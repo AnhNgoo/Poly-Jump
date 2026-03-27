@@ -1,0 +1,124 @@
+{
+  "questions": [
+    {
+      "majorId": "GameProgramming",
+      "questions": [
+        {
+          "id": 1,
+          "question": "Trong Unity, phuong thuc nao duoc goi khi mot GameObject duoc kich hoat lan dau?",
+          "options": [
+            "Start()",
+            "Awake()",
+            "OnEnable()",
+            "LoadAsync()"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": 2,
+          "question": "Thanh phan nao trong Unity chiu trach nhiem xu ly vat ly?",
+          "options": [
+            "Transform",
+            "Renderer",
+            "Rigidbody",
+            "Collider"
+          ],
+          "correctIndex": 2
+        },
+        {
+          "id": 3,
+          "question": "Trong Unity, prefab la gi?",
+          "options": [
+            "Mot loai texture",
+            "Ban sao cua GameObject duoc luu truoc",
+            "Mot script ngu",
+            "Doi tuong 3D model"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": 4,
+          "question": "Phuong thuc nao duoc goi moi frame trong Unity?",
+          "options": [
+            "Start()",
+            "Update()",
+            "OnCollision()",
+            "OnDestroy()"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": 5,
+          "question": "Thanh phan nao duoc su dung de phat hien va xu ly va cham?",
+          "options": [
+            "Rigidbody",
+            "Transform",
+            "Collider",
+            "Camera"
+          ],
+          "correctIndex": 2
+        }
+      ]
+    },
+    {
+      "majorId": "WebProgramming",
+      "questions": [
+        {
+          "id": 101,
+          "question": "HTML la viet tat cua gi?",
+          "options": [
+            "HyperText Markup Language",
+            "High Tech Modern Language",
+            "Home Tool Markup Language",
+            "Hyperlink Text Machine Language"
+          ],
+          "correctIndex": 0
+        },
+        {
+          "id": 102,
+          "question": "The nao duoc su dung de tao danh sach co thu tu trong HTML?",
+          "options": [
+            "<ul>",
+            "<li>",
+            "<ol>",
+            "<dl>"
+          ],
+          "correctIndex": 2
+        },
+        {
+          "id": 103,
+          "question": "Thuoc tinh nao trong CSS duoc su dung de thay doi khoang cach giua cac dong?",
+          "options": [
+            "letter-spacing",
+            "line-height",
+            "text-indent",
+            "word-spacing"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": 104,
+          "question": "Phuong thuc nao trong JavaScript duoc su dung de them phan tu vao cuoi mang?",
+          "options": [
+            "push()",
+            "pop()",
+            "shift()",
+            "unshift()"
+          ],
+          "correctIndex": 0
+        },
+        {
+          "id": 105,
+          "question": "Trong JavaScript, khai bao bien nao co pham vi block-scope?",
+          "options": [
+            "var",
+            "let",
+            "const",
+            "both let and const"
+          ],
+          "correctIndex": 3
+        }
+      ]
+    }
+  ]
+}

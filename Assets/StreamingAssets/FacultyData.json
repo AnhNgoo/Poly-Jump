@@ -1,0 +1,28 @@
+{
+  "faculties": [
+    {
+      "id": "IT",
+      "displayName": "Cong nghe thong tin",
+      "majors": [
+        {
+          "id": "GameProgramming",
+          "displayName": "Game Programming"
+        },
+        {
+          "id": "WebProgramming",
+          "displayName": "Web Programming"
+        }
+      ]
+    },
+    {
+      "id": "Marketing",
+      "displayName": "Marketing",
+      "majors": [
+        {
+          "id": "DigitalMarketing",
+          "displayName": "Digital Marketing"
+        }
+      ]
+    }
+  ]
+}
