@@ -22,6 +22,8 @@ public class QuizUI : MenuBase
     private bool _defaultColorsSet;
     private Question _currentQuestion;
     private bool _hasAnswered;
+    private Coroutine _timerRoutine;
+    private Coroutine _answerRoutine;
 
     protected override void LoadComponent()
     {
@@ -39,6 +41,7 @@ public class QuizUI : MenuBase
     protected override void LoadComponentRuntime()
     {
         EventManager.Instance.Subscribe(GameEvent.QuizTriggered, OnQuizTriggered);
+        EventManager.Instance.Subscribe(GameEvent.QuizClosed, OnQuizClosed);
     }
 
     private void OnQuizTriggered(object data)
@@ -49,11 +52,17 @@ public class QuizUI : MenuBase
         }
     }
 
+    private void OnQuizClosed(object data)
+    {
+        Close();
+    }
+
     public void ShowQuestion(Question question)
     {
         _currentQuestion = question;
         _hasAnswered = false;
 
+        ResetCountdownStyle();
         questionText.text = question.question;
         BuildAnswerButtons(question.options);
         ResetOptionColors();
@@ -65,10 +74,20 @@ public class QuizUI : MenuBase
         if (_hasAnswered || _currentQuestion == null) return;
         _hasAnswered = true;
 
+        CancelQuestionTimer();
+        CancelAnswerRoutine();
+
         bool isCorrect = index == _currentQuestion.correctIndex;
+
+        if (isCorrect)
+            AudioManager.Instance?.PlayCorrect();
+        else
+            AudioManager.Instance?.PlayWrong();
 
         HighlightAnswer(index, isCorrect);
         QuizManager.Instance.OnAnswerSelected(isCorrect);
+
+        ShowAnswerResult(isCorrect);
     }
 
     private void HighlightAnswer(int selectedIndex, bool isCorrect)
@@ -144,28 +163,79 @@ public class QuizUI : MenuBase
         _optionButtons.Clear();
     }
 
-    public void StartCountdown(System.Action onComplete)
+    public void StartQuestionTimer(float durationSeconds)
     {
-        StartCoroutine(CountdownCoroutine(onComplete));
+        CancelQuestionTimer();
+        _timerRoutine = StartCoroutine(QuestionTimerCoroutine(durationSeconds));
     }
 
-    private System.Collections.IEnumerator CountdownCoroutine(System.Action onComplete)
+    public void CancelQuestionTimer()
+    {
+        if (_timerRoutine != null)
+        {
+            StopCoroutine(_timerRoutine);
+            _timerRoutine = null;
+        }
+    }
+
+    private void CancelAnswerRoutine()
+    {
+        if (_answerRoutine != null)
+        {
+            StopCoroutine(_answerRoutine);
+            _answerRoutine = null;
+        }
+    }
+
+    private System.Collections.IEnumerator QuestionTimerCoroutine(float durationSeconds)
     {
         countdownPanel?.SetActive(true);
-        int count = 3;
-        countdownText.text = count.ToString();
+        float remaining = Mathf.Max(0f, durationSeconds);
 
-        for (int i = count; i > 0; i--)
+        while (remaining > 0f)
         {
-            countdownText.text = i.ToString();
-            countdownText.transform.localScale = Vector3.one * 1.5f;
-            countdownText.transform.DOScale(1f, 0.3f).SetUpdate(true);
+            if (countdownText != null)
+                countdownText.text = Mathf.CeilToInt(remaining).ToString();
             yield return new WaitForSecondsRealtime(1f);
+            remaining -= 1f;
         }
 
         countdownPanel?.SetActive(false);
         Close();
-        onComplete?.Invoke();
+        QuizManager.Instance.OnTimeExpired();
+    }
+
+    private void ShowAnswerResult(bool isCorrect)
+    {
+        if (!gameObject.activeInHierarchy)
+        {
+            Open();
+        }
+
+        if (countdownPanel != null)
+            countdownPanel.SetActive(true);
+
+        if (countdownText != null)
+        {
+            countdownText.text = isCorrect ? "Correct" : "Incorrect";
+            countdownText.color = isCorrect ? new Color(0.2f, 0.8f, 0.2f, 1f) : new Color(0.9f, 0.2f, 0.2f, 1f);
+        }
+
+        _answerRoutine = StartCoroutine(AnswerResultCoroutine());
+    }
+
+    private System.Collections.IEnumerator AnswerResultCoroutine()
+    {
+        yield return new WaitForSecondsRealtime(3f);
+        countdownPanel?.SetActive(false);
+        Close();
+        QuizManager.Instance.HandleAnswerResultComplete();
+    }
+
+    private void ResetCountdownStyle()
+    {
+        if (countdownText != null)
+            countdownText.color = Color.white;
     }
 
     public override void Close()
@@ -173,6 +243,8 @@ public class QuizUI : MenuBase
         base.Close();
         _currentQuestion = null;
         _hasAnswered = false;
+        CancelQuestionTimer();
+        CancelAnswerRoutine();
     }
 
     private void OnDestroy()
@@ -180,6 +252,7 @@ public class QuizUI : MenuBase
         if (EventManager.Instance != null)
         {
             EventManager.Instance.Unsubscribe(GameEvent.QuizTriggered, OnQuizTriggered);
+            EventManager.Instance.Unsubscribe(GameEvent.QuizClosed, OnQuizClosed);
         }
     }
 }

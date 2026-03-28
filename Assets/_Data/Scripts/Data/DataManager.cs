@@ -77,15 +77,42 @@ public class DataManager : Singleton<DataManager>
         return question;
     }
 
-    public void SavePlayerProgress(string majorId, float percentage)
+    public void SavePlayerProgress(string facultyId, string majorId, float percentage)
     {
+        if (_saveData.MajorScores == null)
+            _saveData.MajorScores = new Dictionary<string, float>();
+        if (_saveData.FacultyScores == null)
+            _saveData.FacultyScores = new Dictionary<string, Dictionary<string, float>>();
+
+        if (!string.IsNullOrEmpty(majorId))
+        {
+            if (_saveData.MajorScores.TryGetValue(majorId, out float currentBest))
+                _saveData.MajorScores[majorId] = Mathf.Max(currentBest, percentage);
+            else
+                _saveData.MajorScores[majorId] = percentage;
+        }
+
+        if (!string.IsNullOrEmpty(facultyId) && !string.IsNullOrEmpty(majorId))
+        {
+            if (!_saveData.FacultyScores.TryGetValue(facultyId, out var majorScores) || majorScores == null)
+            {
+                majorScores = new Dictionary<string, float>();
+                _saveData.FacultyScores[facultyId] = majorScores;
+            }
+
+            if (majorScores.TryGetValue(majorId, out float currentFacultyBest))
+                majorScores[majorId] = Mathf.Max(currentFacultyBest, percentage);
+            else
+                majorScores[majorId] = percentage;
+        }
+
         switch (majorId)
         {
             case "GameProgramming":
-                _saveData.GameProgramming = percentage;
+                _saveData.GameProgramming = Mathf.Max(_saveData.GameProgramming, percentage);
                 break;
             case "WebProgramming":
-                _saveData.WebProgramming = percentage;
+                _saveData.WebProgramming = Mathf.Max(_saveData.WebProgramming, percentage);
                 break;
         }
 
@@ -95,9 +122,31 @@ public class DataManager : Singleton<DataManager>
 
     public SaveData GetSaveData() => _saveData;
 
+    public float GetBestScore(string facultyId, string majorId)
+    {
+        if (_saveData == null) return 0f;
+
+        if (!string.IsNullOrEmpty(facultyId) && _saveData.FacultyScores != null
+            && _saveData.FacultyScores.TryGetValue(facultyId, out var majors)
+            && majors != null && majors.TryGetValue(majorId, out float facultyScore))
+        {
+            return facultyScore;
+        }
+
+        if (_saveData.MajorScores != null && _saveData.MajorScores.TryGetValue(majorId, out float majorScore))
+            return majorScore;
+
+        return 0f;
+    }
+
     public FacultyInfo GetFaculty(string facultyId)
     {
         return _facultyData?.faculties?.FirstOrDefault(f => f.id == facultyId);
+    }
+
+    public List<FacultyInfo> GetFaculties()
+    {
+        return _facultyData?.faculties ?? new List<FacultyInfo>();
     }
 
     public List<MajorInfo> GetMajorsForFaculty(string facultyId)

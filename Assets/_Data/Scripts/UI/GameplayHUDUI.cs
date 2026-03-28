@@ -80,10 +80,10 @@ public class GameplayHUDUI : MenuBase
             return;
 
         if (jumpScoreText != null)
-            jumpScoreText.text = $"Platform: {ScoreManager.Instance.JumpScore}";
+            jumpScoreText.text = $"Số bậc: {ScoreManager.Instance.JumpScore}";
 
         if (knowledgeScoreText != null)
-            knowledgeScoreText.text = $"Knowledge: {ScoreManager.Instance.KnowledgeScore}";
+            knowledgeScoreText.text = $"Điểm kiến thức: {ScoreManager.Instance.KnowledgeScore}";
     }
 
     private TMPro.TextMeshProUGUI FindTmpByName(string childName)

@@ -8,8 +8,9 @@ public class MainMenuUI : MenuBase
 
     [Header("Buttons")]
     [SerializeField] private UnityEngine.UI.Button playButton;
-    [SerializeField] private UnityEngine.UI.Button continueButton;
     [SerializeField] private UnityEngine.UI.Button settingsButton;
+    [SerializeField] private UnityEngine.UI.Button achievementButton;
+    [SerializeField] private UnityEngine.UI.Button quitButton;
 
     [Header("Animation")]
     [SerializeField] private float buttonAnimDuration = 0.3f;
@@ -17,33 +18,45 @@ public class MainMenuUI : MenuBase
     protected override void LoadComponent()
     {
         if (playButton == null) playButton = transform.Find("ButtonPanel/PlayButton")?.GetComponent<UnityEngine.UI.Button>();
-        if (continueButton == null) continueButton = transform.Find("ButtonPanel/ContinueButton")?.GetComponent<UnityEngine.UI.Button>();
         if (settingsButton == null) settingsButton = transform.Find("ButtonPanel/SettingsButton")?.GetComponent<UnityEngine.UI.Button>();
+        if (achievementButton == null) achievementButton = transform.Find("ButtonPanel/AchievementButton")?.GetComponent<UnityEngine.UI.Button>();
+        if (quitButton == null) quitButton = transform.Find("ButtonPanel/QuitButton")?.GetComponent<UnityEngine.UI.Button>();
     }
 
     protected override void LoadComponentRuntime()
     {
         playButton?.onClick.AddListener(OnPlayClicked);
-        continueButton?.onClick.AddListener(OnContinueClicked);
         settingsButton?.onClick.AddListener(OnSettingsClicked);
+        achievementButton?.onClick.AddListener(OnAchievementClicked);
+        quitButton?.onClick.AddListener(OnQuitClicked);
 
         EventManager.Instance.Subscribe(GameEvent.GameStarted, OnGameStarted);
     }
 
     private void OnPlayClicked()
     {
+        AudioManager.Instance?.PlayButtonClick();
         UIManager.Instance.ChangeMenu(MenuType.MapSelection);
-    }
-
-    private void OnContinueClicked()
-    {
-        PersistentData.Instance.ResetSession();
-        EventManager.Instance.Notify(GameEvent.GameStarted);
     }
 
     private void OnSettingsClicked()
     {
-        Debug.Log("Settings clicked (chua implement)");
+        AudioManager.Instance?.PlayButtonClick();
+        Time.timeScale = 1f;
+        UIManager.Instance.ChangeMenu(MenuType.SettingsMenu, MenuType.MainMenu);
+    }
+
+    private void OnAchievementClicked()
+    {
+        AudioManager.Instance?.PlayButtonClick();
+        Time.timeScale = 1f;
+        UIManager.Instance.ChangeMenu(MenuType.AchievementMenu);
+    }
+
+    private void OnQuitClicked()
+    {
+        AudioManager.Instance?.PlayButtonClick();
+        Application.Quit();
     }
 
     private void OnGameStarted(object data)
@@ -60,12 +73,14 @@ public class MainMenuUI : MenuBase
     private void AnimateButtonsIn()
     {
         playButton?.transform.DOScale(0f, 0f);
-        continueButton?.transform.DOScale(0f, 0f);
         settingsButton?.transform.DOScale(0f, 0f);
+        achievementButton?.transform.DOScale(0f, 0f);
+        quitButton?.transform.DOScale(0f, 0f);
 
         playButton?.transform.DOScale(1f, buttonAnimDuration).SetEase(Ease.OutBack).SetDelay(0.1f);
-        continueButton?.transform.DOScale(1f, buttonAnimDuration).SetEase(Ease.OutBack).SetDelay(0.2f);
-        settingsButton?.transform.DOScale(1f, buttonAnimDuration).SetEase(Ease.OutBack).SetDelay(0.3f);
+        settingsButton?.transform.DOScale(1f, buttonAnimDuration).SetEase(Ease.OutBack).SetDelay(0.2f);
+        achievementButton?.transform.DOScale(1f, buttonAnimDuration).SetEase(Ease.OutBack).SetDelay(0.3f);
+        quitButton?.transform.DOScale(1f, buttonAnimDuration).SetEase(Ease.OutBack).SetDelay(0.4f);
     }
 
     private void OnDestroy()

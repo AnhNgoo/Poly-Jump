@@ -2,25 +2,41 @@
   "faculties": [
     {
       "id": "IT",
-      "displayName": "Cong nghe thong tin",
+      "displayName": "Công nghệ thông tin",
       "majors": [
         {
           "id": "GameProgramming",
-          "displayName": "Game Programming"
+          "displayName": "Lập trình game"
         },
         {
           "id": "WebProgramming",
-          "displayName": "Web Programming"
+          "displayName": "Lập trình web"
+        },
+        {
+          "id": "SoftwareDevelopment",
+          "displayName": "Phát triển phần mềm"
+        },
+        {
+          "id": "MobileProgramming",
+          "displayName": "Lập trình mobile"
         }
       ]
     },
     {
-      "id": "Marketing",
-      "displayName": "Marketing",
+      "id": "BusinessManagement",
+      "displayName": "Quản trị kinh doanh",
       "majors": [
         {
           "id": "DigitalMarketing",
           "displayName": "Digital Marketing"
+        },
+        {
+          "id": "MarketingSales",
+          "displayName": "Marketing & Sales"
+        },
+        {
+          "id": "EventCommunication",
+          "displayName": "Truyền thông & Tổ chức sự kiện"
         }
       ]
     }

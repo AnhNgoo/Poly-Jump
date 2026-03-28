@@ -46,7 +46,7 @@ public class MajorSelectionUI : MenuBase
         var label = faculty != null && !string.IsNullOrEmpty(faculty.displayName)
             ? faculty.displayName
             : _currentFacultyId;
-        titleText.text = string.IsNullOrEmpty(label) ? "Choose Major" : $"{label} Majors";
+        titleText.text = string.IsNullOrEmpty(label) ? "Chọn chuyên ngành" : $"{label} - Chuyên ngành";
     }
 
     private void RebuildMajorButtons()
@@ -126,6 +126,7 @@ public class MajorSelectionUI : MenuBase
 
     private void OnMajorSelected(string majorId)
     {
+        AudioManager.Instance?.PlayButtonClick();
         // Logic: lưu major & gọi GameManager bắt đầu game
         PersistentData.Instance.CurrentMajor = majorId;
         PersistentData.Instance.ResetSession();
@@ -137,6 +138,7 @@ public class MajorSelectionUI : MenuBase
 
     private void OnBackClicked()
     {
+        AudioManager.Instance?.PlayButtonClick();
         UIManager.Instance.ChangeMenu(MenuType.MapSelection);
     }
 }

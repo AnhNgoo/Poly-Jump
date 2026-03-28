@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Sirenix.OdinInspector;
 using TMPro;
 using DG.Tweening;
@@ -30,6 +31,12 @@ public class GameOverUI : MenuBase
 
     protected override void LoadComponentRuntime()
     {
+        if (jumpScoreText == null || knowledgeScoreText == null || percentageText == null
+            || restartButton == null || mainMenuButton == null)
+        {
+            LoadComponent();
+        }
+
         restartButton?.onClick.AddListener(OnRestartClicked);
         mainMenuButton?.onClick.AddListener(OnMainMenuClicked);
 
@@ -38,39 +45,67 @@ public class GameOverUI : MenuBase
 
     private void OnGameOver(object data)
     {
-        ShowResults();
         Open();
     }
 
     private void ShowResults()
     {
+        if (jumpScoreText == null || knowledgeScoreText == null || percentageText == null)
+        {
+            Debug.LogWarning("GameOverUI missing score text references.");
+            return;
+        }
+
         var persistent = PersistentData.Instance;
-        var dataManager = DataManager.Instance;
+        if (persistent == null)
+        {
+            Debug.LogWarning("PersistentData not ready when showing results.");
+            return;
+        }
 
         int jumpScore = persistent.JumpScore;
         int correct = persistent.CorrectAnswers;
-        int total = persistent.TotalQuestions;
-        float percentage = persistent.CalculatePercentage();
+        int totalAsked = persistent.TotalQuestions;
+        int totalForDisplay = totalAsked;
+        var quizManager = QuizManager.Instance;
+        if (quizManager != null && quizManager.MaxQuestionsPerRun > 0)
+            totalForDisplay = quizManager.MaxQuestionsPerRun;
 
-        jumpScoreText.text = $"Platforms Passed: {jumpScore}";
-        knowledgeScoreText.text = $"Correct Answers: {correct}/{total}";
-        percentageText.text = $"Knowledge Score: {percentage:F1}%";
+        float percentage = totalForDisplay > 0
+            ? (float)correct / totalForDisplay * 100f
+            : 0f;
 
-        dataManager.SavePlayerProgress(persistent.CurrentMajor, percentage);
+        jumpScoreText.text = $"Số bậc: {jumpScore}";
+        knowledgeScoreText.text = $"Điểm kiến thức: {correct}/{totalForDisplay}";
+        percentageText.text = $"Tỷ lệ kiến thức: {percentage:F1}%";
+
+        var dataManager = DataManager.Instance;
+        if (dataManager != null)
+            dataManager.SavePlayerProgress(persistent.CurrentFaculty, persistent.CurrentMajor, percentage);
     }
 
     private void OnRestartClicked()
     {
+        AudioManager.Instance?.PlayButtonClick();
         Time.timeScale = 1f;
         PersistentData.Instance.ResetSession();
-        EventManager.Instance.Notify(GameEvent.GameStarted);
+        GameManager.PendingRestart = true;
+        GameManager.PendingMajor = PersistentData.Instance.CurrentMajor;
+        PlayerPrefs.SetInt("PendingRestart", 1);
+        PlayerPrefs.SetString("PendingMajor", PersistentData.Instance.CurrentMajor);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     private void OnMainMenuClicked()
     {
+        AudioManager.Instance?.PlayButtonClick();
         Time.timeScale = 1f;
         PersistentData.Instance.ResetSession();
-        UIManager.Instance.ChangeMenu(MenuType.MainMenu);
+        GameManager.PendingRestart = false;
+        GameManager.PendingMajor = null;
+        PlayerPrefs.DeleteKey("PendingRestart");
+        PlayerPrefs.DeleteKey("PendingMajor");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public override void Open(object data = null)
@@ -78,6 +113,8 @@ public class GameOverUI : MenuBase
         base.Open(data);
         transform.localScale = Vector3.zero;
         transform.DOScale(1f, scaleAnimDuration).SetEase(Ease.OutBack);
+        AudioManager.Instance?.PlayGameOver();
+        ShowResults();
     }
 
     private void OnDestroy()

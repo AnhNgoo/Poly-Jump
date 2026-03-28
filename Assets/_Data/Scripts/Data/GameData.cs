@@ -50,4 +50,6 @@ public class SaveData
 {
     public float GameProgramming;
     public float WebProgramming;
+    public Dictionary<string, float> MajorScores = new Dictionary<string, float>();
+    public Dictionary<string, Dictionary<string, float>> FacultyScores = new Dictionary<string, Dictionary<string, float>>();
 }

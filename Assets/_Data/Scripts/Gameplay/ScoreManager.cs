@@ -36,6 +36,8 @@ public class ScoreManager : Singleton<ScoreManager>
         if (IsQuizActive) return;
 
         JumpScore++;
+        if (PersistentData.Instance != null)
+            PersistentData.Instance.JumpScore = JumpScore;
 
         // UI: bắn event để GameplayHUDUI cập nhật text
         EventManager.Instance.Notify(GameEvent.ScoreChanged, JumpScore);
@@ -61,7 +63,8 @@ public class ScoreManager : Singleton<ScoreManager>
         if (correct)
         {
             KnowledgeScore++;
-            PersistentData.Instance.CorrectAnswers++;
+            if (PersistentData.Instance != null)
+                PersistentData.Instance.CorrectAnswers++;
         }
     }
 
@@ -70,8 +73,9 @@ public class ScoreManager : Singleton<ScoreManager>
         enabled = false;
     }
 
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
+        base.OnDestroy();
         if (EventManager.Instance != null)
         {
             EventManager.Instance.Unsubscribe(GameEvent.QuizClosed, OnQuizClosed);
@@ -85,5 +89,7 @@ public class ScoreManager : Singleton<ScoreManager>
         KnowledgeScore = 0;
         IsQuizActive = false;
         enabled = true;
+        if (PersistentData.Instance != null)
+            PersistentData.Instance.JumpScore = 0;
     }
 }

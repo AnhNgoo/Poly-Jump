@@ -80,7 +80,7 @@ public class PlatformSpawner : LoadComponents
         float cameraBottom = _cameraTransform.position.y - Camera.main.orthographicSize;
         float cameraTop = _cameraTransform.position.y + Camera.main.orthographicSize;
 
-        CleanupPlatformsBelow(cameraBottom - 2f);
+        CleanupPlatformsBelow(cameraBottom - 0.5f);
 
         // Always keep a spawn buffer above the camera
         float spawnAheadY = cameraTop + spawnAheadOfCamera;

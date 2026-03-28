@@ -147,9 +147,6 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D other)
     {
-        var platform = other.gameObject.GetComponent<PlatformComponent>();
-        if (platform != null && platform.PlatformId == _lastBouncePlatformId)
-            _lastBouncePlatformId = -1;
     }
 
     private void TryBounce(Collision2D other)
@@ -158,14 +155,35 @@ public class PlayerController : MonoBehaviour
         if (platform == null)
             platform = other.gameObject.AddComponent<PlatformComponent>();
 
-        if (platform.PlatformId == _lastBouncePlatformId) return;
-        _lastBouncePlatformId = platform.PlatformId;
+        if (_rb.linearVelocity.y > 0.01f) return;
 
-        // Logic game: gọi trực tiếp singleton
-        ScoreManager.Instance?.AddPlatformPass(platform.PlatformId);
+        bool hitFromTop = false;
+        if (other.contactCount > 0)
+        {
+            for (int i = 0; i < other.contactCount; i++)
+            {
+                var contact = other.GetContact(i);
+                if (contact.normal.y > 0.2f)
+                {
+                    hitFromTop = true;
+                    break;
+                }
+            }
+        }
+        if (!hitFromTop) return;
+
+        bool isSamePlatform = platform.PlatformId == _lastBouncePlatformId;
+        if (!isSamePlatform)
+        {
+            _lastBouncePlatformId = platform.PlatformId;
+            // Logic game: gọi trực tiếp singleton
+            ScoreManager.Instance?.AddPlatformPass(platform.PlatformId);
+        }
 
         // Nảy lên
         _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, jumpForce);
+
+        AudioManager.Instance?.PlayJump();
 
         // UI: dùng event (PlatformSpawner cần biết khi nào player nhảy)
         EventManager.Instance?.Notify(GameEvent.PlayerJump, jumpForce);

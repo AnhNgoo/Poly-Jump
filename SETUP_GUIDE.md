@@ -29,6 +29,8 @@ Scene: GameScene
 └── UI
    └── Canvas
       ├── MainMenu            (MainMenuUI)
+      ├── SettingsMenu        (SettingMenuUI)
+      ├── PauseMenu           (PauseMenuUI)
       ├── MapSelection        (MapSelectionUI)
       ├── MajorSelection      (MajorSelectionUI)
       ├── GameplayHUD         (GameplayHUDUI)
@@ -206,8 +208,8 @@ Right-click trên Canvas > Create Empty, đặt tên `MainMenu`
 1. Tạo child `ButtonPanel`
 2. Tạo 3 Button con:
    - `PlayButton`
-   - `ContinueButton`
    - `SettingsButton`
+   - `QuitButton`
 
 > `MainMenuUI` sẽ tự tìm các button theo path `ButtonPanel/...`
 
@@ -218,12 +220,17 @@ Right-click trên Canvas > Create Empty, đặt tên `MapSelection`
 #### ButtonPanel
 
 1. Tạo child `ButtonPanel`
-2. Tạo 2 Button con:
-   - `ITButton`
-   - `MarketingButton`
-   - `BackButton`
+2. Tạo child `FacultyButtons` (container để spawn)
+3. Tạo `BackButton`
+
+#### Faculty Button Prefab
+
+1. Tạo prefab `FacultyButton` (Button + Text/TMP là child)
+2. Kéo prefab này vào field `Faculty Button Prefab` của `MapSelectionUI`
 
 > Đây là màn hình chọn **ngành/khoa**. Khi chọn sẽ chuyển qua MajorSelection để chọn **chuyên ngành**.
+
+> `MapSelectionUI` đọc dữ liệu từ [Assets/StreamingAssets/FacultyData.json](Assets/StreamingAssets/FacultyData.json) và tự spawn button theo danh sách faculties.
 
 ### 3.4 MajorSelection (MajorSelectionUI)
 
@@ -298,10 +305,10 @@ Right-click trên Canvas > Create Empty, đặt tên `QuizPanel`
 1. Tạo child `ContentPanel`
 2. Tạo các con sau:
    - `QuestionText` (TextMeshProUGUI)
-   - `CountdownPanel` (GameObject) để bật/tắt màn hình đếm ngược
+   - `CountdownPanel` (GameObject) để bật/tắt timer
    - `CountdownText` (TextMeshProUGUI) nằm trong `CountdownPanel`
 
-> `CountdownPanel` là lớp overlay hiển thị đếm ngược 3..2..1 trước khi quay lại game.
+> Khi mở câu hỏi, `CountdownPanel` sẽ hiển thị timer 30 giây. Hết thời gian sẽ tự đóng quiz và quay lại game.
 
 #### Answer Buttons (Prefab)
 
@@ -326,7 +333,35 @@ Right-click trên Canvas > Create Empty, đặt tên `GameOverPanel`
    - `RestartButton` (Button)
    - `MainMenuButton` (Button)
 
-### 3.8 TouchControls - Điều Khiển Cảm Ứng
+### 3.8 SettingsMenu (SettingMenuUI)
+
+Right-click trên Canvas > Create Empty, đặt tên `SettingsMenu`
+**Ban đầu SetActive = false**
+
+#### ContentPanel
+
+1. Tạo child `ContentPanel`
+2. Tạo các con:
+   - `MusicSlider` (Slider)
+   - `VFXSlider` (Slider)
+   - `BackButton` (Button)
+
+> `SettingMenuUI` dùng 2 slider để chỉnh music/vfx (logic sẽ thêm sau).
+
+### 3.9 PauseMenu (PauseMenuUI)
+
+Right-click trên Canvas > Create Empty, đặt tên `PauseMenu`
+**Ban đầu SetActive = false**
+
+#### ButtonPanel
+
+1. Tạo child `ButtonPanel`
+2. Tạo các con:
+   - `MainMenuButton` (Button)
+   - `ResumeButton` (Button)
+   - `SettingsButton` (Button)
+
+### 3.10 TouchControls - Điều Khiển Cảm Ứng
 
 Right-click trên Canvas > Create Empty, đặt tên `TouchControls`
 
@@ -476,10 +511,6 @@ Nếu cần, tạo Layer mới:
 - Kiểm tra Canvas có Raycast Target trên Button
 - Kiểm tra EventSystem có trong Scene
 - Thêm `EventTrigger` component nếu OnClick không hoạt động
-
-### Pause Menu không hiện
-
-- Hiện tại chưa có script `PauseMenu` sẵn. Nếu cần UI tạm dừng, hãy tạo script kế thừa `MenuBase` và đặt `menuType` = `PauseMenu`.
 
 ---
 

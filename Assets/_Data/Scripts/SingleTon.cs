@@ -28,4 +28,10 @@ public class Singleton<T> : LoadComponents where T : LoadComponents
     protected override void LoadComponentRuntime()
     {
     }
+
+    protected virtual void OnDestroy()
+    {
+        if (ReferenceEquals(Instance, this))
+            Instance = null;
+    }
 }

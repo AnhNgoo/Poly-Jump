@@ -13,6 +13,7 @@ public enum MenuType
     LoadingMenu = 0,
     MainMenu = 1,
     CreateRoomMenu = 2,
+    SettingsMenu = 14,
     PauseMenu = 3,
     LobbyMenu = 6,
     HUDMenu = 7,
@@ -22,6 +23,8 @@ public enum MenuType
     GameplayHUD = 11,
     QuizPanel = 12,
     GameOverPanel = 13,
+    AchievementMenu = 15,
+    AchievementMajor = 16,
 }
 
 public class UIManager : Singleton<UIManager>
@@ -45,6 +48,20 @@ public class UIManager : Singleton<UIManager>
     {
         LoadMenus();
         CloseAllMenus();
+        Invoke(nameof(TryOpenInitialMenu), 0.05f);
+    }
+
+    private void TryOpenInitialMenu()
+    {
+        if (GameManager.PendingRestart || PlayerPrefs.GetInt("PendingRestart", 0) == 1)
+            return;
+
+        if (GameManager.Instance != null && GameManager.Instance.CurrentState == GameState.Playing)
+        {
+            ChangeMenu(MenuType.GameplayHUD);
+            return;
+        }
+
         ChangeMenu(MenuType.MainMenu);
     }
     protected override void LoadComponent()

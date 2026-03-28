@@ -12,6 +12,12 @@ public enum GameState
 
 public class GameManager : Singleton<GameManager>
 {
+    public static bool PendingRestart;
+    public static string PendingMajor;
+
+    private const string PendingRestartKey = "PendingRestart";
+    private const string PendingMajorKey = "PendingMajor";
+
     [SerializeField] private PlayerController playerPrefab;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private GameObject gameplayContainer;
@@ -29,6 +35,33 @@ public class GameManager : Singleton<GameManager>
         EventManager.Instance.Subscribe(GameEvent.GamePaused, OnGamePaused);
         EventManager.Instance.Subscribe(GameEvent.GameResumed, OnGameResumed);
         EventManager.Instance.Subscribe(GameEvent.MajorSelected, OnMajorSelected);
+    }
+
+    private void Start()
+    {
+        TryStartPendingRestart();
+    }
+
+    private void TryStartPendingRestart()
+    {
+        if (!PendingRestart)
+        {
+            PendingRestart = PlayerPrefs.GetInt(PendingRestartKey, 0) == 1;
+            PendingMajor = PlayerPrefs.GetString(PendingMajorKey, null);
+        }
+        if (!PendingRestart) return;
+
+        if (PersistentData.Instance == null || ScoreManager.Instance == null || UIManager.Instance == null)
+        {
+            Invoke(nameof(TryStartPendingRestart), 0.1f);
+            return;
+        }
+
+        PendingRestart = false;
+        PlayerPrefs.DeleteKey(PendingRestartKey);
+        PlayerPrefs.DeleteKey(PendingMajorKey);
+        if (!string.IsNullOrEmpty(PendingMajor))
+            StartGameWithMajor(PendingMajor);
     }
 
     private void OnMajorSelected(object data)
@@ -70,7 +103,8 @@ public class GameManager : Singleton<GameManager>
             if (platformSpawner != null) platformSpawner.ResetSpawner();
         }
 
-        ScoreManager.Instance.ResetScore();
+        if (ScoreManager.Instance != null)
+            ScoreManager.Instance.ResetScore();
 
         var quizManager = FindFirstObjectByType<QuizManager>();
         if (quizManager != null) quizManager.SetMajor(major);
@@ -79,13 +113,25 @@ public class GameManager : Singleton<GameManager>
         if (cameraFollow != null)
             cameraFollow.SetTarget(_currentPlayer != null ? _currentPlayer.transform : null, true);
 
-        UIManager.Instance.ChangeMenu(MenuType.GameplayHUD);
+        if (UIManager.Instance != null)
+            UIManager.Instance.ChangeMenu(MenuType.GameplayHUD);
     }
 
     private void OnGameOver(object data)
     {
         if (CurrentState != GameState.Playing && CurrentState != GameState.Quiz) return;
         CurrentState = GameState.GameOver;
+
+        if (_currentPlayer != null)
+        {
+            Destroy(_currentPlayer.gameObject);
+            _currentPlayer = null;
+        }
+
+        var cameraFollow = FindFirstObjectByType<CameraFollow>();
+        if (cameraFollow != null)
+            cameraFollow.SetTarget(null, false);
+
         UIManager.Instance.ChangeMenu(MenuType.GameOverPanel);
     }
 
