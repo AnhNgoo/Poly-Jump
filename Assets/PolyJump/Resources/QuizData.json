@@ -1,0 +1,27 @@
+[
+  {
+    "q": "Triết lý đào tạo của FPT Polytechnic là gì?",
+    "a": ["Học lý thuyết", "Thực học - Thực nghiệp", "Học trực tuyến", "Học để thi"],
+    "correct": 1
+  },
+  {
+    "q": "Cơ sở FPT Polytechnic Đà Nẵng có ký túc xá nội trú ngay trong trường không?",
+    "a": ["Có", "Không"],
+    "correct": 1
+  },
+  {
+    "q": "Ngành Thiết kế Đồ họa tại FPT Polytechnic thường dùng bộ phần mềm nào?",
+    "a": ["Adobe", "Microsoft", "Autodesk", "Apple"],
+    "correct": 0
+  },
+  {
+    "q": "FPT Polytechnic chú trọng phương pháp học nào?",
+    "a": ["Học thuộc lòng", "Project-based learning", "Chỉ làm bài thi cuối kỳ", "Không thực hành"],
+    "correct": 1
+  },
+  {
+    "q": "Màu nhận diện chính của FPT Polytechnic là gì?",
+    "a": ["Cam", "Xanh lá"],
+    "correct": 0
+  }
+]
