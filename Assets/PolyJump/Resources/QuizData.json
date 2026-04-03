@@ -1,27 +1,946 @@
 [
   {
     "q": "Triết lý đào tạo của FPT Polytechnic là gì?",
-    "a": ["Học lý thuyết", "Thực học - Thực nghiệp", "Học trực tuyến", "Học để thi"],
-    "correct": 1
+    "a": [
+      "Thực học - Thực nghiệp",
+      "Học lý thuyết",
+      "Học trực tuyến",
+      "Học để thi"
+    ],
+    "correct": 0
   },
   {
     "q": "Cơ sở FPT Polytechnic Đà Nẵng có ký túc xá nội trú ngay trong trường không?",
-    "a": ["Có", "Không"],
+    "a": [
+      "Có",
+      "Không"
+    ],
     "correct": 1
   },
   {
     "q": "Ngành Thiết kế Đồ họa tại FPT Polytechnic thường dùng bộ phần mềm nào?",
-    "a": ["Adobe", "Microsoft", "Autodesk", "Apple"],
-    "correct": 0
-  },
-  {
-    "q": "FPT Polytechnic chú trọng phương pháp học nào?",
-    "a": ["Học thuộc lòng", "Project-based learning", "Chỉ làm bài thi cuối kỳ", "Không thực hành"],
+    "a": [
+      "Microsoft",
+      "Adobe",
+      "Autodesk",
+      "Apple"
+    ],
     "correct": 1
   },
   {
+    "q": "FPT Polytechnic chú trọng phương pháp học nào?",
+    "a": [
+      "Học thuộc lòng",
+      "Chỉ làm bài thi cuối kỳ",
+      "Project-based learning",
+      "Không thực hành"
+    ],
+    "correct": 2
+  },
+  {
     "q": "Màu nhận diện chính của FPT Polytechnic là gì?",
-    "a": ["Cam", "Xanh lá"],
+    "a": [
+      "Cam",
+      "Xanh lá"
+    ],
     "correct": 0
+  },
+  {
+    "q": "FPT Polytechnic hiện có bao nhiêu cơ sở đào tạo chính trên toàn quốc?",
+    "a": [
+      "3 cơ sở",
+      "5 cơ sở",
+      "Trên 10 cơ sở",
+      "7 cơ sở"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "FPT Polytechnic thuộc tập đoàn nào sau đây?",
+    "a": [
+      "Tập đoàn FPT",
+      "Tập đoàn Viettel",
+      "Tập đoàn Vingroup",
+      "Tập đoàn VNPT"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Cơ sở FPT Polytechnic Đà Nẵng nằm ở quận nào?",
+    "a": [
+      "Quận Hải Châu",
+      "Quận Liên Chiểu",
+      "Quận Ngũ Hành Sơn",
+      "Quận Sơn Trà"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Triết lý đào tạo của FPT Polytechnic là gì?",
+    "a": [
+      "Học đi đôi với hành",
+      "Tiên học lễ, hậu học văn",
+      "Thực học - Thực nghiệp",
+      "Học để làm người"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Bee Hub tại FPT Polytechnic là khu vực dành cho việc gì?",
+    "a": [
+      "Phòng thí nghiệm hóa học",
+      "Nhà kho",
+      "Phòng họp của giảng viên",
+      "Không gian tự học và sinh hoạt cộng đồng của sinh viên"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Màu sắc chủ đạo của nhận diện thương hiệu FPT Polytechnic là gì?",
+    "a": [
+      "Cam và Xanh dương",
+      "Xanh lá cây",
+      "Đỏ và Vàng",
+      "Tím"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "FPT Polytechnic có ký túc xá cho sinh viên không (tùy cơ sở)?",
+    "a": [
+      "Có",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Hệ thống thư viện số của trường có tên là gì?",
+    "a": [
+      "FPT Library",
+      "Thư viện số FPT Polytechnic (LMS/Library)",
+      "Library Online",
+      "Book Hub"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Trường có phòng Studio dành cho sinh viên ngành Thiết kế đồ họa không?",
+    "a": [
+      "Có",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Phòng Lab tại trường được trang bị loại máy tính nào?",
+    "a": [
+      "Máy tính cấu hình thấp",
+      "Chỉ có màn hình, không có cây",
+      "Máy tính cấu hình mạnh, phù hợp với từng chuyên ngành",
+      "Sinh viên phải tự mang máy"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Linh vật của FPT Polytechnic là con gì?",
+    "a": [
+      "Con Hổ",
+      "Con Đại bàng",
+      "Con Rồng",
+      "Con Ong (Bee)"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "FPT Polytechnic có bao nhiêu kỳ nhập học trong một năm?",
+    "a": [
+      "3 kỳ (Xuân, Hè, Thu)",
+      "2 kỳ",
+      "1 kỳ",
+      "4 kỳ"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Sinh viên FPoly có được sử dụng wifi miễn phí trong trường không?",
+    "a": [
+      "Có",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Trường có sân bóng đá hoặc sân thể thao cho sinh viên không (tùy cơ sở)?",
+    "a": [
+      "Có",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Hệ thống quản lý học tập trực tuyến của trường tên là gì?",
+    "a": [
+      "Facebook",
+      "LMS (Learning Management System)",
+      "Google Classroom",
+      "Zoom"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Sinh viên có thể xem lịch học và điểm số qua ứng dụng nào?",
+    "a": [
+      "MyFPT",
+      "Zalo",
+      "AP (Academic Portal) hoặc App MyFPoly",
+      "TikTok"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Các phòng học tại FPoly thường được trang bị thiết bị gì?",
+    "a": [
+      "Không có thiết bị điện tử",
+      "Chỉ có quạt điện",
+      "Chỉ có bảng đen",
+      "Máy chiếu, điều hòa, hệ thống âm thanh"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Hội trường lớn tại các cơ sở thường là nơi tổ chức sự kiện gì?",
+    "a": [
+      "Lễ định hướng (Orientation), Talkshow, Nhạc hội",
+      "Chỉ dùng để họp lớp",
+      "Làm bãi đỗ xe",
+      "Chỉ dành cho cán bộ"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Khu vực Canteen của trường cung cấp dịch vụ gì?",
+    "a": [
+      "Bán quần áo",
+      "Đồ ăn, thức uống và không gian nghỉ ngơi",
+      "Bán sách giáo khoa",
+      "Cho thuê máy tính"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "FPT Polytechnic có phòng tập Gym cho sinh viên không (tùy cơ sở)?",
+    "a": [
+      "Có",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Trường có cơ sở tại Tây Nguyên không?",
+    "a": [
+      "Có",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Cơ sở Hải Phòng của FPT Polytechnic đã đi vào hoạt động chưa?",
+    "a": [
+      "Có",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Thẻ sinh viên FPoly có tích hợp chức năng thẻ ngân hàng (tùy liên kết) không?",
+    "a": [
+      "Có",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Trường có khu vực \"Check-in\" sống ảo cho sinh viên không?",
+    "a": [
+      "Có (Rất nhiều góc đẹp tại Bee Hub, sân trường)",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Sinh viên có được tham gia đóng góp ý kiến về cơ sở vật chất không?",
+    "a": [
+      "Có (Qua khảo sát mức độ hài lòng mỗi kỳ)",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Ngành Công nghệ thông tin tại FPoly đào tạo chuyên ngành nào sau đây?",
+    "a": [
+      "Phát triển phần mềm",
+      "Lập trình Web",
+      "Tất cả các phương án trên",
+      "Lập trình Mobile"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Ngành nào sau đây thuộc khối kinh tế tại FPoly?",
+    "a": [
+      "Digital Marketing",
+      "Quan hệ công chúng (PR) & Tổ chức sự kiện",
+      "Logistics",
+      "Tất cả các phương án trên"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Bạn có thể học ngành Thiết kế đồ họa tại FPT Polytechnic không?",
+    "a": [
+      "Có",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Chuyên ngành Lập trình Game thuộc khối ngành nào?",
+    "a": [
+      "Khối Công nghệ thông tin",
+      "Khối Kinh tế",
+      "Khối Du lịch",
+      "Khối Ngôn ngữ"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Ngành Công nghệ kỹ thuật điều khiển và tự động hóa (Điện công nghiệp) có được đào tạo không?",
+    "a": [
+      "Có",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Thời gian đào tạo hệ Cao đẳng tại FPT Polytechnic thường kéo dài bao lâu?",
+    "a": [
+      "1 năm",
+      "2 năm 4 tháng (7 học kỳ)",
+      "4 năm",
+      "5 năm"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Học phí tại FPT Polytechnic được đóng theo hình thức nào?",
+    "a": [
+      "Đóng theo năm",
+      "Đóng theo tuần",
+      "Đóng theo từng học kỳ",
+      "Chỉ đóng 1 lần duy nhất"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Ngành Quản trị khách sạn tại FPoly tập trung vào kỹ năng gì?",
+    "a": [
+      "Lý thuyết lịch sử",
+      "Chỉ học tiếng Anh",
+      "Học lập trình",
+      "Nghiệp vụ nhà hàng, buồng phòng, lễ tân thực tế"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Ngành Chăm sóc sức khỏe & Làm đẹp (Poly K-Beauty) đào tạo những gì?",
+    "a": [
+      "Chăm sóc da, Trang điểm nghệ thuật, Làm móng",
+      "Học làm bác sĩ phẫu thuật",
+      "Học dược lý",
+      "Học chế tạo mỹ phẩm"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Ngành Marketing tại FPoly mạnh về mảng nào nhất?",
+    "a": [
+      "Marketing truyền thống",
+      "Digital Marketing (Marketing kỹ thuật số)",
+      "Marketing quốc tế",
+      "Nghiên cứu thị trường thuần túy"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Học tại FPoly có cần phải thi đại học không (xét tuyển chính)?",
+    "a": [
+      "Không (Xét tuyển học bạ THPT)",
+      "Có (Bắt buộc phải trên 20 điểm đại học)"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "\"Xưởng thực hành\" (Poly Workshop) là nơi để làm gì?",
+    "a": [
+      "Để ngủ",
+      "Để làm phòng ăn",
+      "Để sinh viên làm dự án thực tế với doanh nghiệp",
+      "Để giữ xe"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Sinh viên có được học tiếng Anh trong chương trình chính thức không?",
+    "a": [
+      "Có (Tiếng Anh giao tiếp và chuyên ngành)",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Ngành Logistics và Quản lý chuỗi cung ứng phù hợp với ai?",
+    "a": [
+      "Người thích vẽ",
+      "Người thích hát",
+      "Người thích viết văn",
+      "Người thích quản lý hàng hóa, vận tải, kho bãi"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Chuyên ngành Marketing và Sales tập trung vào điều gì?",
+    "a": [
+      "Kỹ năng bán hàng và nắm bắt tâm lý khách hàng",
+      "Kỹ năng sửa máy tính",
+      "Kỹ năng nấu ăn",
+      "Kỹ năng thiết kế web"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Sinh viên ngành CNTT có được học lập trình Java không?",
+    "a": [
+      "Có",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Ngành Hướng dẫn viên du lịch có đi thực tế (Tour) không?",
+    "a": [
+      "Có (Thường xuyên đi tour thực tế xuyên Việt)",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Học ngành Thiết kế đồ họa có được học về làm phim/video không?",
+    "a": [
+      "Có",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Ngành nào đào tạo về quảng cáo trên Facebook, Google?",
+    "a": [
+      "Công nghệ thông tin",
+      "Digital Marketing",
+      "Quản trị khách sạn",
+      "Điện công nghiệp"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "FPT Polytechnic có đào tạo ngành Ngôn ngữ Anh không?",
+    "a": [
+      "Có",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Sinh viên có được chọn chuyên ngành hẹp sau khi vào trường không?",
+    "a": [
+      "Có",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Phương pháp học tập qua dự án (Project-based learning) nghĩa là gì?",
+    "a": [
+      "Chỉ nghe giảng rồi đi về",
+      "Chỉ làm bài tập trong sách giáo khoa",
+      "Sinh viên làm các sản phẩm thực tế để thay thế bài thi lý thuyết",
+      "Học thuộc lòng 100%"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Giảng viên tại FPoly thường là những ai?",
+    "a": [
+      "Chỉ là người nghiên cứu lý thuyết",
+      "Robot",
+      "Sinh viên khóa trên",
+      "Những người có kinh nghiệm làm việc thực tế tại các doanh nghiệp"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Sinh viên ngành Công nghệ kỹ thuật ô tô được học tại đâu?",
+    "a": [
+      "Xưởng thực hành ô tô chuyên dụng",
+      "Trong văn phòng",
+      "Tại nhà",
+      "Tại rạp phim"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Ngành PR & Tổ chức sự kiện có thường xuyên tổ chức event trong trường không?",
+    "a": [
+      "Có",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "FPoly có hỗ trợ sinh viên khởi nghiệp (Startup) không?",
+    "a": [
+      "Có",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Học xong Cao đẳng FPoly có được liên thông lên Đại học FPT không?",
+    "a": [
+      "Có",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Ngành Lập trình Mobile đào tạo trên hệ điều hành nào?",
+    "a": [
+      "Chỉ Android",
+      "Cả Android và iOS",
+      "Chỉ Windows Phone",
+      "Chỉ Symbian"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Sinh viên ngành Thiết kế đồ họa có được học về UI/UX không?",
+    "a": [
+      "Có",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Ngành Quản trị kinh doanh tại FPoly đào tạo theo hướng nào?",
+    "a": [
+      "Quản trị nông nghiệp",
+      "Quản trị tập đoàn đa quốc gia thuần lý thuyết",
+      "Quản trị doanh nghiệp vừa và nhỏ",
+      "Quản trị bệnh viện"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Bạn có thể thay đổi ngành học nếu cảm thấy không phù hợp không?",
+    "a": [
+      "Có (Theo quy định của trường)",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Học phí ngành nào tại FPoly là cao nhất?",
+    "a": [
+      "Ngành Đồ họa không mất tiền",
+      "Ngành CNTT cao gấp 10 lần ngành khác",
+      "Ngành Du lịch miễn phí",
+      "Các ngành có mức học phí tương đương nhau theo khối ngành"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Trường có tổ chức các buổi tư vấn hướng nghiệp cho học sinh lớp 12 không?",
+    "a": [
+      "Có",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Ngành nào liên quan đến việc bảo trì và lắp đặt hệ thống điện?",
+    "a": [
+      "Công nghệ kỹ thuật điều khiển và tự động hóa",
+      "Lập trình Web",
+      "Marketing",
+      "Kế toán"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Ngành Digital Marketing có học về SEO không?",
+    "a": [
+      "Có",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Học ngành Du lịch có cần ngoại hình không?",
+    "a": [
+      "Không bắt buộc nhưng là một lợi thế",
+      "Bắt buộc phải cao trên 1m80"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Sinh viên CNTT có được học về bảo mật thông tin cơ bản không?",
+    "a": [
+      "Có",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Ngành Thiết kế đồ họa có học về vẽ tay không?",
+    "a": [
+      "Có (Học cơ sở tạo hình và phác thảo)",
+      "Không (Chỉ dùng chuột)"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Ngành Phát triển phần mềm học ngôn ngữ lập trình nào là chính?",
+    "a": [
+      "Tiếng Pháp",
+      "Java, C#, Python...",
+      "Ngôn ngữ ký hiệu",
+      "Không học ngôn ngữ nào"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Học tại FPoly có nặng về các môn đại cương không?",
+    "a": [
+      "Không (Chương trình tập trung vào chuyên môn ngay từ đầu)",
+      "Có (Chiếm 80% thời gian học)"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Tỷ lệ sinh viên FPT Polytechnic có việc làm sau 1 năm tốt nghiệp là bao nhiêu?",
+    "a": [
+      "50%",
+      "70%",
+      "97.7%",
+      "100%"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Ngày hội việc làm tại trường được gọi là gì?",
+    "a": [
+      "Bee Day",
+      "Golden Bee",
+      "Open Day",
+      "Career Day / Job Fair"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "FPT Polytechnic có bộ phận hỗ trợ việc làm cho sinh viên không?",
+    "a": [
+      "Có (Phòng Quan hệ doanh nghiệp)",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Sinh viên có được thực tập tại tập đoàn FPT không?",
+    "a": [
+      "Có (FPT Software, FPT IS, FPT Telecom,...)",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Trường liên kết với bao nhiêu doanh nghiệp trên toàn quốc?",
+    "a": [
+      "Hàng nghìn doanh nghiệp (Hơn 2000 đối tác)",
+      "Khoảng 50 doanh nghiệp",
+      "Khoảng 10 doanh nghiệp",
+      "Không liên kết với ai"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Sinh viên có được tham gia phỏng vấn thử với doanh nghiệp tại trường không?",
+    "a": [
+      "Có",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "\"Học kỳ doanh nghiệp\" (On the Job Training) diễn ra vào kỳ thứ mấy?",
+    "a": [
+      "Kỳ 1",
+      "Kỳ 6 hoặc kỳ 7",
+      "Sau khi tốt nghiệp",
+      "Không có học kỳ này"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Doanh nghiệp có tham gia vào việc thẩm định chương trình đào tạo của trường không?",
+    "a": [
+      "Có",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Sinh viên có thể đi làm ngay từ khi còn đang học không?",
+    "a": [
+      "Có (Nhiều sinh viên có việc làm từ kỳ 5, 6)",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Lương khởi điểm trung bình của sinh viên FPoly sau tốt nghiệp (tham khảo)?",
+    "a": [
+      "1 - 2 triệu VNĐ",
+      "100 triệu VNĐ",
+      "8 - 15 triệu VNĐ (tùy năng lực và ngành)",
+      "Không có lương"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Ngành nào có nhu cầu nhân lực cao nhất hiện nay tại FPoly?",
+    "a": [
+      "Ngành chăn nuôi",
+      "Ngành khảo cổ học",
+      "Ngành thiên văn học",
+      "CNTT và Digital Marketing"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Sinh viên có được hỗ trợ viết CV và kỹ năng phỏng vấn không?",
+    "a": [
+      "Có",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Các cuộc thi như \"Poly Creative\", \"Code War\" nhằm mục đích gì?",
+    "a": [
+      "Rèn luyện kỹ năng thực chiến và kết nối doanh nghiệp",
+      "Chơi cho vui",
+      "Để lấy thêm tiền học phí",
+      "Để đuổi học sinh viên"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Sinh viên tốt nghiệp FPoly nhận bằng gì?",
+    "a": [
+      "Bằng Trung cấp",
+      "Bằng Cao đẳng chính quy",
+      "Bằng chứng nhận hoàn thành khóa học",
+      "Bằng Đại học (nếu không liên thông)"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Doanh nghiệp có thường xuyên đến trường để \"săn\" nhân tài không?",
+    "a": [
+      "Có (Qua các buổi Talkshow và Workshop)",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Sinh viên có được đi tham quan doanh nghiệp (Company Visit) không?",
+    "a": [
+      "Có",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Bằng cao đẳng FPoly có giá trị trên toàn quốc không?",
+    "a": [
+      "Có",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Trường có hỗ trợ giới thiệu việc làm sau khi sinh viên đã tốt nghiệp vài năm không?",
+    "a": [
+      "Có (Vẫn hỗ trợ cựu sinh viên)",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Các dự án cuối khóa có thể trở thành sản phẩm kinh doanh thực tế không?",
+    "a": [
+      "Có",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Làm việc tại FPT Software có yêu cầu bằng Đại học bắt buộc không (với SV FPoly)?",
+    "a": [
+      "Không (Ưu tiên năng lực và kỹ năng thực tế)",
+      "Có (Bắt buộc phải có bằng Đại học)"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Sự kiện nhạc hội lớn nhất dành cho sinh viên FPT Polytechnic là gì?",
+    "a": [
+      "Rap Việt",
+      "Vietnam Idol",
+      "Happy Bee",
+      "Sao Mai điểm hẹn"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Happy Bee đã từng có sự hiện diện của nghệ sĩ quốc tế nào (ví dụ)?",
+    "a": [
+      "Sơn Tùng M-TP",
+      "Tất cả đều đã từng tham gia",
+      "Đen Vâu",
+      "Jessi / DJ Soda"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Câu lạc bộ (CLB) nào sau đây có mặt tại FPoly?",
+    "a": [
+      "CLB Tình nguyện, CLB Âm nhạc, CLB Vovinam...",
+      "CLB Những người thích ngủ",
+      "CLB Hội người cao tuổi",
+      "Không có CLB nào"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Môn võ bắt buộc tại FPT Polytechnic là gì?",
+    "a": [
+      "Karate",
+      "Vovinam (Việt Võ Đạo)",
+      "Taekwondo",
+      "Judo"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Cuộc thi tìm kiếm tài năng âm nhạc/nghệ thuật của trường là gì?",
+    "a": [
+      "Poly Shine",
+      "Poly’s Got Talent",
+      "Cả A và B",
+      "Golden Bee"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Sinh viên có được học kỹ năng mềm (Giao tiếp, làm việc nhóm...) không?",
+    "a": [
+      "Có (Là môn học bắt buộc)",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Cuộc thi sắc đẹp và tài năng dành cho nữ sinh FPoly tên là gì?",
+    "a": [
+      "Hoa hậu Việt Nam",
+      "Bee Lady",
+      "Poly Queen",
+      "Miss Poly"
+    ],
+    "correct": 3
+  },
+  {
+    "q": "Hoạt động \"Mùa hè xanh\" tại trường dành cho ai?",
+    "a": [
+      "Sinh viên tham gia tình nguyện vì cộng đồng",
+      "Giảng viên đi nghỉ mát",
+      "Người dân địa phương",
+      "Chỉ dành cho bảo vệ"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Ngày hội định hướng cho tân sinh viên được gọi là gì?",
+    "a": [
+      "Ngày nhập ngũ",
+      "Orientation Day",
+      "Graduation Day",
+      "Wedding Day"
+    ],
+    "correct": 1
+  },
+  {
+    "q": "Sinh viên có được tham gia các giải chạy Marathon do FPT tổ chức không?",
+    "a": [
+      "Có (Ví dụ: FPT Happy Run)",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "\"Xưởng phim Poly\" là nơi dành cho sinh viên ngành nào?",
+    "a": [
+      "CNTT",
+      "Điện công nghiệp",
+      "PR & Tổ chức sự kiện / Thiết kế đồ họa",
+      "Kế toán"
+    ],
+    "correct": 2
+  },
+  {
+    "q": "Giải thi đấu Esport (Liên quân, LOL...) có được tổ chức tại trường không?",
+    "a": [
+      "Có",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Sinh viên có được tham gia các cuộc thi cấp quốc gia không?",
+    "a": [
+      "Có (Ví dụ: WorldSkills, các cuộc thi lập trình quốc gia)",
+      "Không"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Đâu là slogan của sinh viên FPT Polytechnic?",
+    "a": [
+      "Học hết mình, chơi nhiệt tình",
+      "Đỉnh cao công nghệ",
+      "Poly làm nên chuyện",
+      "Cả A và C"
+    ],
+    "correct": 3
   }
 ]

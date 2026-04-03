@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 namespace PolyJump.Editor
 {
@@ -29,6 +30,7 @@ namespace PolyJump.Editor
             public GameObject panelHud;
             public GameObject panelQuiz;
             public GameObject panelGameOver;
+            public GameObject panelLeaderboard;
 
             public Text hudScore;
             public Text hudTime;
@@ -36,9 +38,28 @@ namespace PolyJump.Editor
             public Text gameOverHighscore;
 
             public Button playButton;
+            public Button leaderboardButton;
+            public Button toggleMusicButton;
+            public Button toggleSfxButton;
             public Button replayButton;
             public Button[] answerButtons;
             public Text quizQuestion;
+        }
+
+        private struct AuthUiRefs
+        {
+            public GameObject authRoot;
+            public GameObject panelRegister;
+            public GameObject panelLogin;
+            public TMP_InputField regName;
+            public TMP_InputField regEmail;
+            public TMP_InputField regPhone;
+            public TMP_InputField regPass;
+            public Button btnConfirmRegister;
+            public TMP_InputField loginEmail;
+            public TMP_InputField loginPass;
+            public Button btnConfirmLogin;
+            public TMP_Text statusText;
         }
 
         [MenuItem("PolyJump/Build Stage 1 Prototype (Local)")]
@@ -381,6 +402,7 @@ namespace PolyJump.Editor
 
             Canvas canvas = CreateOrGetCanvas();
             UiRefs ui = BuildUi(canvas.transform);
+            AuthUiRefs authUi = BuildAuthUi(canvas.transform);
 
             GameObject spawnPointObj = CreateOrGetPlayerSpawnPoint();
             PrepareExistingScenePlayer();
@@ -393,6 +415,8 @@ namespace PolyJump.Editor
             GameManager gm = GetOrAddComponent<GameManager>(managersObj);
             LevelSpawner spawner = GetOrAddComponent<LevelSpawner>(managersObj);
             QuizManager quiz = GetOrAddComponent<QuizManager>(managersObj);
+            PlayFabAuthManager authManager = GetOrAddComponent<PlayFabAuthManager>(managersObj);
+            LeaderboardUiManager leaderboardUi = GetOrAddComponent<LeaderboardUiManager>(managersObj);
 
             if (spawner.platformPrefab == null)
             {
@@ -509,6 +533,11 @@ namespace PolyJump.Editor
                 gm.mainCamera = cam;
             }
 
+            if (gm.playFabAuthManager == null)
+            {
+                gm.playFabAuthManager = authManager;
+            }
+
             if (gm.panelStart == null)
             {
                 gm.panelStart = ui.panelStart;
@@ -554,6 +583,8 @@ namespace PolyJump.Editor
                 gm.playButton = ui.playButton;
             }
 
+            EnsureStartPanelAudioToggles(ui);
+
             if (gm.replayButton == null)
             {
                 gm.replayButton = ui.replayButton;
@@ -574,10 +605,82 @@ namespace PolyJump.Editor
                 gm.cameraFollowLerp = 10f;
             }
 
-            ui.panelStart.SetActive(true);
-            ui.panelHud.SetActive(false);
-            ui.panelQuiz.SetActive(false);
-            ui.panelGameOver.SetActive(false);
+            if (authManager.reg_Name == null)
+            {
+                authManager.reg_Name = authUi.regName;
+            }
+
+            if (authManager.reg_Email == null)
+            {
+                authManager.reg_Email = authUi.regEmail;
+            }
+
+            if (authManager.reg_Phone == null)
+            {
+                authManager.reg_Phone = authUi.regPhone;
+            }
+
+            if (authManager.reg_Pass == null)
+            {
+                authManager.reg_Pass = authUi.regPass;
+            }
+
+            if (authManager.Btn_ConfirmRegister == null)
+            {
+                authManager.Btn_ConfirmRegister = authUi.btnConfirmRegister;
+            }
+
+            if (authManager.login_Email == null)
+            {
+                authManager.login_Email = authUi.loginEmail;
+            }
+
+            if (authManager.login_Pass == null)
+            {
+                authManager.login_Pass = authUi.loginPass;
+            }
+
+            if (authManager.Btn_ConfirmLogin == null)
+            {
+                authManager.Btn_ConfirmLogin = authUi.btnConfirmLogin;
+            }
+
+            if (authManager.auth_Status == null)
+            {
+                authManager.auth_Status = authUi.statusText;
+            }
+
+            if (leaderboardUi.playFabAuthManager == null)
+            {
+                leaderboardUi.playFabAuthManager = authManager;
+            }
+
+            if (leaderboardUi.targetCanvas == null)
+            {
+                leaderboardUi.targetCanvas = canvas;
+            }
+
+        }
+
+        private static void EnsureStartPanelAudioToggles(UiRefs ui)
+        {
+            if (ui.toggleMusicButton != null)
+            {
+                AudioStartToggleRelay musicRelay = ui.toggleMusicButton.GetComponent<AudioStartToggleRelay>();
+                if (musicRelay != null)
+                {
+                    Object.DestroyImmediate(musicRelay);
+                }
+            }
+
+            if (ui.toggleSfxButton != null)
+            {
+                AudioStartToggleRelay sfxRelay = ui.toggleSfxButton.GetComponent<AudioStartToggleRelay>();
+                if (sfxRelay != null)
+                {
+                    Object.DestroyImmediate(sfxRelay);
+                }
+            }
         }
 
         private static void CreateOrUpdateSideBoundaries(Camera cam)
@@ -806,6 +909,11 @@ namespace PolyJump.Editor
 
         private static UiRefs BuildUi(Transform canvas)
         {
+            bool panelStartCreated = FindChildByName(canvas, "Panel_Start") == null;
+            bool panelHudCreated = FindChildByName(canvas, "Panel_HUD") == null;
+            bool panelQuizCreated = FindChildByName(canvas, "Panel_Quiz") == null;
+            bool panelGameOverCreated = FindChildByName(canvas, "Panel_GameOver") == null;
+
             UiRefs ui = new UiRefs
             {
                 panelStart = CreatePanel("Panel_Start", canvas, new Color(0f, 0f, 0f, 0f)),
@@ -818,7 +926,10 @@ namespace PolyJump.Editor
             Font font = GetBuiltinFont();
 
             CreateText("Title", ui.panelStart.transform, "PolyJump", 120, FptOrange, font, new Vector2(0.5f, 0.72f), new Vector2(700f, 180f));
-            ui.playButton = CreateButton("Btn_Play", ui.panelStart.transform, "PLAY", new Vector2(0.5f, 0.45f), new Vector2(360f, 120f), FptOrange, Color.white, font, 56);
+            ui.playButton = CreateButton("Btn_Play", ui.panelStart.transform, "Chơi thôi", new Vector2(0.5f, 0.45f), new Vector2(360f, 120f), FptOrange, Color.white, font, 56);
+            ui.leaderboardButton = CreateButton("Btn_Leaderboard", ui.panelStart.transform, "Bảng xếp hạng", new Vector2(0.5f, 0.33f), new Vector2(360f, 100f), FptNavy, Color.white, font, 42);
+            ui.toggleMusicButton = CreateButton("Btn_ToggleMusic", ui.panelStart.transform, string.Empty, new Vector2(0.84f, 0.93f), new Vector2(92f, 92f), FptNavy, Color.white, font, 22);
+            ui.toggleSfxButton = CreateButton("Btn_ToggleSfx", ui.panelStart.transform, string.Empty, new Vector2(0.94f, 0.93f), new Vector2(92f, 92f), FptNavy, Color.white, font, 22);
 
             ui.hudScore = CreateText("Txt_Score", ui.panelHud.transform, "Diem: 0", 56, FptOrange, font, new Vector2(0.18f, 0.95f), new Vector2(400f, 100f));
             ui.hudTime = CreateText("Txt_Time", ui.panelHud.transform, "03:00", 56, FptOrange, font, new Vector2(0.82f, 0.95f), new Vector2(280f, 100f));
@@ -848,7 +959,624 @@ namespace PolyJump.Editor
             ui.gameOverHighscore = CreateText("Txt_Highscore", ui.panelGameOver.transform, "Highscore: 0", 52, Color.white, font, new Vector2(0.5f, 0.48f), new Vector2(700f, 100f));
             ui.replayButton = CreateButton("Btn_Replay", ui.panelGameOver.transform, "REPLAY", new Vector2(0.5f, 0.34f), new Vector2(380f, 120f), FptOrange, Color.white, font, 52);
 
+            bool panelLeaderboardCreated;
+            ui.panelLeaderboard = BuildLeaderboardPanel(canvas, font, out panelLeaderboardCreated);
+
+            if (panelStartCreated)
+            {
+                ui.panelStart.SetActive(true);
+            }
+
+            if (panelHudCreated)
+            {
+                ui.panelHud.SetActive(false);
+            }
+
+            if (panelQuizCreated)
+            {
+                ui.panelQuiz.SetActive(false);
+            }
+
+            if (panelGameOverCreated)
+            {
+                ui.panelGameOver.SetActive(false);
+            }
+
+            if (panelLeaderboardCreated && ui.panelLeaderboard != null)
+            {
+                ui.panelLeaderboard.SetActive(false);
+            }
+
             return ui;
+        }
+
+        private static GameObject BuildLeaderboardPanel(Transform canvas, Font font, out bool panelCreated)
+        {
+            panelCreated = FindChildByName(canvas, "Panel_Leaderboard") == null;
+            GameObject panel = CreatePanel("Panel_Leaderboard", canvas, new Color(FptNavy.r / 255f, FptNavy.g / 255f, FptNavy.b / 255f, 0.93f));
+
+            GameObject card = FindChildByName(panel.transform, "Card");
+            bool cardCreated = false;
+            if (card == null)
+            {
+                card = new GameObject("Card", typeof(RectTransform), typeof(Image));
+                card.transform.SetParent(panel.transform, false);
+                cardCreated = true;
+            }
+
+            RectTransform cardRt = card.GetComponent<RectTransform>();
+            if (cardCreated)
+            {
+                cardRt.anchorMin = new Vector2(0.5f, 0.5f);
+                cardRt.anchorMax = new Vector2(0.5f, 0.5f);
+                cardRt.pivot = new Vector2(0.5f, 0.5f);
+                cardRt.sizeDelta = new Vector2(1020f, 1740f);
+                cardRt.anchoredPosition = Vector2.zero;
+            }
+
+            Image cardImage = GetOrAddComponent<Image>(card);
+            if (cardCreated)
+            {
+                cardImage.color = new Color32(0xF6, 0xF8, 0xFC, 0xFF);
+            }
+
+            CreateButton("Btn_Back", card.transform, "Quay lại", new Vector2(0.12f, 0.93f), new Vector2(220f, 74f), FptNavy, Color.white, font, 30);
+            CreateText("Txt_LeaderboardTitle", card.transform, "Bảng Xếp Hạng", 58, FptOrange, font, new Vector2(0.5f, 0.93f), new Vector2(620f, 96f));
+            CreateText("Txt_TabTitle", card.transform, "Bảng xếp hạng thường", 34, FptNavy, font, new Vector2(0.5f, 0.865f), new Vector2(620f, 68f));
+
+            CreateText("Txt_CurrentUser", card.transform, "Người chơi: --", 30, FptNavy, font, new Vector2(0.5f, 0.815f), new Vector2(900f, 58f));
+            CreateText("Txt_CurrentScore", card.transform, "Điểm: --", 30, FptNavy, font, new Vector2(0.36f, 0.775f), new Vector2(360f, 58f));
+            CreateText("Txt_CurrentRank", card.transform, "Hạng: --", 30, FptNavy, font, new Vector2(0.64f, 0.775f), new Vector2(360f, 58f));
+
+            GameObject headerRow = FindChildByName(card.transform, "Header_Row");
+            bool headerCreated = false;
+            if (headerRow == null)
+            {
+                headerRow = new GameObject("Header_Row", typeof(RectTransform), typeof(Image));
+                headerRow.transform.SetParent(card.transform, false);
+                headerCreated = true;
+            }
+
+            RectTransform headerRt = headerRow.GetComponent<RectTransform>();
+            if (headerCreated)
+            {
+                headerRt.anchorMin = new Vector2(0.08f, 0.73f);
+                headerRt.anchorMax = new Vector2(0.92f, 0.775f);
+                headerRt.offsetMin = Vector2.zero;
+                headerRt.offsetMax = Vector2.zero;
+            }
+
+            Image headerImage = GetOrAddComponent<Image>(headerRow);
+            if (headerCreated)
+            {
+                headerImage.color = new Color32(0xD9, 0xE4, 0xFA, 0xFF);
+            }
+
+            bool headerRankCreated = FindChildByName(headerRow.transform, "Txt_HeaderRank") == null;
+            Text headerRank = CreateText("Txt_HeaderRank", headerRow.transform, "Thứ hạng", 26, FptNavy, font, new Vector2(0f, 0.5f), new Vector2(220f, 52f));
+            if (headerRankCreated)
+            {
+                RectTransform headerRankRt = headerRank.GetComponent<RectTransform>();
+                headerRankRt.pivot = new Vector2(0f, 0.5f);
+                headerRankRt.anchoredPosition = new Vector2(18f, 0f);
+                headerRank.alignment = TextAnchor.MiddleLeft;
+                headerRank.fontStyle = FontStyle.Bold;
+            }
+
+            bool headerNameCreated = FindChildByName(headerRow.transform, "Txt_HeaderName") == null;
+            Text headerName = CreateText("Txt_HeaderName", headerRow.transform, "Người chơi", 26, FptNavy, font, new Vector2(0.5f, 0.5f), new Vector2(420f, 52f));
+            if (headerNameCreated)
+            {
+                headerName.alignment = TextAnchor.MiddleCenter;
+                headerName.fontStyle = FontStyle.Bold;
+            }
+
+            bool headerScoreCreated = FindChildByName(headerRow.transform, "Txt_HeaderScore") == null;
+            Text headerScore = CreateText("Txt_HeaderScore", headerRow.transform, "Điểm", 26, FptNavy, font, new Vector2(1f, 0.5f), new Vector2(180f, 52f));
+            if (headerScoreCreated)
+            {
+                RectTransform headerScoreRt = headerScore.GetComponent<RectTransform>();
+                headerScoreRt.pivot = new Vector2(1f, 0.5f);
+                headerScoreRt.anchoredPosition = new Vector2(-18f, 0f);
+                headerScore.alignment = TextAnchor.MiddleRight;
+                headerScore.fontStyle = FontStyle.Bold;
+            }
+
+            bool eventTimeCreated = FindChildByName(card.transform, "Txt_EventTime") == null;
+            Text eventTime = CreateText("Txt_EventTime", card.transform, "Thời gian sự kiện: --", 24, FptNavy, font, new Vector2(0.5f, 0.695f), new Vector2(860f, 42f));
+            if (eventTimeCreated)
+            {
+                eventTime.alignment = TextAnchor.MiddleLeft;
+                eventTime.horizontalOverflow = HorizontalWrapMode.Wrap;
+                eventTime.verticalOverflow = VerticalWrapMode.Truncate;
+            }
+
+            bool eventRewardsCreated = FindChildByName(card.transform, "Txt_EventRewards") == null;
+            Text eventRewards = CreateText("Txt_EventRewards", card.transform, "Quà sự kiện: --", 24, FptNavy, font, new Vector2(0.5f, 0.665f), new Vector2(860f, 42f));
+            if (eventRewardsCreated)
+            {
+                eventRewards.alignment = TextAnchor.MiddleLeft;
+                eventRewards.horizontalOverflow = HorizontalWrapMode.Wrap;
+                eventRewards.verticalOverflow = VerticalWrapMode.Truncate;
+            }
+
+            GameObject scrollRoot = FindChildByName(card.transform, "ScrollRoot");
+            bool scrollRootCreated = false;
+            if (scrollRoot == null)
+            {
+                scrollRoot = new GameObject("ScrollRoot", typeof(RectTransform), typeof(Image), typeof(ScrollRect));
+                scrollRoot.transform.SetParent(card.transform, false);
+                scrollRootCreated = true;
+            }
+
+            RectTransform scrollRootRt = scrollRoot.GetComponent<RectTransform>();
+            if (scrollRootCreated)
+            {
+                scrollRootRt.anchorMin = new Vector2(0.08f, 0.17f);
+                scrollRootRt.anchorMax = new Vector2(0.92f, 0.62f);
+                scrollRootRt.offsetMin = Vector2.zero;
+                scrollRootRt.offsetMax = Vector2.zero;
+            }
+
+            Image scrollBg = GetOrAddComponent<Image>(scrollRoot);
+            if (scrollRootCreated)
+            {
+                scrollBg.color = new Color32(0xE9, 0xEE, 0xF7, 0xFF);
+            }
+
+            GameObject viewport = FindChildByName(scrollRoot.transform, "Viewport");
+            bool viewportCreated = false;
+            if (viewport == null)
+            {
+                viewport = new GameObject("Viewport", typeof(RectTransform), typeof(Image), typeof(Mask));
+                viewport.transform.SetParent(scrollRoot.transform, false);
+                viewportCreated = true;
+            }
+
+            RectTransform viewportRt = viewport.GetComponent<RectTransform>();
+            if (viewportCreated)
+            {
+                viewportRt.anchorMin = Vector2.zero;
+                viewportRt.anchorMax = Vector2.one;
+                viewportRt.offsetMin = new Vector2(14f, 14f);
+                viewportRt.offsetMax = new Vector2(-14f, -14f);
+            }
+
+            Image viewportImage = GetOrAddComponent<Image>(viewport);
+            if (viewportCreated)
+            {
+                viewportImage.color = new Color32(0xF9, 0xFB, 0xFF, 0xFF);
+            }
+
+            Mask viewportMask = GetOrAddComponent<Mask>(viewport);
+            if (viewportCreated)
+            {
+                viewportMask.showMaskGraphic = true;
+            }
+
+            GameObject content = FindChildByName(viewport.transform, "Content");
+            bool contentCreated = false;
+            if (content == null)
+            {
+                content = new GameObject("Content", typeof(RectTransform), typeof(VerticalLayoutGroup), typeof(ContentSizeFitter));
+                content.transform.SetParent(viewport.transform, false);
+                contentCreated = true;
+            }
+
+            RectTransform contentRt = content.GetComponent<RectTransform>();
+            if (contentCreated)
+            {
+                contentRt.anchorMin = new Vector2(0f, 1f);
+                contentRt.anchorMax = new Vector2(1f, 1f);
+                contentRt.pivot = new Vector2(0.5f, 1f);
+                contentRt.anchoredPosition = Vector2.zero;
+                contentRt.sizeDelta = Vector2.zero;
+            }
+
+            VerticalLayoutGroup layout = GetOrAddComponent<VerticalLayoutGroup>(content);
+            if (contentCreated)
+            {
+                layout.spacing = 8f;
+                layout.padding = new RectOffset(8, 8, 8, 8);
+                layout.childControlHeight = true;
+                layout.childControlWidth = true;
+                layout.childForceExpandHeight = false;
+                layout.childForceExpandWidth = true;
+            }
+
+            ContentSizeFitter fitter = GetOrAddComponent<ContentSizeFitter>(content);
+            if (contentCreated)
+            {
+                fitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
+                fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+            }
+
+            GameObject rowTemplate = FindChildByName(content.transform, "Row_1");
+            bool rowTemplateCreated = false;
+            if (rowTemplate == null)
+            {
+                rowTemplate = new GameObject("Row_1", typeof(RectTransform), typeof(Image));
+                rowTemplate.transform.SetParent(content.transform, false);
+                rowTemplateCreated = true;
+            }
+
+            RectTransform rowRt = rowTemplate.GetComponent<RectTransform>();
+            if (rowTemplateCreated)
+            {
+                rowRt.anchorMin = new Vector2(0f, 1f);
+                rowRt.anchorMax = new Vector2(1f, 1f);
+                rowRt.pivot = new Vector2(0.5f, 1f);
+                rowRt.sizeDelta = new Vector2(0f, 74f);
+            }
+
+            Image rowImage = GetOrAddComponent<Image>(rowTemplate);
+            if (rowTemplateCreated)
+            {
+                rowImage.color = new Color32(0xF2, 0xF6, 0xFF, 0xFF);
+            }
+
+            bool rowRankCreated = FindChildByName(rowTemplate.transform, "Txt_Rank") == null;
+            Text rowRank = CreateText("Txt_Rank", rowTemplate.transform, "#1", 28, FptNavy, font, new Vector2(0f, 0.5f), new Vector2(220f, 56f));
+            if (rowRankCreated)
+            {
+                RectTransform rowRankRt = rowRank.GetComponent<RectTransform>();
+                rowRankRt.pivot = new Vector2(0f, 0.5f);
+                rowRankRt.anchoredPosition = new Vector2(18f, 0f);
+                rowRank.alignment = TextAnchor.MiddleLeft;
+            }
+
+            bool rowNameCreated = FindChildByName(rowTemplate.transform, "Txt_Name") == null;
+            Text rowName = CreateText("Txt_Name", rowTemplate.transform, "Người chơi", 28, FptNavy, font, new Vector2(0.5f, 0.5f), new Vector2(440f, 56f));
+            if (rowNameCreated)
+            {
+                rowName.alignment = TextAnchor.MiddleCenter;
+            }
+
+            bool rowScoreCreated = FindChildByName(rowTemplate.transform, "Txt_Score") == null;
+            Text rowScore = CreateText("Txt_Score", rowTemplate.transform, "0", 28, FptOrange, font, new Vector2(1f, 0.5f), new Vector2(180f, 56f));
+            if (rowScoreCreated)
+            {
+                RectTransform rowScoreRt = rowScore.GetComponent<RectTransform>();
+                rowScoreRt.pivot = new Vector2(1f, 0.5f);
+                rowScoreRt.anchoredPosition = new Vector2(-18f, 0f);
+                rowScore.alignment = TextAnchor.MiddleRight;
+                rowScore.fontStyle = FontStyle.Bold;
+            }
+
+            if (rowTemplateCreated)
+            {
+                rowTemplate.SetActive(false);
+            }
+
+            ScrollRect scrollRect = scrollRoot.GetComponent<ScrollRect>();
+            bool scrollRectCreated = false;
+            if (scrollRect == null)
+            {
+                scrollRect = scrollRoot.AddComponent<ScrollRect>();
+                scrollRectCreated = true;
+            }
+
+            if (scrollRect.viewport == null)
+            {
+                scrollRect.viewport = viewportRt;
+            }
+
+            if (scrollRect.content == null)
+            {
+                scrollRect.content = contentRt;
+            }
+
+            if (scrollRectCreated)
+            {
+                scrollRect.horizontal = false;
+                scrollRect.vertical = true;
+                scrollRect.movementType = ScrollRect.MovementType.Clamped;
+                scrollRect.scrollSensitivity = 20f;
+            }
+
+            bool emptyTextCreated = FindChildByName(viewport.transform, "Txt_Empty") == null;
+            Text emptyText = CreateText("Txt_Empty", viewport.transform, "Chưa có xếp hạng", 34, new Color32(0x5D, 0x6B, 0x85, 0xFF), font, new Vector2(0.5f, 0.5f), new Vector2(640f, 110f));
+            if (emptyTextCreated)
+            {
+                emptyText.alignment = TextAnchor.MiddleCenter;
+            }
+
+            CreateButton("Btn_TabNormal", card.transform, "Thường", new Vector2(0.33f, 0.09f), new Vector2(230f, 78f), FptNavy, Color.white, font, 30);
+            CreateButton("Btn_TabRaceTop", card.transform, "Sự kiện", new Vector2(0.56f, 0.09f), new Vector2(230f, 78f), FptNavy, Color.white, font, 30);
+            CreateButton("Btn_RefreshLeaderboard", card.transform, "Làm mới", new Vector2(0.79f, 0.09f), new Vector2(230f, 78f), FptOrange, Color.white, font, 30);
+
+            if (panelCreated)
+            {
+                panel.SetActive(false);
+            }
+
+            return panel;
+        }
+
+        private static AuthUiRefs BuildAuthUi(Transform canvas)
+        {
+            AuthUiRefs auth = new AuthUiRefs();
+
+            auth.authRoot = FindChildByName(canvas, "Panel_Auth");
+            bool rootCreated = false;
+            if (auth.authRoot == null)
+            {
+                auth.authRoot = new GameObject("Panel_Auth", typeof(RectTransform));
+                auth.authRoot.transform.SetParent(canvas, false);
+                rootCreated = true;
+            }
+
+            RectTransform rootRect = auth.authRoot.GetComponent<RectTransform>();
+            if (rootCreated)
+            {
+                rootRect.anchorMin = Vector2.zero;
+                rootRect.anchorMax = Vector2.one;
+                rootRect.offsetMin = Vector2.zero;
+                rootRect.offsetMax = Vector2.zero;
+            }
+
+            auth.panelRegister = CreateAuthPanel(
+                "Panel_Register",
+                auth.authRoot.transform,
+                new Vector2(0.26f, 0.38f),
+                new Vector2(460f, 800f),
+                new Color(FptNavy.r / 255f, FptNavy.g / 255f, FptNavy.b / 255f, 0.72f));
+
+            auth.panelLogin = CreateAuthPanel(
+                "Panel_Login",
+                auth.authRoot.transform,
+                new Vector2(0.74f, 0.38f),
+                new Vector2(460f, 620f),
+                new Color(FptNavy.r / 255f, FptNavy.g / 255f, FptNavy.b / 255f, 0.72f));
+
+            CreateTMPLabel("reg_Title", auth.panelRegister.transform, "Dang Ky", 56, FptOrange, new Vector2(0.5f, 0.92f), new Vector2(360f, 90f));
+            auth.regName = CreateTMPInputField("reg_Name", auth.panelRegister.transform, "Ho ten", new Vector2(0.5f, 0.78f), new Vector2(380f, 84f), TMP_InputField.ContentType.Standard);
+            auth.regEmail = CreateTMPInputField("reg_Email", auth.panelRegister.transform, "Email", new Vector2(0.5f, 0.66f), new Vector2(380f, 84f), TMP_InputField.ContentType.EmailAddress);
+            auth.regPhone = CreateTMPInputField("reg_Phone", auth.panelRegister.transform, "So dien thoai", new Vector2(0.5f, 0.54f), new Vector2(380f, 84f), TMP_InputField.ContentType.Standard);
+            if (auth.regPhone != null && auth.regPhone.characterValidation == TMP_InputField.CharacterValidation.None)
+            {
+                auth.regPhone.characterValidation = TMP_InputField.CharacterValidation.Integer;
+            }
+            auth.regPass = CreateTMPInputField("reg_Pass", auth.panelRegister.transform, "Mat khau", new Vector2(0.5f, 0.42f), new Vector2(380f, 84f), TMP_InputField.ContentType.Password);
+            auth.btnConfirmRegister = CreateTMPButton("Btn_ConfirmRegister", auth.panelRegister.transform, "Dang Ky", new Vector2(0.5f, 0.26f), new Vector2(280f, 90f), FptOrange, Color.white, 42);
+
+            CreateTMPLabel("login_Title", auth.panelLogin.transform, "Dang Nhap", 56, FptOrange, new Vector2(0.5f, 0.88f), new Vector2(360f, 90f));
+            auth.loginEmail = CreateTMPInputField("login_Email", auth.panelLogin.transform, "Email", new Vector2(0.5f, 0.66f), new Vector2(380f, 84f), TMP_InputField.ContentType.EmailAddress);
+            auth.loginPass = CreateTMPInputField("login_Pass", auth.panelLogin.transform, "Mat khau", new Vector2(0.5f, 0.5f), new Vector2(380f, 84f), TMP_InputField.ContentType.Password);
+            auth.btnConfirmLogin = CreateTMPButton("Btn_ConfirmLogin", auth.panelLogin.transform, "Dang Nhap", new Vector2(0.5f, 0.32f), new Vector2(280f, 90f), FptOrange, Color.white, 42);
+
+            auth.statusText = CreateTMPLabel("auth_Status", auth.authRoot.transform, string.Empty, 34, Color.white, new Vector2(0.5f, 0.08f), new Vector2(920f, 80f));
+            auth.statusText.alignment = TextAlignmentOptions.Center;
+
+            return auth;
+        }
+
+        private static GameObject CreateAuthPanel(string name, Transform parent, Vector2 anchor, Vector2 size, Color color)
+        {
+            GameObject panel = FindChildByName(parent, name);
+            bool created = false;
+            if (panel == null)
+            {
+                panel = new GameObject(name, typeof(RectTransform), typeof(Image));
+                panel.transform.SetParent(parent, false);
+                created = true;
+            }
+
+            RectTransform rect = panel.GetComponent<RectTransform>();
+            if (created)
+            {
+                rect.anchorMin = anchor;
+                rect.anchorMax = anchor;
+                rect.pivot = new Vector2(0.5f, 0.5f);
+                rect.sizeDelta = size;
+                rect.anchoredPosition = Vector2.zero;
+            }
+
+            Image image = panel.GetComponent<Image>();
+            if (created)
+            {
+                image.color = color;
+            }
+
+            return panel;
+        }
+
+        private static TMP_Text CreateTMPLabel(string name, Transform parent, string content, int fontSize, Color color, Vector2 anchor, Vector2 size)
+        {
+            GameObject obj = FindChildByName(parent, name);
+            bool created = false;
+            if (obj == null)
+            {
+                obj = new GameObject(name, typeof(RectTransform), typeof(TextMeshProUGUI));
+                obj.transform.SetParent(parent, false);
+                created = true;
+            }
+
+            RectTransform rect = obj.GetComponent<RectTransform>();
+            if (created)
+            {
+                rect.anchorMin = anchor;
+                rect.anchorMax = anchor;
+                rect.pivot = new Vector2(0.5f, 0.5f);
+                rect.sizeDelta = size;
+                rect.anchoredPosition = Vector2.zero;
+            }
+
+            TMP_Text text = obj.GetComponent<TextMeshProUGUI>();
+            if (created)
+            {
+                text.text = content;
+                text.fontSize = fontSize;
+                text.color = color;
+                text.alignment = TextAlignmentOptions.Midline;
+            }
+
+            return text;
+        }
+
+        private static TMP_InputField CreateTMPInputField(string name, Transform parent, string placeholder, Vector2 anchor, Vector2 size, TMP_InputField.ContentType contentType)
+        {
+            GameObject obj = FindChildByName(parent, name);
+            bool created = false;
+            if (obj == null)
+            {
+                obj = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(TMP_InputField));
+                obj.transform.SetParent(parent, false);
+                created = true;
+            }
+
+            RectTransform rect = obj.GetComponent<RectTransform>();
+            if (created)
+            {
+                rect.anchorMin = anchor;
+                rect.anchorMax = anchor;
+                rect.pivot = new Vector2(0.5f, 0.5f);
+                rect.sizeDelta = size;
+                rect.anchoredPosition = Vector2.zero;
+            }
+
+            Image image = obj.GetComponent<Image>();
+            if (created)
+            {
+                image.color = new Color(1f, 1f, 1f, 0.95f);
+            }
+
+            TMP_InputField input = obj.GetComponent<TMP_InputField>();
+            EnsureTmpInputTextObjects(input, placeholder);
+
+            if (created)
+            {
+                input.contentType = contentType;
+                input.lineType = TMP_InputField.LineType.SingleLine;
+            }
+
+            return input;
+        }
+
+        private static void EnsureTmpInputTextObjects(TMP_InputField input, string placeholderText)
+        {
+            if (input == null)
+            {
+                return;
+            }
+
+            Transform inputTransform = input.transform;
+            GameObject textArea = FindChildByName(inputTransform, "Text Area");
+            if (textArea == null)
+            {
+                textArea = new GameObject("Text Area", typeof(RectTransform), typeof(RectMask2D));
+                textArea.transform.SetParent(inputTransform, false);
+            }
+
+            RectTransform textAreaRect = textArea.GetComponent<RectTransform>();
+            textAreaRect.anchorMin = Vector2.zero;
+            textAreaRect.anchorMax = Vector2.one;
+            textAreaRect.offsetMin = new Vector2(18f, 10f);
+            textAreaRect.offsetMax = new Vector2(-18f, -10f);
+
+            GameObject placeholderObj = FindChildByName(textArea.transform, "Placeholder");
+            if (placeholderObj == null)
+            {
+                placeholderObj = new GameObject("Placeholder", typeof(RectTransform), typeof(TextMeshProUGUI));
+                placeholderObj.transform.SetParent(textArea.transform, false);
+            }
+
+            RectTransform placeholderRect = placeholderObj.GetComponent<RectTransform>();
+            placeholderRect.anchorMin = Vector2.zero;
+            placeholderRect.anchorMax = Vector2.one;
+            placeholderRect.offsetMin = Vector2.zero;
+            placeholderRect.offsetMax = Vector2.zero;
+
+            TextMeshProUGUI placeholderTextComp = placeholderObj.GetComponent<TextMeshProUGUI>();
+            placeholderTextComp.text = placeholderText;
+            placeholderTextComp.fontSize = 32;
+            placeholderTextComp.color = new Color(0.26f, 0.26f, 0.26f, 0.6f);
+            placeholderTextComp.alignment = TextAlignmentOptions.MidlineLeft;
+
+            GameObject textObj = FindChildByName(textArea.transform, "Text");
+            if (textObj == null)
+            {
+                textObj = new GameObject("Text", typeof(RectTransform), typeof(TextMeshProUGUI));
+                textObj.transform.SetParent(textArea.transform, false);
+            }
+
+            RectTransform textRect = textObj.GetComponent<RectTransform>();
+            textRect.anchorMin = Vector2.zero;
+            textRect.anchorMax = Vector2.one;
+            textRect.offsetMin = Vector2.zero;
+            textRect.offsetMax = Vector2.zero;
+
+            TextMeshProUGUI inputTextComp = textObj.GetComponent<TextMeshProUGUI>();
+            inputTextComp.fontSize = 34;
+            inputTextComp.color = new Color(0.13f, 0.13f, 0.13f, 1f);
+            inputTextComp.alignment = TextAlignmentOptions.MidlineLeft;
+
+            input.textViewport = textAreaRect;
+            input.textComponent = inputTextComp;
+            input.placeholder = placeholderTextComp;
+        }
+
+        private static Button CreateTMPButton(string name, Transform parent, string label, Vector2 anchor, Vector2 size, Color bgColor, Color textColor, int fontSize)
+        {
+            GameObject obj = FindChildByName(parent, name);
+            bool created = false;
+            if (obj == null)
+            {
+                obj = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(Button));
+                obj.transform.SetParent(parent, false);
+                created = true;
+            }
+
+            RectTransform rect = obj.GetComponent<RectTransform>();
+            if (created)
+            {
+                rect.anchorMin = anchor;
+                rect.anchorMax = anchor;
+                rect.pivot = new Vector2(0.5f, 0.5f);
+                rect.sizeDelta = size;
+                rect.anchoredPosition = Vector2.zero;
+            }
+
+            Image image = obj.GetComponent<Image>();
+            if (created)
+            {
+                image.color = bgColor;
+            }
+
+            Button button = obj.GetComponent<Button>();
+            if (created)
+            {
+                ColorBlock colors = button.colors;
+                colors.normalColor = bgColor;
+                colors.highlightedColor = new Color(bgColor.r * 1.05f, bgColor.g * 1.05f, bgColor.b * 1.05f, 1f);
+                colors.pressedColor = new Color(bgColor.r * 0.9f, bgColor.g * 0.9f, bgColor.b * 0.9f, 1f);
+                colors.selectedColor = colors.highlightedColor;
+                button.colors = colors;
+            }
+
+            GameObject labelObj = FindChildByName(obj.transform, "Label");
+            if (labelObj == null)
+            {
+                labelObj = new GameObject("Label", typeof(RectTransform), typeof(TextMeshProUGUI));
+                labelObj.transform.SetParent(obj.transform, false);
+            }
+
+            RectTransform labelRect = labelObj.GetComponent<RectTransform>();
+            labelRect.anchorMin = Vector2.zero;
+            labelRect.anchorMax = Vector2.one;
+            labelRect.offsetMin = Vector2.zero;
+            labelRect.offsetMax = Vector2.zero;
+
+            TextMeshProUGUI labelText = labelObj.GetComponent<TextMeshProUGUI>();
+            if (created)
+            {
+                labelText.text = label;
+                labelText.fontSize = fontSize;
+                labelText.color = textColor;
+                labelText.alignment = TextAlignmentOptions.Center;
+            }
+
+            return button;
         }
 
         private static GameObject CreatePanel(string name, Transform parent, Color color)

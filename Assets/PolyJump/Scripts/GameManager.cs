@@ -17,6 +17,13 @@ namespace PolyJump.Scripts
     public class GameManager : MonoBehaviour
     {
         public static GameManager Instance { get; private set; }
+        private const int FixedTargetFps = 60;
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        private static void ApplyGlobalFrameRateOnBoot()
+        {
+            ApplyFrameRateSettings();
+        }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         private static void ResetStatics()
@@ -29,6 +36,7 @@ namespace PolyJump.Scripts
         public GameObject playerPrefab;
         public LevelSpawner levelSpawner;
         public QuizManager quizManager;
+        public PlayFabAuthManager playFabAuthManager;
         public Camera mainCamera;
 
         [Header("Spawn Config")]
@@ -69,14 +77,14 @@ namespace PolyJump.Scripts
         private Collider2D _pendingQuizPlatformCollider;
         private readonly List<RaycastResult> _uiRaycastResults = new List<RaycastResult>(8);
 
-        private const string HighscoreKey = "PolyJump_Highscore_Local";
-
         public float RemainingTime => _remainingTime;
         public int CurrentScore => Mathf.Max(0, Mathf.RoundToInt(_maxPlayerY));
         public int Highscore => _highscore;
 
         private void Awake()
         {
+            ApplyFrameRateSettings();
+
             if (Instance == this)
             {
                 return;
@@ -89,6 +97,20 @@ namespace PolyJump.Scripts
             }
 
             Instance = this;
+        }
+
+        private void OnApplicationFocus(bool hasFocus)
+        {
+            if (hasFocus)
+            {
+                ApplyFrameRateSettings();
+            }
+        }
+
+        private static void ApplyFrameRateSettings()
+        {
+            QualitySettings.vSyncCount = 0;
+            Application.targetFrameRate = FixedTargetFps;
         }
 
         private void Start()
@@ -114,7 +136,12 @@ namespace PolyJump.Scripts
                 }
             }
 
-            _highscore = PlayerPrefs.GetInt(HighscoreKey, 0);
+            if (playFabAuthManager == null)
+            {
+                playFabAuthManager = Object.FindObjectOfType<PlayFabAuthManager>(true);
+            }
+
+            _highscore = playFabAuthManager != null ? playFabAuthManager.GetCachedLeaderboardHighscore() : 0;
             _remainingTime = startTimeSeconds;
 
             if (player != null)
@@ -188,6 +215,7 @@ namespace PolyJump.Scripts
 
         public void OnReplayPressed()
         {
+            PlayFabAuthManager.PreserveSessionForNextSceneLoad();
             Scene active = SceneManager.GetActiveScene();
             SceneManager.LoadScene(active.buildIndex);
         }
@@ -460,12 +488,11 @@ namespace PolyJump.Scripts
             }
 
             int finalScore = CurrentScore;
-            if (finalScore > _highscore)
-            {
-                _highscore = finalScore;
-                PlayerPrefs.SetInt(HighscoreKey, _highscore);
-                PlayerPrefs.Save();
-            }
+
+            int cachedHighscore = playFabAuthManager != null
+                ? playFabAuthManager.GetCachedLeaderboardHighscore()
+                : _highscore;
+            _highscore = Mathf.Max(0, cachedHighscore);
 
             if (gameOverScoreText != null)
             {
@@ -475,6 +502,18 @@ namespace PolyJump.Scripts
             if (gameOverHighscoreText != null)
             {
                 gameOverHighscoreText.text = "Highscore: " + _highscore;
+            }
+
+            if (playFabAuthManager != null)
+            {
+                playFabAuthManager.SubmitScore(finalScore, resolvedHighscore =>
+                {
+                    _highscore = Mathf.Max(0, resolvedHighscore);
+                    if (gameOverHighscoreText != null)
+                    {
+                        gameOverHighscoreText.text = "Highscore: " + _highscore;
+                    }
+                });
             }
 
             RefreshUI();

@@ -10,8 +10,23 @@ namespace PolyJump.Scripts
         public float moveSpeed = 6f;
         public float jumpVelocity = 12f;
 
+        [Header("Movement Smoothing")]
+        [Tooltip("Do muot input ngang. Gia tri cao hon phan hoi nhanh hon.")]
+        public float inputResponse = 18f;
+        [Tooltip("Toc do tang van toc ngang (unit/giay^2).")]
+        public float horizontalAcceleration = 55f;
+        [Tooltip("Toc do giam van toc ngang (unit/giay^2).")]
+        public float horizontalDeceleration = 85f;
+
         [Header("Touch Control")]
+        [Tooltip("Toc do keo tay (pixel/giay) de dat input di chuyen toi da.")]
         public float dragPixelsForFullInput = 140f;
+        [Tooltip("Nguong toc do keo toi thieu (pixel/giay) de bat dau di chuyen.")]
+        public float touchDeadZonePixels = 8f;
+        [Tooltip("Do nhay duong cong input keo tay. >1 giam nhay gan tam, <1 tang nhay gan tam.")]
+        public float touchResponseExponent = 1f;
+        [Tooltip("Nguong de uu tien input touch thay vi input ban phim/joystick.")]
+        public float touchOverrideThreshold = 0.01f;
 
         [Header("References")]
         public Rigidbody2D rb;
@@ -28,12 +43,13 @@ namespace PolyJump.Scripts
         public float crouchDuration = 0.1f;
 
         private float _horizontalInput;
+        private float _targetHorizontalInput;
+        private float _smoothedHorizontalInput;
         private bool _inputEnabled = true;
         private bool _gameplayPaused;
         private Vector2 _cachedVelocity;
 
         private int _activeTouchId = -1;
-        private float _touchStartX;
         private float _crouchUntil;
         private int _currentAnimHash;
         private int _normalAnimHash;
@@ -81,13 +97,26 @@ namespace PolyJump.Scripts
                 return;
             }
 
-            rb.velocity = new Vector2(_horizontalInput * moveSpeed, rb.velocity.y);
+            float targetVelocityX = _horizontalInput * moveSpeed;
+            float currentVelocityX = rb.velocity.x;
+            float accel = Mathf.Abs(targetVelocityX) > Mathf.Abs(currentVelocityX)
+                ? Mathf.Max(0f, horizontalAcceleration)
+                : Mathf.Max(0f, horizontalDeceleration);
+            float maxDelta = accel * Time.fixedDeltaTime;
+
+            float nextVelocityX = accel <= 0f
+                ? targetVelocityX
+                : Mathf.MoveTowards(currentVelocityX, targetVelocityX, maxDelta);
+
+            rb.velocity = new Vector2(nextVelocityX, rb.velocity.y);
         }
 
         private void CaptureInput()
         {
             if (!_inputEnabled || _gameplayPaused)
             {
+                _targetHorizontalInput = 0f;
+                _smoothedHorizontalInput = 0f;
                 _horizontalInput = 0f;
                 return;
             }
@@ -96,12 +125,30 @@ namespace PolyJump.Scripts
             float touchInput = ReadTouchDragInput();
 
             // Ưu tiên touch trên mobile; desktop vẫn dùng Horizontal như bình thường.
-            if (Mathf.Abs(touchInput) > 0.01f)
+            if (Mathf.Abs(touchInput) > Mathf.Max(0f, touchOverrideThreshold))
             {
                 input = touchInput;
             }
 
-            _horizontalInput = Mathf.Clamp(input, -1f, 1f);
+            _targetHorizontalInput = Mathf.Clamp(input, -1f, 1f);
+
+            float response = Mathf.Max(0f, inputResponse);
+            if (response <= 0f)
+            {
+                _smoothedHorizontalInput = _targetHorizontalInput;
+            }
+            else
+            {
+                float t = 1f - Mathf.Exp(-response * Time.unscaledDeltaTime);
+                _smoothedHorizontalInput = Mathf.Lerp(_smoothedHorizontalInput, _targetHorizontalInput, t);
+            }
+
+            if (Mathf.Abs(_targetHorizontalInput) < 0.001f && Mathf.Abs(_smoothedHorizontalInput) < 0.001f)
+            {
+                _smoothedHorizontalInput = 0f;
+            }
+
+            _horizontalInput = Mathf.Clamp(_smoothedHorizontalInput, -1f, 1f);
         }
 
         private float ReadTouchDragInput()
@@ -116,7 +163,6 @@ namespace PolyJump.Scripts
             {
                 Touch firstTouch = Input.GetTouch(0);
                 _activeTouchId = firstTouch.fingerId;
-                _touchStartX = firstTouch.position.x;
             }
 
             bool foundTouch = false;
@@ -132,7 +178,6 @@ namespace PolyJump.Scripts
 
                 if (touch.phase == TouchPhase.Began)
                 {
-                    _touchStartX = touch.position.x;
                     return 0f;
                 }
 
@@ -142,9 +187,25 @@ namespace PolyJump.Scripts
                     return 0f;
                 }
 
-                float delta = touch.position.x - _touchStartX;
-                float divisor = Mathf.Max(1f, dragPixelsForFullInput);
-                return Mathf.Clamp(delta / divisor, -1f, 1f);
+                // Use per-frame drag velocity so player stops immediately when finger stops moving,
+                // even if finger is still touching the screen.
+                float dt = Mathf.Max(0.0001f, Time.unscaledDeltaTime);
+                float dragVelocity = touch.deltaPosition.x / dt;
+                float deadZone = Mathf.Max(0f, touchDeadZonePixels);
+                float absVelocity = Mathf.Abs(dragVelocity);
+                if (absVelocity <= deadZone)
+                {
+                    return 0f;
+                }
+
+                float fullInputVelocity = Mathf.Max(1f, dragPixelsForFullInput);
+                float effectiveRange = Mathf.Max(1f, fullInputVelocity - deadZone);
+                float normalized = Mathf.Clamp((absVelocity - deadZone) / effectiveRange, 0f, 1f);
+
+                float exponent = Mathf.Max(0.01f, touchResponseExponent);
+                float curved = Mathf.Pow(normalized, exponent);
+                float signed = Mathf.Sign(dragVelocity) * curved;
+                return Mathf.Clamp(signed, -1f, 1f);
             }
 
             if (!foundTouch)
@@ -194,6 +255,8 @@ namespace PolyJump.Scripts
             _inputEnabled = enabled;
             if (!enabled)
             {
+                _targetHorizontalInput = 0f;
+                _smoothedHorizontalInput = 0f;
                 _horizontalInput = 0f;
                 _activeTouchId = -1;
             }
@@ -231,6 +294,9 @@ namespace PolyJump.Scripts
             _inputEnabled = true;
             _gameplayPaused = false;
             _activeTouchId = -1;
+            _targetHorizontalInput = 0f;
+            _smoothedHorizontalInput = 0f;
+            _horizontalInput = 0f;
 
             if (rb == null)
             {
