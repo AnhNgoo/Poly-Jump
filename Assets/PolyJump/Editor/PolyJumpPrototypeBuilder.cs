@@ -11,6 +11,9 @@ using TMPro;
 
 namespace PolyJump.Editor
 {
+    /// <summary>
+    /// Công cụ Editor để dựng nhanh prototype scene, prefab và giao diện PolyJump theo cấu hình chuẩn.
+    /// </summary>
     public static class PolyJumpPrototypeBuilder
     {
         private const string RootFolder = "Assets/PolyJump";
@@ -63,8 +66,12 @@ namespace PolyJump.Editor
         }
 
         [MenuItem("PolyJump/Build Stage 1 Prototype (Local)")]
+        /// <summary>
+        /// Xây dựng Stage1 Prototype phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         public static void BuildStage1Prototype()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             EnsureFolders();
             EnsureTag("Platform");
             EnsureTag("QuizPlatform");
@@ -80,8 +87,12 @@ namespace PolyJump.Editor
             Debug.Log("[PolyJump] Stage 1 prototype build completed.");
         }
 
+        /// <summary>
+        /// Đảm bảo Folders phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static void EnsureFolders()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             Directory.CreateDirectory(ScriptsFolder);
             Directory.CreateDirectory(ResourcesFolder);
             Directory.CreateDirectory(PrefabsFolder);
@@ -90,8 +101,12 @@ namespace PolyJump.Editor
             Directory.CreateDirectory(EditorFolder);
         }
 
+        /// <summary>
+        /// Đảm bảo Tag phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static void EnsureTag(string tag)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (string.IsNullOrWhiteSpace(tag))
             {
                 return;
@@ -100,9 +115,11 @@ namespace PolyJump.Editor
             SerializedObject tagManager = new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/TagManager.asset")[0]);
             SerializedProperty tagsProp = tagManager.FindProperty("tags");
 
+            // Khối lặp: duyệt tuần tự các phần tử cần xử lý.
             for (int i = 0; i < tagsProp.arraySize; i++)
             {
                 SerializedProperty prop = tagsProp.GetArrayElementAtIndex(i);
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (prop.stringValue == tag)
                 {
                     return;
@@ -115,10 +132,15 @@ namespace PolyJump.Editor
             tagManager.ApplyModifiedProperties();
         }
 
+        /// <summary>
+        /// Tạo Or Update Player Prefab phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static GameObject CreateOrUpdatePlayerPrefab()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             string path = PrefabsFolder + "/Player.prefab";
             GameObject existing = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (existing != null)
             {
                 EnsurePlayerPrefabEnhancements(path);
@@ -153,11 +175,16 @@ namespace PolyJump.Editor
             return prefab;
         }
 
+        /// <summary>
+        /// Tạo Or Update Platform Prefab phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static GameObject CreateOrUpdatePlatformPrefab(bool isQuiz)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             string prefabName = isQuiz ? "QuizPlatform" : "Platform";
             string path = PrefabsFolder + "/" + prefabName + ".prefab";
             GameObject existing = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (existing != null)
             {
                 return existing;
@@ -181,20 +208,29 @@ namespace PolyJump.Editor
             return prefab;
         }
 
+        /// <summary>
+        /// Lưu Temp As Prefab phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static GameObject SaveTempAsPrefab(GameObject temp, string path)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             GameObject prefab = PrefabUtility.SaveAsPrefabAsset(temp, path);
             return prefab != null ? prefab : AssetDatabase.LoadAssetAtPath<GameObject>(path);
         }
 
+        /// <summary>
+        /// Đảm bảo Player Prefab Enhancements phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static void EnsurePlayerPrefabEnhancements(string prefabPath)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (string.IsNullOrEmpty(prefabPath))
             {
                 return;
             }
 
             GameObject prefabAsset = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (prefabAsset == null)
             {
                 return;
@@ -204,6 +240,7 @@ namespace PolyJump.Editor
             bool changed = false;
 
             Animator animator = root.GetComponent<Animator>();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (animator == null)
             {
                 animator = root.AddComponent<Animator>();
@@ -211,6 +248,7 @@ namespace PolyJump.Editor
             }
 
             AnimatorController controller = EnsurePlayerAnimatorController();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (animator.runtimeAnimatorController == null && controller != null)
             {
                 animator.runtimeAnimatorController = controller;
@@ -218,26 +256,31 @@ namespace PolyJump.Editor
             }
 
             PlayerController playerController = root.GetComponent<PlayerController>();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (playerController != null)
             {
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (playerController.animator == null)
                 {
                     playerController.animator = animator;
                     changed = true;
                 }
 
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (string.IsNullOrWhiteSpace(playerController.normalStateName))
                 {
                     playerController.normalStateName = "Normal";
                     changed = true;
                 }
 
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (string.IsNullOrWhiteSpace(playerController.crouchStateName))
                 {
                     playerController.crouchStateName = "Squash";
                     changed = true;
                 }
 
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (playerController.bounceParticle == null)
                 {
                     ParticleSystem existingFx = root.GetComponentInChildren<ParticleSystem>(true);
@@ -255,6 +298,7 @@ namespace PolyJump.Editor
                 }
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (changed)
             {
                 PrefabUtility.SaveAsPrefabAsset(root, prefabPath);
@@ -263,15 +307,21 @@ namespace PolyJump.Editor
             PrefabUtility.UnloadPrefabContents(root);
         }
 
+        /// <summary>
+        /// Đảm bảo Player Animator Controller phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static AnimatorController EnsurePlayerAnimatorController()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             string controllerPath = AnimationsFolder + "/Player.controller";
             AnimatorController controller = AssetDatabase.LoadAssetAtPath<AnimatorController>(controllerPath);
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (controller == null)
             {
                 controller = AnimatorController.CreateAnimatorControllerAtPath(controllerPath);
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (controller == null)
             {
                 return null;
@@ -284,6 +334,7 @@ namespace PolyJump.Editor
             AnimatorState normalState = FindOrCreateState(sm, "Normal", normalClip, new Vector3(220f, 120f, 0f));
             FindOrCreateState(sm, "Squash", squashClip, new Vector3(520f, 120f, 0f));
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (sm.defaultState == null)
             {
                 sm.defaultState = normalState;
@@ -294,9 +345,14 @@ namespace PolyJump.Editor
             return controller;
         }
 
+        /// <summary>
+        /// Đảm bảo Scale Animation Clip phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static AnimationClip EnsureScaleAnimationClip(string clipPath, Vector3 scale)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             AnimationClip clip = AssetDatabase.LoadAssetAtPath<AnimationClip>(clipPath);
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (clip != null)
             {
                 return clip;
@@ -318,10 +374,15 @@ namespace PolyJump.Editor
             return clip;
         }
 
+        /// <summary>
+        /// Tìm Or Create State phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static AnimatorState FindOrCreateState(AnimatorStateMachine sm, string name, Motion motion, Vector3 position)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             foreach (ChildAnimatorState child in sm.states)
             {
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (child.state != null && child.state.name == name)
                 {
                     if (child.state.motion == null && motion != null)
@@ -338,8 +399,12 @@ namespace PolyJump.Editor
             return state;
         }
 
+        /// <summary>
+        /// Tạo Default Player Bounce Particle phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static ParticleSystem CreateDefaultPlayerBounceParticle(Transform parent)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (parent == null)
             {
                 return null;
@@ -371,9 +436,14 @@ namespace PolyJump.Editor
             return ps;
         }
 
+        /// <summary>
+        /// Lấy Square Sprite phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static Sprite GetSquareSprite()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             Sprite sprite = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/UISprite.psd");
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (sprite == null)
             {
                 sprite = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/Background.psd");
@@ -382,9 +452,14 @@ namespace PolyJump.Editor
             return sprite;
         }
 
+        /// <summary>
+        /// Lấy Builtin Font phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static Font GetBuiltinFont()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             Font font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (font == null)
             {
                 font = Resources.GetBuiltinResource<Font>("Arial.ttf");
@@ -393,8 +468,12 @@ namespace PolyJump.Editor
             return font;
         }
 
+        /// <summary>
+        /// Thiết lập up Scene phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static void SetupScene(GameObject playerPrefab, GameObject platformPrefab, GameObject quizPlatformPrefab)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             Camera cam = SetupMainCamera();
             EnsureDirectionalLight();
             EnsureEventSystem();
@@ -418,86 +497,103 @@ namespace PolyJump.Editor
             PlayFabAuthManager authManager = GetOrAddComponent<PlayFabAuthManager>(managersObj);
             LeaderboardUiManager leaderboardUi = GetOrAddComponent<LeaderboardUiManager>(managersObj);
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (spawner.platformPrefab == null)
             {
                 spawner.platformPrefab = platformPrefab;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (spawner.quizPlatformPrefab == null)
             {
                 spawner.quizPlatformPrefab = quizPlatformPrefab;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (spawner.platformRoot == null)
             {
                 spawner.platformRoot = platformRootObj.transform;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (spawner.quizPlatformChance <= 0f)
             {
                 spawner.quizPlatformChance = 0.15f;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (spawner.initialPlatformCount <= 0)
             {
                 spawner.initialPlatformCount = 16;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (spawner.horizontalRange <= 0f)
             {
                 spawner.horizontalRange = 2.7f;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (spawner.spawnEdgePadding < 0f)
             {
                 spawner.spawnEdgePadding = 0.45f;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (spawner.minGapY <= 0f)
             {
                 spawner.minGapY = 0.95f;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (spawner.maxGapY <= 0f)
             {
                 spawner.maxGapY = 1.5f;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (spawner.initialSpawnBelowPlayer <= 0f)
             {
                 spawner.initialSpawnBelowPlayer = 3.2f;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (spawner.guaranteedFirstPlatformOffsetY <= 0f)
             {
                 spawner.guaranteedFirstPlatformOffsetY = 1.7f;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (spawner.groundOffsetBelowPlayer <= 0f)
             {
                 spawner.groundOffsetBelowPlayer = 1.35f;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (spawner.groundWidth <= 0f)
             {
                 spawner.groundWidth = 7.4f;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (spawner.groundHeight <= 0f)
             {
                 spawner.groundHeight = 0.9f;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (spawner.sceneStartGround == null && startGroundObj != null)
             {
                 spawner.sceneStartGround = startGroundObj.transform;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (spawner.spawnAheadDistance <= 0f)
             {
                 spawner.spawnAheadDistance = 14f;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (spawner.cleanupBelowDistance <= 0f)
             {
                 spawner.cleanupBelowDistance = 12f;
@@ -508,76 +604,91 @@ namespace PolyJump.Editor
             quiz.answerButtons = ui.answerButtons;
             quiz.resourceFileName = "QuizData";
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (gm.playerPrefab == null)
             {
                 gm.playerPrefab = playerPrefab;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (gm.playerSpawnPoint == null && spawnPointObj != null)
             {
                 gm.playerSpawnPoint = spawnPointObj.transform;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (gm.levelSpawner == null)
             {
                 gm.levelSpawner = spawner;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (gm.quizManager == null)
             {
                 gm.quizManager = quiz;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (gm.mainCamera == null)
             {
                 gm.mainCamera = cam;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (gm.playFabAuthManager == null)
             {
                 gm.playFabAuthManager = authManager;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (gm.panelStart == null)
             {
                 gm.panelStart = ui.panelStart;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (gm.panelHud == null)
             {
                 gm.panelHud = ui.panelHud;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (gm.panelQuiz == null)
             {
                 gm.panelQuiz = ui.panelQuiz;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (gm.panelGameOver == null)
             {
                 gm.panelGameOver = ui.panelGameOver;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (gm.hudScoreText == null)
             {
                 gm.hudScoreText = ui.hudScore;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (gm.hudTimeText == null)
             {
                 gm.hudTimeText = ui.hudTime;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (gm.gameOverScoreText == null)
             {
                 gm.gameOverScoreText = ui.gameOverScore;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (gm.gameOverHighscoreText == null)
             {
                 gm.gameOverHighscoreText = ui.gameOverHighscore;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (gm.playButton == null)
             {
                 gm.playButton = ui.playButton;
@@ -585,76 +696,91 @@ namespace PolyJump.Editor
 
             EnsureStartPanelAudioToggles(ui);
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (gm.replayButton == null)
             {
                 gm.replayButton = ui.replayButton;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (gm.startTimeSeconds <= 0f)
             {
                 gm.startTimeSeconds = 180f;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (gm.fallOutOffset <= 0f)
             {
                 gm.fallOutOffset = 1.5f;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (gm.cameraFollowLerp <= 0f)
             {
                 gm.cameraFollowLerp = 10f;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (authManager.reg_Name == null)
             {
                 authManager.reg_Name = authUi.regName;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (authManager.reg_Email == null)
             {
                 authManager.reg_Email = authUi.regEmail;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (authManager.reg_Phone == null)
             {
                 authManager.reg_Phone = authUi.regPhone;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (authManager.reg_Pass == null)
             {
                 authManager.reg_Pass = authUi.regPass;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (authManager.Btn_ConfirmRegister == null)
             {
                 authManager.Btn_ConfirmRegister = authUi.btnConfirmRegister;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (authManager.login_Email == null)
             {
                 authManager.login_Email = authUi.loginEmail;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (authManager.login_Pass == null)
             {
                 authManager.login_Pass = authUi.loginPass;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (authManager.Btn_ConfirmLogin == null)
             {
                 authManager.Btn_ConfirmLogin = authUi.btnConfirmLogin;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (authManager.auth_Status == null)
             {
                 authManager.auth_Status = authUi.statusText;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (leaderboardUi.playFabAuthManager == null)
             {
                 leaderboardUi.playFabAuthManager = authManager;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (leaderboardUi.targetCanvas == null)
             {
                 leaderboardUi.targetCanvas = canvas;
@@ -662,20 +788,27 @@ namespace PolyJump.Editor
 
         }
 
+        /// <summary>
+        /// Đảm bảo Start Panel Audio Toggles phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static void EnsureStartPanelAudioToggles(UiRefs ui)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (ui.toggleMusicButton != null)
             {
                 AudioStartToggleRelay musicRelay = ui.toggleMusicButton.GetComponent<AudioStartToggleRelay>();
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (musicRelay != null)
                 {
                     Object.DestroyImmediate(musicRelay);
                 }
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (ui.toggleSfxButton != null)
             {
                 AudioStartToggleRelay sfxRelay = ui.toggleSfxButton.GetComponent<AudioStartToggleRelay>();
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (sfxRelay != null)
                 {
                     Object.DestroyImmediate(sfxRelay);
@@ -683,8 +816,12 @@ namespace PolyJump.Editor
             }
         }
 
+        /// <summary>
+        /// Tạo Or Update Side Boundaries phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static void CreateOrUpdateSideBoundaries(Camera cam)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (cam == null)
             {
                 return;
@@ -701,10 +838,15 @@ namespace PolyJump.Editor
             CreateOrUpdateBoundary(boundsRoot.transform, "Boundary_Right", cam.transform.position.x + boundaryXOffset, yCenter);
         }
 
+        /// <summary>
+        /// Tạo Or Update Boundary phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static void CreateOrUpdateBoundary(Transform parent, string name, float x, float y)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             GameObject boundary = FindChildByName(parent, name);
             bool created = false;
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (boundary == null)
             {
                 boundary = new GameObject(name, typeof(BoxCollider2D));
@@ -712,12 +854,14 @@ namespace PolyJump.Editor
                 created = true;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (created)
             {
                 boundary.transform.position = new Vector3(x, y, 0f);
             }
 
             BoxCollider2D collider = GetOrAddComponent<BoxCollider2D>(boundary);
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (created)
             {
                 collider.isTrigger = false;
@@ -726,18 +870,28 @@ namespace PolyJump.Editor
             }
         }
 
+        /// <summary>
+        /// Thực hiện nghiệp vụ Remove Existing Scene Player theo ngữ cảnh sử dụng của script.
+        /// </summary>
         private static void RemoveExistingScenePlayer()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             GameObject playerObj = GameObject.Find("Player");
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (playerObj != null)
             {
                 Object.DestroyImmediate(playerObj);
             }
         }
 
+        /// <summary>
+        /// Thực hiện nghiệp vụ Prepare Existing Scene Player theo ngữ cảnh sử dụng của script.
+        /// </summary>
         private static void PrepareExistingScenePlayer()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             GameObject playerObj = GameObject.Find("Player");
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (playerObj == null)
             {
                 return;
@@ -746,9 +900,14 @@ namespace PolyJump.Editor
             playerObj.SetActive(false);
         }
 
+        /// <summary>
+        /// Tạo Or Get Player Spawn Point phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static GameObject CreateOrGetPlayerSpawnPoint()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             GameObject spawn = GameObject.Find("PlayerSpawnPoint");
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (spawn == null)
             {
                 spawn = new GameObject("PlayerSpawnPoint");
@@ -758,8 +917,12 @@ namespace PolyJump.Editor
             return spawn;
         }
 
+        /// <summary>
+        /// Tạo Or Update Start Ground phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static GameObject CreateOrUpdateStartGround(Transform parent, GameObject platformPrefab)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (parent == null)
             {
                 return null;
@@ -769,9 +932,11 @@ namespace PolyJump.Editor
             bool isAutoCreated = false;
             bool convertedFromLegacyPlatform = false;
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (startGround == null)
             {
                 GameObject existingPlatformChild = FindChildByName(parent, "Platform");
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (existingPlatformChild != null)
                 {
                     startGround = existingPlatformChild;
@@ -779,13 +944,16 @@ namespace PolyJump.Editor
                 }
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (startGround == null)
             {
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (platformPrefab != null)
                 {
                     startGround = PrefabUtility.InstantiatePrefab(platformPrefab, parent) as GameObject;
                 }
 
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (startGround == null)
                 {
                     startGround = new GameObject("StartGround", typeof(SpriteRenderer), typeof(BoxCollider2D));
@@ -802,17 +970,20 @@ namespace PolyJump.Editor
 
             startGround.name = "StartGround";
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (isAutoCreated || convertedFromLegacyPlatform)
             {
                 startGround.transform.position = new Vector3(0f, -2.55f, 0f);
                 startGround.transform.localScale = new Vector3(7.4f, 0.9f, 1f);
             }
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (string.IsNullOrEmpty(startGround.tag) || startGround.tag == "Untagged")
             {
                 startGround.tag = "Platform";
             }
 
             BoxCollider2D col = GetOrAddComponent<BoxCollider2D>(startGround);
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (isAutoCreated || convertedFromLegacyPlatform)
             {
                 col.isTrigger = true;
@@ -821,10 +992,15 @@ namespace PolyJump.Editor
             return startGround;
         }
 
+        /// <summary>
+        /// Thiết lập up Main Camera phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static Camera SetupMainCamera()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             Camera cam = Camera.main;
             bool created = false;
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (cam == null)
             {
                 GameObject cameraObj = FindOrCreate("Main Camera");
@@ -834,6 +1010,7 @@ namespace PolyJump.Editor
                 created = true;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (created)
             {
                 cam.orthographic = true;
@@ -846,11 +1023,17 @@ namespace PolyJump.Editor
             return cam;
         }
 
+        /// <summary>
+        /// Đảm bảo Directional Light phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static void EnsureDirectionalLight()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             Light[] lights = Object.FindObjectsOfType<Light>();
+            // Khối lặp: duyệt từng phần tử trong tập dữ liệu để xử lý.
             foreach (Light light in lights)
             {
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (light.type == LightType.Directional)
                 {
                     light.gameObject.name = "Directional Light";
@@ -866,8 +1049,12 @@ namespace PolyJump.Editor
             lightObj.transform.rotation = Quaternion.Euler(50f, -30f, 0f);
         }
 
+        /// <summary>
+        /// Đảm bảo Event System phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static void EnsureEventSystem()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (Object.FindObjectOfType<EventSystem>() != null)
             {
                 return;
@@ -878,10 +1065,15 @@ namespace PolyJump.Editor
             eventSystemObj.AddComponent<StandaloneInputModule>();
         }
 
+        /// <summary>
+        /// Tạo Or Get Canvas phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static Canvas CreateOrGetCanvas()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             GameObject canvasObj = GameObject.Find("Canvas_PolyJump");
             bool created = false;
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (canvasObj == null)
             {
                 canvasObj = new GameObject("Canvas_PolyJump");
@@ -889,12 +1081,14 @@ namespace PolyJump.Editor
             }
 
             Canvas canvas = GetOrAddComponent<Canvas>(canvasObj);
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (created)
             {
                 canvas.renderMode = RenderMode.ScreenSpaceOverlay;
             }
 
             CanvasScaler scaler = GetOrAddComponent<CanvasScaler>(canvasObj);
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (created)
             {
                 scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
@@ -907,8 +1101,12 @@ namespace PolyJump.Editor
             return canvas;
         }
 
+        /// <summary>
+        /// Xây dựng Ui phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static UiRefs BuildUi(Transform canvas)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             bool panelStartCreated = FindChildByName(canvas, "Panel_Start") == null;
             bool panelHudCreated = FindChildByName(canvas, "Panel_HUD") == null;
             bool panelQuizCreated = FindChildByName(canvas, "Panel_Quiz") == null;
@@ -939,6 +1137,7 @@ namespace PolyJump.Editor
             ui.quizQuestion.horizontalOverflow = HorizontalWrapMode.Wrap;
             ui.quizQuestion.verticalOverflow = VerticalWrapMode.Overflow;
 
+            // Khối lặp: duyệt tuần tự các phần tử cần xử lý.
             for (int i = 0; i < 4; i++)
             {
                 float y = 0.56f - (i * 0.11f);
@@ -962,26 +1161,31 @@ namespace PolyJump.Editor
             bool panelLeaderboardCreated;
             ui.panelLeaderboard = BuildLeaderboardPanel(canvas, font, out panelLeaderboardCreated);
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (panelStartCreated)
             {
                 ui.panelStart.SetActive(true);
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (panelHudCreated)
             {
                 ui.panelHud.SetActive(false);
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (panelQuizCreated)
             {
                 ui.panelQuiz.SetActive(false);
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (panelGameOverCreated)
             {
                 ui.panelGameOver.SetActive(false);
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (panelLeaderboardCreated && ui.panelLeaderboard != null)
             {
                 ui.panelLeaderboard.SetActive(false);
@@ -990,13 +1194,18 @@ namespace PolyJump.Editor
             return ui;
         }
 
+        /// <summary>
+        /// Xây dựng Leaderboard Panel phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static GameObject BuildLeaderboardPanel(Transform canvas, Font font, out bool panelCreated)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             panelCreated = FindChildByName(canvas, "Panel_Leaderboard") == null;
             GameObject panel = CreatePanel("Panel_Leaderboard", canvas, new Color(FptNavy.r / 255f, FptNavy.g / 255f, FptNavy.b / 255f, 0.93f));
 
             GameObject card = FindChildByName(panel.transform, "Card");
             bool cardCreated = false;
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (card == null)
             {
                 card = new GameObject("Card", typeof(RectTransform), typeof(Image));
@@ -1005,6 +1214,7 @@ namespace PolyJump.Editor
             }
 
             RectTransform cardRt = card.GetComponent<RectTransform>();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (cardCreated)
             {
                 cardRt.anchorMin = new Vector2(0.5f, 0.5f);
@@ -1015,6 +1225,7 @@ namespace PolyJump.Editor
             }
 
             Image cardImage = GetOrAddComponent<Image>(card);
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (cardCreated)
             {
                 cardImage.color = new Color32(0xF6, 0xF8, 0xFC, 0xFF);
@@ -1030,6 +1241,7 @@ namespace PolyJump.Editor
 
             GameObject headerRow = FindChildByName(card.transform, "Header_Row");
             bool headerCreated = false;
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (headerRow == null)
             {
                 headerRow = new GameObject("Header_Row", typeof(RectTransform), typeof(Image));
@@ -1038,6 +1250,7 @@ namespace PolyJump.Editor
             }
 
             RectTransform headerRt = headerRow.GetComponent<RectTransform>();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (headerCreated)
             {
                 headerRt.anchorMin = new Vector2(0.08f, 0.73f);
@@ -1047,6 +1260,7 @@ namespace PolyJump.Editor
             }
 
             Image headerImage = GetOrAddComponent<Image>(headerRow);
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (headerCreated)
             {
                 headerImage.color = new Color32(0xD9, 0xE4, 0xFA, 0xFF);
@@ -1054,6 +1268,7 @@ namespace PolyJump.Editor
 
             bool headerRankCreated = FindChildByName(headerRow.transform, "Txt_HeaderRank") == null;
             Text headerRank = CreateText("Txt_HeaderRank", headerRow.transform, "Thứ hạng", 26, FptNavy, font, new Vector2(0f, 0.5f), new Vector2(220f, 52f));
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (headerRankCreated)
             {
                 RectTransform headerRankRt = headerRank.GetComponent<RectTransform>();
@@ -1065,6 +1280,7 @@ namespace PolyJump.Editor
 
             bool headerNameCreated = FindChildByName(headerRow.transform, "Txt_HeaderName") == null;
             Text headerName = CreateText("Txt_HeaderName", headerRow.transform, "Người chơi", 26, FptNavy, font, new Vector2(0.5f, 0.5f), new Vector2(420f, 52f));
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (headerNameCreated)
             {
                 headerName.alignment = TextAnchor.MiddleCenter;
@@ -1073,6 +1289,7 @@ namespace PolyJump.Editor
 
             bool headerScoreCreated = FindChildByName(headerRow.transform, "Txt_HeaderScore") == null;
             Text headerScore = CreateText("Txt_HeaderScore", headerRow.transform, "Điểm", 26, FptNavy, font, new Vector2(1f, 0.5f), new Vector2(180f, 52f));
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (headerScoreCreated)
             {
                 RectTransform headerScoreRt = headerScore.GetComponent<RectTransform>();
@@ -1084,6 +1301,7 @@ namespace PolyJump.Editor
 
             bool eventTimeCreated = FindChildByName(card.transform, "Txt_EventTime") == null;
             Text eventTime = CreateText("Txt_EventTime", card.transform, "Thời gian sự kiện: --", 24, FptNavy, font, new Vector2(0.5f, 0.695f), new Vector2(860f, 42f));
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (eventTimeCreated)
             {
                 eventTime.alignment = TextAnchor.MiddleLeft;
@@ -1093,6 +1311,7 @@ namespace PolyJump.Editor
 
             bool eventRewardsCreated = FindChildByName(card.transform, "Txt_EventRewards") == null;
             Text eventRewards = CreateText("Txt_EventRewards", card.transform, "Quà sự kiện: --", 24, FptNavy, font, new Vector2(0.5f, 0.665f), new Vector2(860f, 42f));
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (eventRewardsCreated)
             {
                 eventRewards.alignment = TextAnchor.MiddleLeft;
@@ -1102,6 +1321,7 @@ namespace PolyJump.Editor
 
             GameObject scrollRoot = FindChildByName(card.transform, "ScrollRoot");
             bool scrollRootCreated = false;
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (scrollRoot == null)
             {
                 scrollRoot = new GameObject("ScrollRoot", typeof(RectTransform), typeof(Image), typeof(ScrollRect));
@@ -1110,6 +1330,7 @@ namespace PolyJump.Editor
             }
 
             RectTransform scrollRootRt = scrollRoot.GetComponent<RectTransform>();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (scrollRootCreated)
             {
                 scrollRootRt.anchorMin = new Vector2(0.08f, 0.17f);
@@ -1119,6 +1340,7 @@ namespace PolyJump.Editor
             }
 
             Image scrollBg = GetOrAddComponent<Image>(scrollRoot);
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (scrollRootCreated)
             {
                 scrollBg.color = new Color32(0xE9, 0xEE, 0xF7, 0xFF);
@@ -1126,6 +1348,7 @@ namespace PolyJump.Editor
 
             GameObject viewport = FindChildByName(scrollRoot.transform, "Viewport");
             bool viewportCreated = false;
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (viewport == null)
             {
                 viewport = new GameObject("Viewport", typeof(RectTransform), typeof(Image), typeof(Mask));
@@ -1134,6 +1357,7 @@ namespace PolyJump.Editor
             }
 
             RectTransform viewportRt = viewport.GetComponent<RectTransform>();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (viewportCreated)
             {
                 viewportRt.anchorMin = Vector2.zero;
@@ -1143,12 +1367,14 @@ namespace PolyJump.Editor
             }
 
             Image viewportImage = GetOrAddComponent<Image>(viewport);
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (viewportCreated)
             {
                 viewportImage.color = new Color32(0xF9, 0xFB, 0xFF, 0xFF);
             }
 
             Mask viewportMask = GetOrAddComponent<Mask>(viewport);
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (viewportCreated)
             {
                 viewportMask.showMaskGraphic = true;
@@ -1156,6 +1382,7 @@ namespace PolyJump.Editor
 
             GameObject content = FindChildByName(viewport.transform, "Content");
             bool contentCreated = false;
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (content == null)
             {
                 content = new GameObject("Content", typeof(RectTransform), typeof(VerticalLayoutGroup), typeof(ContentSizeFitter));
@@ -1164,6 +1391,7 @@ namespace PolyJump.Editor
             }
 
             RectTransform contentRt = content.GetComponent<RectTransform>();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (contentCreated)
             {
                 contentRt.anchorMin = new Vector2(0f, 1f);
@@ -1174,6 +1402,7 @@ namespace PolyJump.Editor
             }
 
             VerticalLayoutGroup layout = GetOrAddComponent<VerticalLayoutGroup>(content);
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (contentCreated)
             {
                 layout.spacing = 8f;
@@ -1185,6 +1414,7 @@ namespace PolyJump.Editor
             }
 
             ContentSizeFitter fitter = GetOrAddComponent<ContentSizeFitter>(content);
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (contentCreated)
             {
                 fitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
@@ -1193,6 +1423,7 @@ namespace PolyJump.Editor
 
             GameObject rowTemplate = FindChildByName(content.transform, "Row_1");
             bool rowTemplateCreated = false;
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (rowTemplate == null)
             {
                 rowTemplate = new GameObject("Row_1", typeof(RectTransform), typeof(Image));
@@ -1201,6 +1432,7 @@ namespace PolyJump.Editor
             }
 
             RectTransform rowRt = rowTemplate.GetComponent<RectTransform>();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (rowTemplateCreated)
             {
                 rowRt.anchorMin = new Vector2(0f, 1f);
@@ -1210,6 +1442,7 @@ namespace PolyJump.Editor
             }
 
             Image rowImage = GetOrAddComponent<Image>(rowTemplate);
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (rowTemplateCreated)
             {
                 rowImage.color = new Color32(0xF2, 0xF6, 0xFF, 0xFF);
@@ -1217,6 +1450,7 @@ namespace PolyJump.Editor
 
             bool rowRankCreated = FindChildByName(rowTemplate.transform, "Txt_Rank") == null;
             Text rowRank = CreateText("Txt_Rank", rowTemplate.transform, "#1", 28, FptNavy, font, new Vector2(0f, 0.5f), new Vector2(220f, 56f));
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (rowRankCreated)
             {
                 RectTransform rowRankRt = rowRank.GetComponent<RectTransform>();
@@ -1227,6 +1461,7 @@ namespace PolyJump.Editor
 
             bool rowNameCreated = FindChildByName(rowTemplate.transform, "Txt_Name") == null;
             Text rowName = CreateText("Txt_Name", rowTemplate.transform, "Người chơi", 28, FptNavy, font, new Vector2(0.5f, 0.5f), new Vector2(440f, 56f));
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (rowNameCreated)
             {
                 rowName.alignment = TextAnchor.MiddleCenter;
@@ -1234,6 +1469,7 @@ namespace PolyJump.Editor
 
             bool rowScoreCreated = FindChildByName(rowTemplate.transform, "Txt_Score") == null;
             Text rowScore = CreateText("Txt_Score", rowTemplate.transform, "0", 28, FptOrange, font, new Vector2(1f, 0.5f), new Vector2(180f, 56f));
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (rowScoreCreated)
             {
                 RectTransform rowScoreRt = rowScore.GetComponent<RectTransform>();
@@ -1243,6 +1479,7 @@ namespace PolyJump.Editor
                 rowScore.fontStyle = FontStyle.Bold;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (rowTemplateCreated)
             {
                 rowTemplate.SetActive(false);
@@ -1250,22 +1487,26 @@ namespace PolyJump.Editor
 
             ScrollRect scrollRect = scrollRoot.GetComponent<ScrollRect>();
             bool scrollRectCreated = false;
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (scrollRect == null)
             {
                 scrollRect = scrollRoot.AddComponent<ScrollRect>();
                 scrollRectCreated = true;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (scrollRect.viewport == null)
             {
                 scrollRect.viewport = viewportRt;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (scrollRect.content == null)
             {
                 scrollRect.content = contentRt;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (scrollRectCreated)
             {
                 scrollRect.horizontal = false;
@@ -1276,6 +1517,7 @@ namespace PolyJump.Editor
 
             bool emptyTextCreated = FindChildByName(viewport.transform, "Txt_Empty") == null;
             Text emptyText = CreateText("Txt_Empty", viewport.transform, "Chưa có xếp hạng", 34, new Color32(0x5D, 0x6B, 0x85, 0xFF), font, new Vector2(0.5f, 0.5f), new Vector2(640f, 110f));
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (emptyTextCreated)
             {
                 emptyText.alignment = TextAnchor.MiddleCenter;
@@ -1285,6 +1527,7 @@ namespace PolyJump.Editor
             CreateButton("Btn_TabRaceTop", card.transform, "Sự kiện", new Vector2(0.56f, 0.09f), new Vector2(230f, 78f), FptNavy, Color.white, font, 30);
             CreateButton("Btn_RefreshLeaderboard", card.transform, "Làm mới", new Vector2(0.79f, 0.09f), new Vector2(230f, 78f), FptOrange, Color.white, font, 30);
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (panelCreated)
             {
                 panel.SetActive(false);
@@ -1293,12 +1536,17 @@ namespace PolyJump.Editor
             return panel;
         }
 
+        /// <summary>
+        /// Xây dựng Auth Ui phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static AuthUiRefs BuildAuthUi(Transform canvas)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             AuthUiRefs auth = new AuthUiRefs();
 
             auth.authRoot = FindChildByName(canvas, "Panel_Auth");
             bool rootCreated = false;
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (auth.authRoot == null)
             {
                 auth.authRoot = new GameObject("Panel_Auth", typeof(RectTransform));
@@ -1307,6 +1555,7 @@ namespace PolyJump.Editor
             }
 
             RectTransform rootRect = auth.authRoot.GetComponent<RectTransform>();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (rootCreated)
             {
                 rootRect.anchorMin = Vector2.zero;
@@ -1333,6 +1582,7 @@ namespace PolyJump.Editor
             auth.regName = CreateTMPInputField("reg_Name", auth.panelRegister.transform, "Ho ten", new Vector2(0.5f, 0.78f), new Vector2(380f, 84f), TMP_InputField.ContentType.Standard);
             auth.regEmail = CreateTMPInputField("reg_Email", auth.panelRegister.transform, "Email", new Vector2(0.5f, 0.66f), new Vector2(380f, 84f), TMP_InputField.ContentType.EmailAddress);
             auth.regPhone = CreateTMPInputField("reg_Phone", auth.panelRegister.transform, "So dien thoai", new Vector2(0.5f, 0.54f), new Vector2(380f, 84f), TMP_InputField.ContentType.Standard);
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (auth.regPhone != null && auth.regPhone.characterValidation == TMP_InputField.CharacterValidation.None)
             {
                 auth.regPhone.characterValidation = TMP_InputField.CharacterValidation.Integer;
@@ -1351,10 +1601,15 @@ namespace PolyJump.Editor
             return auth;
         }
 
+        /// <summary>
+        /// Tạo Auth Panel phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static GameObject CreateAuthPanel(string name, Transform parent, Vector2 anchor, Vector2 size, Color color)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             GameObject panel = FindChildByName(parent, name);
             bool created = false;
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (panel == null)
             {
                 panel = new GameObject(name, typeof(RectTransform), typeof(Image));
@@ -1363,6 +1618,7 @@ namespace PolyJump.Editor
             }
 
             RectTransform rect = panel.GetComponent<RectTransform>();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (created)
             {
                 rect.anchorMin = anchor;
@@ -1373,6 +1629,7 @@ namespace PolyJump.Editor
             }
 
             Image image = panel.GetComponent<Image>();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (created)
             {
                 image.color = color;
@@ -1381,10 +1638,15 @@ namespace PolyJump.Editor
             return panel;
         }
 
+        /// <summary>
+        /// Tạo TMP Label phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static TMP_Text CreateTMPLabel(string name, Transform parent, string content, int fontSize, Color color, Vector2 anchor, Vector2 size)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             GameObject obj = FindChildByName(parent, name);
             bool created = false;
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (obj == null)
             {
                 obj = new GameObject(name, typeof(RectTransform), typeof(TextMeshProUGUI));
@@ -1393,6 +1655,7 @@ namespace PolyJump.Editor
             }
 
             RectTransform rect = obj.GetComponent<RectTransform>();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (created)
             {
                 rect.anchorMin = anchor;
@@ -1403,6 +1666,7 @@ namespace PolyJump.Editor
             }
 
             TMP_Text text = obj.GetComponent<TextMeshProUGUI>();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (created)
             {
                 text.text = content;
@@ -1414,10 +1678,15 @@ namespace PolyJump.Editor
             return text;
         }
 
+        /// <summary>
+        /// Tạo TMP Input Field phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static TMP_InputField CreateTMPInputField(string name, Transform parent, string placeholder, Vector2 anchor, Vector2 size, TMP_InputField.ContentType contentType)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             GameObject obj = FindChildByName(parent, name);
             bool created = false;
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (obj == null)
             {
                 obj = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(TMP_InputField));
@@ -1426,6 +1695,7 @@ namespace PolyJump.Editor
             }
 
             RectTransform rect = obj.GetComponent<RectTransform>();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (created)
             {
                 rect.anchorMin = anchor;
@@ -1436,6 +1706,7 @@ namespace PolyJump.Editor
             }
 
             Image image = obj.GetComponent<Image>();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (created)
             {
                 image.color = new Color(1f, 1f, 1f, 0.95f);
@@ -1444,6 +1715,7 @@ namespace PolyJump.Editor
             TMP_InputField input = obj.GetComponent<TMP_InputField>();
             EnsureTmpInputTextObjects(input, placeholder);
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (created)
             {
                 input.contentType = contentType;
@@ -1453,8 +1725,12 @@ namespace PolyJump.Editor
             return input;
         }
 
+        /// <summary>
+        /// Đảm bảo Tmp Input Text Objects phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static void EnsureTmpInputTextObjects(TMP_InputField input, string placeholderText)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (input == null)
             {
                 return;
@@ -1462,6 +1738,7 @@ namespace PolyJump.Editor
 
             Transform inputTransform = input.transform;
             GameObject textArea = FindChildByName(inputTransform, "Text Area");
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (textArea == null)
             {
                 textArea = new GameObject("Text Area", typeof(RectTransform), typeof(RectMask2D));
@@ -1475,6 +1752,7 @@ namespace PolyJump.Editor
             textAreaRect.offsetMax = new Vector2(-18f, -10f);
 
             GameObject placeholderObj = FindChildByName(textArea.transform, "Placeholder");
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (placeholderObj == null)
             {
                 placeholderObj = new GameObject("Placeholder", typeof(RectTransform), typeof(TextMeshProUGUI));
@@ -1494,6 +1772,7 @@ namespace PolyJump.Editor
             placeholderTextComp.alignment = TextAlignmentOptions.MidlineLeft;
 
             GameObject textObj = FindChildByName(textArea.transform, "Text");
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (textObj == null)
             {
                 textObj = new GameObject("Text", typeof(RectTransform), typeof(TextMeshProUGUI));
@@ -1516,10 +1795,15 @@ namespace PolyJump.Editor
             input.placeholder = placeholderTextComp;
         }
 
+        /// <summary>
+        /// Tạo TMP Button phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static Button CreateTMPButton(string name, Transform parent, string label, Vector2 anchor, Vector2 size, Color bgColor, Color textColor, int fontSize)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             GameObject obj = FindChildByName(parent, name);
             bool created = false;
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (obj == null)
             {
                 obj = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(Button));
@@ -1528,6 +1812,7 @@ namespace PolyJump.Editor
             }
 
             RectTransform rect = obj.GetComponent<RectTransform>();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (created)
             {
                 rect.anchorMin = anchor;
@@ -1538,12 +1823,14 @@ namespace PolyJump.Editor
             }
 
             Image image = obj.GetComponent<Image>();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (created)
             {
                 image.color = bgColor;
             }
 
             Button button = obj.GetComponent<Button>();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (created)
             {
                 ColorBlock colors = button.colors;
@@ -1555,6 +1842,7 @@ namespace PolyJump.Editor
             }
 
             GameObject labelObj = FindChildByName(obj.transform, "Label");
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (labelObj == null)
             {
                 labelObj = new GameObject("Label", typeof(RectTransform), typeof(TextMeshProUGUI));
@@ -1568,6 +1856,7 @@ namespace PolyJump.Editor
             labelRect.offsetMax = Vector2.zero;
 
             TextMeshProUGUI labelText = labelObj.GetComponent<TextMeshProUGUI>();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (created)
             {
                 labelText.text = label;
@@ -1579,10 +1868,15 @@ namespace PolyJump.Editor
             return button;
         }
 
+        /// <summary>
+        /// Tạo Panel phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static GameObject CreatePanel(string name, Transform parent, Color color)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             GameObject panel = FindChildByName(parent, name);
             bool created = false;
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (panel == null)
             {
                 panel = new GameObject(name, typeof(RectTransform), typeof(Image));
@@ -1591,6 +1885,7 @@ namespace PolyJump.Editor
             }
 
             RectTransform rect = panel.GetComponent<RectTransform>();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (created)
             {
                 rect.anchorMin = Vector2.zero;
@@ -1600,6 +1895,7 @@ namespace PolyJump.Editor
             }
 
             Image image = panel.GetComponent<Image>();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (created)
             {
                 image.color = color;
@@ -1608,10 +1904,15 @@ namespace PolyJump.Editor
             return panel;
         }
 
+        /// <summary>
+        /// Tạo Text phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static Text CreateText(string name, Transform parent, string content, int fontSize, Color color, Font font, Vector2 anchor, Vector2 size)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             GameObject obj = FindChildByName(parent, name);
             bool created = false;
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (obj == null)
             {
                 obj = new GameObject(name, typeof(RectTransform), typeof(Text));
@@ -1620,6 +1921,7 @@ namespace PolyJump.Editor
             }
 
             RectTransform rect = obj.GetComponent<RectTransform>();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (created)
             {
                 rect.anchorMin = anchor;
@@ -1630,6 +1932,7 @@ namespace PolyJump.Editor
             }
 
             Text text = obj.GetComponent<Text>();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (created)
             {
                 text.text = content;
@@ -1644,6 +1947,9 @@ namespace PolyJump.Editor
             return text;
         }
 
+        /// <summary>
+        /// Tạo Button phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static Button CreateButton(
             string name,
             Transform parent,
@@ -1655,8 +1961,10 @@ namespace PolyJump.Editor
             Font font,
             int fontSize)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             GameObject obj = FindChildByName(parent, name);
             bool created = false;
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (obj == null)
             {
                 obj = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(Button));
@@ -1665,6 +1973,7 @@ namespace PolyJump.Editor
             }
 
             RectTransform rect = obj.GetComponent<RectTransform>();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (created)
             {
                 rect.anchorMin = anchor;
@@ -1675,12 +1984,14 @@ namespace PolyJump.Editor
             }
 
             Image image = obj.GetComponent<Image>();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (created)
             {
                 image.color = buttonColor;
             }
 
             Button button = obj.GetComponent<Button>();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (created)
             {
                 ColorBlock colors = button.colors;
@@ -1693,6 +2004,7 @@ namespace PolyJump.Editor
             }
 
             GameObject textObj = FindChildByName(obj.transform, "Text");
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (textObj == null)
             {
                 textObj = new GameObject("Text", typeof(RectTransform), typeof(Text));
@@ -1700,6 +2012,7 @@ namespace PolyJump.Editor
             }
 
             RectTransform textRect = textObj.GetComponent<RectTransform>();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (created)
             {
                 textRect.anchorMin = Vector2.zero;
@@ -1709,6 +2022,7 @@ namespace PolyJump.Editor
             }
 
             Text text = textObj.GetComponent<Text>();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (created)
             {
                 text.text = label;
@@ -1721,9 +2035,14 @@ namespace PolyJump.Editor
             return button;
         }
 
+        /// <summary>
+        /// Tìm Or Create phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static GameObject FindOrCreate(string name)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             GameObject obj = GameObject.Find(name);
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (obj == null)
             {
                 obj = new GameObject(name);
@@ -1732,8 +2051,12 @@ namespace PolyJump.Editor
             return obj;
         }
 
+        /// <summary>
+        /// Tìm Child By Name phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static GameObject FindChildByName(Transform parent, string childName)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             Transform child = parent.Find(childName);
             return child != null ? child.gameObject : null;
         }

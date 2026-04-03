@@ -1,15 +1,20 @@
+// Script CloudScript xử lý nhận điểm sự kiện từ client,
+// kiểm tra khung giờ hợp lệ và cập nhật thống kê sự kiện trên server PlayFab.
 handlers.SubmitEventScore = function (args, context) {
+    // Khối 1: đọc cấu hình sự kiện từ Title Data để xác thực điều kiện mở sự kiện.
     var tdResp = server.GetTitleData({
         Keys: ["EventEnabled", "EventStartUtc", "EventEndUtc", "EventStart", "EventEnd"]
     });
     var titleData = (tdResp && tdResp.Data) ? tdResp.Data : {};
 
+    // Hàm phụ: chuẩn hóa và đọc trạng thái bật/tắt sự kiện.
     function isEnabled(value) {
         if (value === null || value === undefined) return false;
         var normalized = ("" + value).toLowerCase().trim();
         return normalized === "true" || normalized === "1" || normalized === "yes";
     }
 
+    // Hàm phụ: ưu tiên giá trị primary, fallback sang giá trị dự phòng nếu primary rỗng.
     function pickValue(primary, fallback) {
         if (primary !== null && primary !== undefined && ("" + primary).trim() !== "") {
             return ("" + primary).trim();
@@ -22,11 +27,12 @@ handlers.SubmitEventScore = function (args, context) {
         return "";
     }
 
-    // Parse event time text into UTC milliseconds.
-    // Supported examples: "HH:mm:ss-yyyy:MM:dd", "HH-mm-ss - yyyy-MM-dd", "yyyy:MM:dd-HH:mm:ss"
+    // Hàm phụ: chuyển chuỗi thời gian sự kiện về UTC milliseconds.
+    // Hỗ trợ các dạng: "HH:mm:ss-yyyy:MM:dd", "HH-mm-ss - yyyy-MM-dd", "yyyy:MM:dd-HH:mm:ss".
     function parseVnTimeToUtcMs(text) {
         if (!text || typeof text !== "string") return null;
 
+        // Khối phụ: ghép năm-tháng-ngày-giờ VN và đổi sang mốc UTC.
         function toUtcMs(year, month, day, hour, minute, second) {
             if (hour < 0 || hour > 24) return null;
             if (minute < 0 || minute > 59 || second < 0 || second > 59) return null;
@@ -43,6 +49,7 @@ handlers.SubmitEventScore = function (args, context) {
 
         var raw = text.trim();
 
+        // Khối 2.1: parse dạng giờ-trước, ngày-sau.
         var m1 = raw.match(/^\s*(\d{1,2})\D+(\d{1,2})\D+(\d{1,2})\s*-\s*(\d{4})\D+(\d{1,2})\D+(\d{1,2})\s*$/);
         if (m1) {
             var h1 = parseInt(m1[1], 10);
@@ -59,6 +66,7 @@ handlers.SubmitEventScore = function (args, context) {
             return toUtcMs(y1, mo1, d1, h1, min1, s1);
         }
 
+        // Khối 2.2: parse dạng ngày-trước, giờ-sau.
         var m2 = raw.match(/^\s*(\d{4})\D+(\d{1,2})\D+(\d{1,2})\s*-\s*(\d{1,2})\D+(\d{1,2})\D+(\d{1,2})\s*$/);
         if (m2) {
             var y2 = parseInt(m2[1], 10);
@@ -81,21 +89,25 @@ handlers.SubmitEventScore = function (args, context) {
     var startText = pickValue(titleData.EventStartUtc, titleData.EventStart);
     var endText = pickValue(titleData.EventEndUtc, titleData.EventEnd);
     var baseStatisticName = "LeaderBoard_Event";
+
+    // Khối 3: xác định tên statistic sự kiện theo payload client hoặc dùng mặc định.
     var statisticName = (args && args.statisticName) ? ("" + args.statisticName).trim() : baseStatisticName;
     if (!statisticName) {
         statisticName = baseStatisticName;
     }
 
-    // Ensure this cloud script only writes to event-time scoped statistic.
-    // Example: LeaderBoard_Event_11:30:00-2026:04:03
+    // Khối 4: ép ghi vào statistic gắn suffix thời gian sự kiện để tách từng đợt.
+    // Ví dụ: LeaderBoard_Event_11:30:00-2026:04:03
     if (statisticName === baseStatisticName && startText) {
         statisticName = baseStatisticName + "_" + startText;
     }
 
+    // Khối 5: chặn cập nhật nếu sự kiện chưa mở từ cấu hình.
     if (!isEnabled(titleData.EventEnabled)) {
         return { success: false, message: "Sự kiện đang đóng" };
     }
 
+    // Khối 6: parse thời gian và kiểm tra định dạng hợp lệ.
     var startMs = parseVnTimeToUtcMs(startText);
     var endMs = parseVnTimeToUtcMs(endText);
 
@@ -107,7 +119,7 @@ handlers.SubmitEventScore = function (args, context) {
     }
 
     if (endMs < startMs) {
-        // Support overnight window (e.g. 22:00 -> 06:00 next day)
+        // Hỗ trợ khung giờ qua đêm (ví dụ 22:00 -> 06:00 ngày hôm sau).
         endMs += 24 * 60 * 60 * 1000;
 
         if (endMs < startMs) {
@@ -115,6 +127,7 @@ handlers.SubmitEventScore = function (args, context) {
         }
     }
 
+    // Khối 7: chặn request nằm ngoài khung giờ sự kiện.
     var nowMs = Date.now();
     if (nowMs < startMs || nowMs > endMs) {
         return {
@@ -123,16 +136,19 @@ handlers.SubmitEventScore = function (args, context) {
         };
     }
 
+    // Khối 8: chuẩn hóa điểm đầu vào và kiểm tra hợp lệ.
     var score = parseInt(args && args.score, 10);
     if (isNaN(score) || score < 0) {
         return { success: false, message: "Điểm không hợp lệ" };
     }
 
+    // Khối 9: xác định người chơi hiện tại từ context server.
     var playFabId = currentPlayerId;
     if (!playFabId) {
         return { success: false, message: "Không tìm thấy người chơi hiện tại" };
     }
 
+    // Khối 10: lấy điểm cũ để trả về thông tin thay đổi cho client/admin.
     var previousScore = 0;
     try {
         var statsResp = server.GetPlayerStatistics({
@@ -150,9 +166,10 @@ handlers.SubmitEventScore = function (args, context) {
             }
         }
     } catch (readErr) {
-        // Keep previousScore = 0 and continue
+        // Không chặn luồng cập nhật điểm nếu đọc điểm cũ thất bại.
     }
 
+    // Khối 11: ghi đè điểm hiện tại của người chơi lên statistic sự kiện.
     server.UpdatePlayerStatistics({
         PlayFabId: playFabId,
         Statistics: [
@@ -163,6 +180,7 @@ handlers.SubmitEventScore = function (args, context) {
         ]
     });
 
+    // Khối 12: trả kết quả xử lý cho phía gọi CloudScript.
     return {
         success: true,
         updated: true,

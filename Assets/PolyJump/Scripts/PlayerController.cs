@@ -4,6 +4,9 @@ namespace PolyJump.Scripts
 {
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(BoxCollider2D))]
+    /// <summary>
+    /// Điều khiển nhân vật người chơi: nhận input, bật nảy, hoạt ảnh và hiệu ứng khi tương tác nền tảng.
+    /// </summary>
     public class PlayerController : MonoBehaviour
     {
         [Header("Movement")]
@@ -57,13 +60,18 @@ namespace PolyJump.Scripts
         private bool _animReady;
         private bool _warnedMissingAnimatorStates;
 
+        /// <summary>
+        /// Khởi tạo tham chiếu, trạng thái ban đầu và các cấu hình cần thiết khi đối tượng được tạo.
+        /// </summary>
         private void Awake()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (rb == null)
             {
                 rb = GetComponent<Rigidbody2D>();
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (animator == null)
             {
                 animator = GetComponent<Animator>();
@@ -76,22 +84,34 @@ namespace PolyJump.Scripts
             RefreshAnimatorStateCache();
         }
 
+        /// <summary>
+        /// Thiết lập dữ liệu và liên kết cần dùng ngay trước khi vòng lặp gameplay bắt đầu.
+        /// </summary>
         private void Start()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (rb != null && rb.velocity.y <= 0f)
             {
                 rb.velocity = new Vector2(0f, jumpVelocity * 0.5f);
             }
         }
 
+        /// <summary>
+        /// Cập nhật logic theo từng khung hình để phản hồi trạng thái hiện tại của game.
+        /// </summary>
         private void Update()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             CaptureInput();
             UpdateAnimationState();
         }
 
+        /// <summary>
+        /// Cập nhật logic vật lý theo nhịp cố định để đảm bảo chuyển động ổn định.
+        /// </summary>
         private void FixedUpdate()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (rb == null || !_inputEnabled || _gameplayPaused)
             {
                 return;
@@ -111,8 +131,12 @@ namespace PolyJump.Scripts
             rb.velocity = new Vector2(nextVelocityX, rb.velocity.y);
         }
 
+        /// <summary>
+        /// Thu thập Input phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private void CaptureInput()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (!_inputEnabled || _gameplayPaused)
             {
                 _targetHorizontalInput = 0f;
@@ -133,6 +157,7 @@ namespace PolyJump.Scripts
             _targetHorizontalInput = Mathf.Clamp(input, -1f, 1f);
 
             float response = Mathf.Max(0f, inputResponse);
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (response <= 0f)
             {
                 _smoothedHorizontalInput = _targetHorizontalInput;
@@ -143,6 +168,7 @@ namespace PolyJump.Scripts
                 _smoothedHorizontalInput = Mathf.Lerp(_smoothedHorizontalInput, _targetHorizontalInput, t);
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (Mathf.Abs(_targetHorizontalInput) < 0.001f && Mathf.Abs(_smoothedHorizontalInput) < 0.001f)
             {
                 _smoothedHorizontalInput = 0f;
@@ -151,14 +177,19 @@ namespace PolyJump.Scripts
             _horizontalInput = Mathf.Clamp(_smoothedHorizontalInput, -1f, 1f);
         }
 
+        /// <summary>
+        /// Thực hiện nghiệp vụ Read Touch Drag Input theo ngữ cảnh sử dụng của script.
+        /// </summary>
         private float ReadTouchDragInput()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (Input.touchCount <= 0)
             {
                 _activeTouchId = -1;
                 return 0f;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_activeTouchId < 0)
             {
                 Touch firstTouch = Input.GetTouch(0);
@@ -166,9 +197,11 @@ namespace PolyJump.Scripts
             }
 
             bool foundTouch = false;
+            // Khối lặp: duyệt tuần tự các phần tử cần xử lý.
             for (int i = 0; i < Input.touchCount; i++)
             {
                 Touch touch = Input.GetTouch(i);
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (touch.fingerId != _activeTouchId)
                 {
                     continue;
@@ -176,11 +209,13 @@ namespace PolyJump.Scripts
 
                 foundTouch = true;
 
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (touch.phase == TouchPhase.Began)
                 {
                     return 0f;
                 }
 
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
                 {
                     _activeTouchId = -1;
@@ -193,6 +228,7 @@ namespace PolyJump.Scripts
                 float dragVelocity = touch.deltaPosition.x / dt;
                 float deadZone = Mathf.Max(0f, touchDeadZonePixels);
                 float absVelocity = Mathf.Abs(dragVelocity);
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (absVelocity <= deadZone)
                 {
                     return 0f;
@@ -208,6 +244,7 @@ namespace PolyJump.Scripts
                 return Mathf.Clamp(signed, -1f, 1f);
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (!foundTouch)
             {
                 _activeTouchId = -1;
@@ -216,8 +253,12 @@ namespace PolyJump.Scripts
             return 0f;
         }
 
+        /// <summary>
+        /// Xử lý callback sự kiện hệ thống hoặc gameplay phát sinh trong vòng đời đối tượng.
+        /// </summary>
         private void OnTriggerEnter2D(Collider2D other)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (rb == null)
             {
                 return;
@@ -231,6 +272,7 @@ namespace PolyJump.Scripts
 
             bool isPlatform = other.CompareTag("Platform");
             bool isQuizPlatform = other.CompareTag("QuizPlatform");
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (!isPlatform && !isQuizPlatform)
             {
                 return;
@@ -239,8 +281,10 @@ namespace PolyJump.Scripts
             rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
             PlayBounceEffects(other);
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (isQuizPlatform)
             {
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (GameManager.Instance != null)
                 {
                     other.enabled = false;
@@ -250,9 +294,14 @@ namespace PolyJump.Scripts
             }
         }
 
+        /// <summary>
+        /// Thiết lập Input Enabled phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         public void SetInputEnabled(bool enabled)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             _inputEnabled = enabled;
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (!enabled)
             {
                 _targetHorizontalInput = 0f;
@@ -262,16 +311,22 @@ namespace PolyJump.Scripts
             }
         }
 
+        /// <summary>
+        /// Thiết lập Gameplay Paused phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         public void SetGameplayPaused(bool paused)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             bool wasPaused = _gameplayPaused;
             _gameplayPaused = paused;
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (rb == null)
             {
                 return;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (paused)
             {
                 _cachedVelocity = rb.velocity;
@@ -283,14 +338,19 @@ namespace PolyJump.Scripts
                 rb.velocity = _cachedVelocity;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (paused)
             {
                 _crouchUntil = 0f;
             }
         }
 
+        /// <summary>
+        /// Thực hiện nghiệp vụ Reset For New Run theo ngữ cảnh sử dụng của script.
+        /// </summary>
         public void ResetForNewRun()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             _inputEnabled = true;
             _gameplayPaused = false;
             _activeTouchId = -1;
@@ -298,6 +358,7 @@ namespace PolyJump.Scripts
             _smoothedHorizontalInput = 0f;
             _horizontalInput = 0f;
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (rb == null)
             {
                 return;
@@ -309,15 +370,21 @@ namespace PolyJump.Scripts
             _currentAnimHash = 0;
         }
 
+        /// <summary>
+        /// Thực hiện nghiệp vụ Force Normal Animation theo ngữ cảnh sử dụng của script.
+        /// </summary>
         public void ForceNormalAnimation()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             _crouchUntil = 0f;
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (!_animReady)
             {
                 RefreshAnimatorStateCache();
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (!_animReady || _normalAnimHash == 0)
             {
                 return;
@@ -327,22 +394,31 @@ namespace PolyJump.Scripts
             _currentAnimHash = _normalAnimHash;
         }
 
+        /// <summary>
+        /// Thực hiện nghiệp vụ Play Bounce Effects theo ngữ cảnh sử dụng của script.
+        /// </summary>
         private void PlayBounceEffects(Collider2D surface)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             EmitBounceParticle(surface);
 
             _crouchUntil = Time.time + Mathf.Max(0.02f, crouchDuration);
             CrossFadeTo(_crouchAnimHash);
         }
 
+        /// <summary>
+        /// Phát sinh Bounce Particle phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private void EmitBounceParticle(Collider2D surface)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (bounceParticle == null)
             {
                 return;
             }
 
             Vector3 emitPos = transform.position;
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (surface != null)
             {
                 emitPos = surface.ClosestPoint(transform.position);
@@ -352,23 +428,30 @@ namespace PolyJump.Scripts
             bounceParticle.Play(true);
         }
 
+        /// <summary>
+        /// Đảm bảo Bounce Particle phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private void EnsureBounceParticle()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (bounceParticle != null)
             {
                 return;
             }
 
             Transform existing = transform.Find("BounceFx");
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (existing != null)
             {
                 bounceParticle = existing.GetComponent<ParticleSystem>();
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (bounceParticle != null)
                 {
                     return;
                 }
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (!autoCreateBounceParticle)
             {
                 return;
@@ -416,17 +499,23 @@ namespace PolyJump.Scripts
             bounceParticle = ps;
         }
 
+        /// <summary>
+        /// Cập nhật Animation State phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private void UpdateAnimationState()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (!_animReady)
             {
                 RefreshAnimatorStateCache();
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (!_animReady)
                 {
                     return;
                 }
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_gameplayPaused)
             {
                 CrossFadeTo(_normalAnimHash);
@@ -437,8 +526,12 @@ namespace PolyJump.Scripts
             CrossFadeTo(targetHash);
         }
 
+        /// <summary>
+        /// Thực hiện nghiệp vụ Cross Fade To theo ngữ cảnh sử dụng của script.
+        /// </summary>
         private void CrossFadeTo(int targetHash)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (!_animReady || targetHash == 0 || _currentAnimHash == targetHash)
             {
                 return;
@@ -448,9 +541,14 @@ namespace PolyJump.Scripts
             _currentAnimHash = targetHash;
         }
 
+        /// <summary>
+        /// Làm mới Animator State Cache phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private void RefreshAnimatorStateCache()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             _animReady = false;
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (animator == null || animator.runtimeAnimatorController == null)
             {
                 return;
@@ -463,6 +561,7 @@ namespace PolyJump.Scripts
             bool hasCrouch = animator.HasState(0, _crouchAnimHash);
             _animReady = hasNormal && hasCrouch;
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (!_animReady && !_warnedMissingAnimatorStates)
             {
                 _warnedMissingAnimatorStates = true;

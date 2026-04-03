@@ -9,6 +9,9 @@ using UnityEngine.UI;
 
 namespace PolyJump.Scripts
 {
+    /// <summary>
+    /// Quản lý giao diện bảng xếp hạng, tải dữ liệu top và đồng bộ trạng thái theo tab thường/sự kiện.
+    /// </summary>
     public class LeaderboardUiManager : MonoBehaviour
     {
         private enum LeaderboardTab
@@ -27,6 +30,9 @@ namespace PolyJump.Scripts
             Invalid
         }
 
+        /// <summary>
+        /// Lưu trạng thái cache dữ liệu bảng xếp hạng để giảm số lần gọi API không cần thiết.
+        /// </summary>
         private sealed class LeaderboardCache
         {
             public readonly List<PlayerLeaderboardEntry> topEntries = new List<PlayerLeaderboardEntry>();
@@ -39,8 +45,12 @@ namespace PolyJump.Scripts
             public bool hasPlayerInfo;
             public string emptyMessage = "Chưa có xếp hạng";
 
+            /// <summary>
+            /// Xóa nghiệp vụ tương ứng phục vụ luồng xử lý hiện tại của hệ thống.
+            /// </summary>
             public void Clear()
             {
+                // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
                 topEntries.Clear();
                 hasData = false;
                 isFetching = false;
@@ -120,15 +130,21 @@ namespace PolyJump.Scripts
         private float _eventInfoLastFetchRealtime;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+        /// <summary>
+        /// Thực hiện nghiệp vụ Bootstrap theo ngữ cảnh sử dụng của script.
+        /// </summary>
         private static void Bootstrap()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             LeaderboardUiManager existing = UnityEngine.Object.FindObjectOfType<LeaderboardUiManager>(true);
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (existing != null)
             {
                 return;
             }
 
             GameObject host = GameObject.Find("Managers");
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (host == null)
             {
                 host = new GameObject("Managers");
@@ -137,8 +153,12 @@ namespace PolyJump.Scripts
             host.AddComponent<LeaderboardUiManager>();
         }
 
+        /// <summary>
+        /// Khởi tạo tham chiếu, trạng thái ban đầu và các cấu hình cần thiết khi đối tượng được tạo.
+        /// </summary>
         private void Awake()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (_instance != null && _instance != this)
             {
                 Destroy(this);
@@ -152,8 +172,12 @@ namespace PolyJump.Scripts
             SyncAuthVisibility();
         }
 
+        /// <summary>
+        /// Đăng ký sự kiện và kích hoạt các liên kết runtime khi đối tượng được bật.
+        /// </summary>
         private void OnEnable()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             ResolveRuntimeReferences();
             BuildOrBindUi();
             WireEvents();
@@ -161,10 +185,15 @@ namespace PolyJump.Scripts
             UpdateRefreshButtonVisual();
         }
 
+        /// <summary>
+        /// Cập nhật logic theo từng khung hình để phản hồi trạng thái hiện tại của game.
+        /// </summary>
         private void Update()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             ResolveRuntimeReferences();
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_btnOpenLeaderboard == null || _panelLeaderboard == null)
             {
                 BuildOrBindUi();
@@ -172,6 +201,7 @@ namespace PolyJump.Scripts
             }
 
             bool loggedIn = PlayFabClientAPI.IsClientLoggedIn();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (loggedIn && !_wasLoggedIn)
             {
                 OnLoginDetected();
@@ -184,15 +214,18 @@ namespace PolyJump.Scripts
             _wasLoggedIn = loggedIn;
             SyncAuthVisibility();
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_panelLeaderboard != null && _panelLeaderboard.activeSelf)
             {
                 bool shouldPollEventInfo = !_eventInfoFetching
                     && (!_eventInfoLoaded || (Time.unscaledTime - _eventInfoLastFetchRealtime) >= EventInfoCacheSeconds);
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (shouldPollEventInfo)
                 {
                     TryRefreshEventInfo(force: true);
                 }
 
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (_activeTab == LeaderboardTab.Normal && ShouldAutoRefresh(_normalCache))
                 {
                     FetchNormalLeaderboard(force: false);
@@ -206,35 +239,45 @@ namespace PolyJump.Scripts
             UpdateRefreshButtonVisual();
         }
 
+        /// <summary>
+        /// Xác định Runtime References phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private void ResolveRuntimeReferences()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (playFabAuthManager == null)
             {
                 playFabAuthManager = UnityEngine.Object.FindObjectOfType<PlayFabAuthManager>(true);
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (targetCanvas == null)
             {
                 GameObject canvasObj = GameObject.Find(CanvasName);
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (canvasObj != null)
                 {
                     targetCanvas = canvasObj.GetComponent<Canvas>();
                 }
 
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (targetCanvas == null)
                 {
                     targetCanvas = UnityEngine.Object.FindObjectOfType<Canvas>(true);
                 }
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_panelStart == null)
             {
                 _panelStart = GameObject.Find(PanelStartName);
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_btnPlay == null && _panelStart != null)
             {
                 Transform play = _panelStart.transform.Find("Btn_Play");
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (play != null)
                 {
                     _btnPlay = play.GetComponent<Button>();
@@ -242,13 +285,18 @@ namespace PolyJump.Scripts
             }
         }
 
+        /// <summary>
+        /// Xây dựng Or Bind Ui phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private void BuildOrBindUi()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (targetCanvas == null)
             {
                 return;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_panelStart == null)
             {
                 _panelStart = GameObject.Find(PanelStartName);
@@ -258,8 +306,12 @@ namespace PolyJump.Scripts
             BuildOrBindLeaderboardPanel();
         }
 
+        /// <summary>
+        /// Xây dựng Or Bind Open Leaderboard Button phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private void BuildOrBindOpenLeaderboardButton()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (_panelStart == null)
             {
                 return;
@@ -267,11 +319,13 @@ namespace PolyJump.Scripts
 
             Transform existing = _panelStart.transform.Find(ButtonOpenLeaderboardName);
             bool wasExisting = existing != null;
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (existing != null)
             {
                 _btnOpenLeaderboard = existing.GetComponent<Button>();
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_btnOpenLeaderboard == null)
             {
                 _btnOpenLeaderboard = CreateButton(
@@ -285,9 +339,11 @@ namespace PolyJump.Scripts
                     42);
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (!wasExisting && _btnOpenLeaderboard != null)
             {
                 RectTransform rt = _btnOpenLeaderboard.GetComponent<RectTransform>();
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (rt != null)
                 {
                     rt.anchorMin = new Vector2(0.5f, 0.5f);
@@ -306,15 +362,21 @@ namespace PolyJump.Scripts
             }
         }
 
+        /// <summary>
+        /// Xây dựng Or Bind Leaderboard Panel phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private void BuildOrBindLeaderboardPanel()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             Transform existing = targetCanvas.transform.Find(PanelLeaderboardName);
             bool panelCreated = existing == null;
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (existing != null)
             {
                 _panelLeaderboard = existing.gameObject;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_panelLeaderboard == null)
             {
                 _panelLeaderboard = new GameObject(PanelLeaderboardName, typeof(RectTransform), typeof(Image));
@@ -322,6 +384,7 @@ namespace PolyJump.Scripts
                 panelCreated = true;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (panelCreated)
             {
                 RectTransform rootRt = _panelLeaderboard.GetComponent<RectTransform>();
@@ -339,8 +402,12 @@ namespace PolyJump.Scripts
             EnsureLeaderboardChildren();
         }
 
+        /// <summary>
+        /// Đảm bảo Leaderboard Children phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private void EnsureLeaderboardChildren()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (_panelLeaderboard == null)
             {
                 return;
@@ -350,6 +417,7 @@ namespace PolyJump.Scripts
 
             bool cardCreated;
             GameObject card = FindOrCreateChild(_panelLeaderboard.transform, "Card", out cardCreated, typeof(RectTransform), typeof(Image));
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (cardCreated)
             {
                 RectTransform cardRt = card.GetComponent<RectTransform>();
@@ -365,6 +433,7 @@ namespace PolyJump.Scripts
             _btnBack = EnsureButton(card.transform, "Btn_Back", "Quay lại", new Vector2(0.12f, 0.93f), new Vector2(220f, 74f), new Color32(0x12, 0x1A, 0x2F, 0xFF), Color.white, 30);
 
             Transform legacyTitle = card.transform.Find("Txt_Title");
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (legacyTitle != null)
             {
                 Destroy(legacyTitle.gameObject);
@@ -380,6 +449,7 @@ namespace PolyJump.Scripts
 
             bool headerCreated;
             GameObject headerRow = FindOrCreateChild(card.transform, "Header_Row", out headerCreated, typeof(RectTransform), typeof(Image));
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (headerCreated)
             {
                 RectTransform headerRt = headerRow.GetComponent<RectTransform>();
@@ -400,6 +470,7 @@ namespace PolyJump.Scripts
 
             bool scrollRootCreated;
             GameObject scrollRoot = FindOrCreateChild(card.transform, "ScrollRoot", out scrollRootCreated, typeof(RectTransform), typeof(Image));
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (scrollRootCreated)
             {
                 RectTransform scrollRootRt = scrollRoot.GetComponent<RectTransform>();
@@ -414,6 +485,7 @@ namespace PolyJump.Scripts
             bool viewportCreated;
             GameObject viewport = FindOrCreateChild(scrollRoot.transform, "Viewport", out viewportCreated, typeof(RectTransform), typeof(Image), typeof(Mask));
             RectTransform viewportRt = viewport.GetComponent<RectTransform>();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (viewportCreated)
             {
                 viewportRt.anchorMin = Vector2.zero;
@@ -429,6 +501,7 @@ namespace PolyJump.Scripts
             bool contentCreated;
             GameObject content = FindOrCreateChild(viewport.transform, "Content", out contentCreated, typeof(RectTransform), typeof(VerticalLayoutGroup), typeof(ContentSizeFitter));
             _rowsContainer = content.GetComponent<RectTransform>();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (contentCreated)
             {
                 _rowsContainer.anchorMin = new Vector2(0f, 1f);
@@ -451,21 +524,25 @@ namespace PolyJump.Scripts
             }
 
             ScrollRect scrollRect = scrollRoot.GetComponent<ScrollRect>();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (scrollRect == null)
             {
                 scrollRect = scrollRoot.AddComponent<ScrollRect>();
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (scrollRect.viewport == null)
             {
                 scrollRect.viewport = viewportRt;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (scrollRect.content == null)
             {
                 scrollRect.content = _rowsContainer;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (scrollRootCreated)
             {
                 scrollRect.horizontal = false;
@@ -475,16 +552,19 @@ namespace PolyJump.Scripts
             }
 
             Transform template = _rowsContainer.Find("Row_1");
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (template != null)
             {
                 _rowTemplate = template.gameObject;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_rowTemplate == null)
             {
                 _rowTemplate = CreateDefaultRowTemplate(_rowsContainer);
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_rowTemplate != null)
             {
                 _rowTemplate.name = "Row_1";
@@ -507,32 +587,40 @@ namespace PolyJump.Scripts
             root.SetAsLastSibling();
         }
 
+        /// <summary>
+        /// Liên kết Events phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private void WireEvents()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (_btnOpenLeaderboard != null)
             {
                 _btnOpenLeaderboard.onClick.RemoveListener(OnOpenLeaderboardPressed);
                 _btnOpenLeaderboard.onClick.AddListener(OnOpenLeaderboardPressed);
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_btnBack != null)
             {
                 _btnBack.onClick.RemoveListener(OnBackPressed);
                 _btnBack.onClick.AddListener(OnBackPressed);
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_btnTabNormal != null)
             {
                 _btnTabNormal.onClick.RemoveListener(OnTabNormalPressed);
                 _btnTabNormal.onClick.AddListener(OnTabNormalPressed);
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_btnTabRaceTop != null)
             {
                 _btnTabRaceTop.onClick.RemoveListener(OnTabRacePressed);
                 _btnTabRaceTop.onClick.AddListener(OnTabRacePressed);
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_btnRefresh != null)
             {
                 _btnRefresh.onClick.RemoveListener(OnRefreshPressed);
@@ -540,18 +628,24 @@ namespace PolyJump.Scripts
             }
         }
 
+        /// <summary>
+        /// Xử lý sự kiện khi người dùng nhấn nút/chức năng tương ứng trên giao diện.
+        /// </summary>
         private void OnOpenLeaderboardPressed()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (_panelLeaderboard == null)
             {
                 return;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_panelStart != null)
             {
                 _panelStart.SetActive(false);
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (playFabAuthManager != null && playFabAuthManager.panelStart != null)
             {
                 playFabAuthManager.panelStart.SetActive(false);
@@ -562,6 +656,7 @@ namespace PolyJump.Scripts
             SetActiveTab(_activeTab);
             TryRefreshEventInfo(force: true);
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (!PlayFabClientAPI.IsClientLoggedIn())
             {
                 _normalCache.emptyMessage = "Vui lòng đăng nhập để xem xếp hạng";
@@ -569,6 +664,7 @@ namespace PolyJump.Scripts
                 return;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_activeTab == LeaderboardTab.Normal && ShouldAutoRefresh(_normalCache))
             {
                 FetchNormalLeaderboard(force: false);
@@ -579,38 +675,51 @@ namespace PolyJump.Scripts
             }
         }
 
+        /// <summary>
+        /// Xử lý sự kiện khi người dùng nhấn nút/chức năng tương ứng trên giao diện.
+        /// </summary>
         private void OnBackPressed()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (_panelLeaderboard != null)
             {
                 _panelLeaderboard.SetActive(false);
             }
 
             bool canShowStart = true;
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (playFabAuthManager != null && playFabAuthManager.panelAuth != null)
             {
                 canShowStart = !playFabAuthManager.panelAuth.activeSelf;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (GameManager.Instance != null)
             {
                 canShowStart = canShowStart && GameManager.Instance.CurrentState == GameState.Menu;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_panelStart != null)
             {
                 _panelStart.SetActive(canShowStart);
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (playFabAuthManager != null && playFabAuthManager.panelStart != null)
             {
                 playFabAuthManager.panelStart.SetActive(canShowStart);
             }
         }
 
+        /// <summary>
+        /// Xử lý sự kiện khi người dùng nhấn nút/chức năng tương ứng trên giao diện.
+        /// </summary>
         private void OnTabNormalPressed()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             SetActiveTab(LeaderboardTab.Normal);
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (ShouldAutoRefresh(_normalCache))
             {
                 FetchNormalLeaderboard(force: false);
@@ -621,9 +730,14 @@ namespace PolyJump.Scripts
             }
         }
 
+        /// <summary>
+        /// Xử lý sự kiện khi người dùng nhấn nút/chức năng tương ứng trên giao diện.
+        /// </summary>
         private void OnTabRacePressed()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             SetActiveTab(LeaderboardTab.Event);
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (ShouldAutoRefresh(_eventCache))
             {
                 FetchEventLeaderboard(force: false);
@@ -634,8 +748,12 @@ namespace PolyJump.Scripts
             }
         }
 
+        /// <summary>
+        /// Xử lý sự kiện khi người dùng nhấn nút/chức năng tương ứng trên giao diện.
+        /// </summary>
         private void OnRefreshPressed()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (Time.unscaledTime < _refreshCooldownEndRealtime)
             {
                 return;
@@ -643,6 +761,7 @@ namespace PolyJump.Scripts
 
             _refreshCooldownEndRealtime = Time.unscaledTime + Mathf.Max(5f, manualRefreshCooldownSeconds);
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_activeTab == LeaderboardTab.Normal)
             {
                 FetchNormalLeaderboard(force: true);
@@ -655,19 +774,26 @@ namespace PolyJump.Scripts
             UpdateRefreshButtonVisual();
         }
 
+        /// <summary>
+        /// Thiết lập Active Tab phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private void SetActiveTab(LeaderboardTab tab)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             _activeTab = tab;
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_btnTabNormal != null)
             {
                 _btnTabNormal.interactable = _activeTab != LeaderboardTab.Normal;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_btnTabRaceTop != null)
             {
                 _btnTabRaceTop.interactable = _activeTab != LeaderboardTab.Event;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_txtTabTitle != null)
             {
                 _txtTabTitle.text = _activeTab == LeaderboardTab.Normal ? "Bảng xếp hạng thường" : "Bảng xếp hạng sự kiện";
@@ -678,23 +804,33 @@ namespace PolyJump.Scripts
             UpdateRefreshButtonVisual();
         }
 
+        /// <summary>
+        /// Cập nhật Event Info Visibility phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private void UpdateEventInfoVisibility()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             bool showEventInfo = _activeTab == LeaderboardTab.Event && GetEventWindowState() == EventWindowState.Active;
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_txtEventTime != null)
             {
                 _txtEventTime.gameObject.SetActive(showEventInfo);
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_txtEventRewards != null)
             {
                 _txtEventRewards.gameObject.SetActive(showEventInfo);
             }
         }
 
+        /// <summary>
+        /// Xử lý callback sự kiện hệ thống hoặc gameplay phát sinh trong vòng đời đối tượng.
+        /// </summary>
         private void OnLoginDetected()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             _normalCache.Clear();
             _eventCache.Clear();
             _normalCache.emptyMessage = "Đang tải bảng xếp hạng...";
@@ -705,11 +841,16 @@ namespace PolyJump.Scripts
             FetchEventLeaderboard(force: true);
         }
 
+        /// <summary>
+        /// Xử lý callback sự kiện hệ thống hoặc gameplay phát sinh trong vòng đời đối tượng.
+        /// </summary>
         private void OnLogoutDetected()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             _normalCache.Clear();
             _eventCache.Clear();
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_panelLeaderboard != null)
             {
                 _panelLeaderboard.SetActive(false);
@@ -722,18 +863,24 @@ namespace PolyJump.Scripts
             SyncAuthVisibility();
         }
 
+        /// <summary>
+        /// Thực hiện nghiệp vụ Should Auto Refresh theo ngữ cảnh sử dụng của script.
+        /// </summary>
         private bool ShouldAutoRefresh(LeaderboardCache cache)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (!PlayFabClientAPI.IsClientLoggedIn())
             {
                 return false;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (cache.isFetching)
             {
                 return false;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (!cache.hasData)
             {
                 return true;
@@ -742,8 +889,12 @@ namespace PolyJump.Scripts
             return Time.unscaledTime - cache.lastFetchRealtime >= Mathf.Max(30f, cacheRefreshIntervalSeconds);
         }
 
+        /// <summary>
+        /// Tải Normal Leaderboard phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private void FetchNormalLeaderboard(bool force)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (!PlayFabClientAPI.IsClientLoggedIn())
             {
                 _normalCache.isFetching = false;
@@ -752,11 +903,13 @@ namespace PolyJump.Scripts
                 return;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_normalCache.isFetching)
             {
                 return;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (!force && !ShouldAutoRefresh(_normalCache))
             {
                 return;
@@ -774,6 +927,7 @@ namespace PolyJump.Scripts
                 MaxResultsCount = Mathf.Clamp(maxLeaderboardEntries, 1, 100)
             };
 
+            // Khối an toàn: thực thi tác vụ có khả năng phát sinh lỗi và sẽ xử lý ngoại lệ đi kèm.
             try
             {
                 PlayFabClientAPI.GetLeaderboard(topRequest,
@@ -805,8 +959,12 @@ namespace PolyJump.Scripts
             }
         }
 
+        /// <summary>
+        /// Tải Current Player Position phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private void FetchCurrentPlayerPosition(string statisticName)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (!PlayFabClientAPI.IsClientLoggedIn())
             {
                 FinalizeNormalCacheWithoutRank();
@@ -819,6 +977,7 @@ namespace PolyJump.Scripts
                 MaxResultsCount = 1
             };
 
+            // Khối an toàn: thực thi tác vụ có khả năng phát sinh lỗi và sẽ xử lý ngoại lệ đi kèm.
             try
             {
                 PlayFabClientAPI.GetLeaderboardAroundPlayer(aroundRequest,
@@ -865,8 +1024,12 @@ namespace PolyJump.Scripts
             }
         }
 
+        /// <summary>
+        /// Thực hiện nghiệp vụ Finalize Normal Cache Without Rank theo ngữ cảnh sử dụng của script.
+        /// </summary>
         private void FinalizeNormalCacheWithoutRank()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             _normalCache.playerName = ResolveCurrentUserName();
             _normalCache.playerScore = playFabAuthManager != null ? playFabAuthManager.GetCachedLeaderboardHighscore() : 0;
             _normalCache.playerRank = 0;
@@ -880,13 +1043,18 @@ namespace PolyJump.Scripts
             RefreshCurrentTabUi();
         }
 
+        /// <summary>
+        /// Làm mới Current Tab Ui phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private void RefreshCurrentTabUi()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (_panelLeaderboard == null || !_panelLeaderboard.activeSelf)
             {
                 return;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_activeTab == LeaderboardTab.Normal)
             {
                 RefreshTabUi(_normalCache, "Bảng xếp hạng thường");
@@ -897,8 +1065,12 @@ namespace PolyJump.Scripts
             }
         }
 
+        /// <summary>
+        /// Tải Event Leaderboard phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private void FetchEventLeaderboard(bool force)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (!PlayFabClientAPI.IsClientLoggedIn())
             {
                 _eventCache.isFetching = false;
@@ -910,6 +1082,7 @@ namespace PolyJump.Scripts
             bool shouldRefreshEventInfo = !_eventInfoLoaded
                 || (Time.unscaledTime - _eventInfoLastFetchRealtime) >= EventInfoCacheSeconds;
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (shouldRefreshEventInfo)
             {
                 TryRefreshEventInfo(
@@ -918,6 +1091,7 @@ namespace PolyJump.Scripts
                 return;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (!IsEventOpenNow())
             {
                 _eventCache.topEntries.Clear();
@@ -935,11 +1109,13 @@ namespace PolyJump.Scripts
                 return;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_eventCache.isFetching)
             {
                 return;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (!force && !ShouldAutoRefresh(_eventCache))
             {
                 return;
@@ -950,6 +1126,7 @@ namespace PolyJump.Scripts
             UpdateRefreshButtonVisual();
 
             string statisticName = ResolveEventStatisticName();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (!string.Equals(_resolvedEventStatisticName, statisticName, StringComparison.Ordinal))
             {
                 _resolvedEventStatisticName = statisticName;
@@ -965,6 +1142,7 @@ namespace PolyJump.Scripts
                 MaxResultsCount = Mathf.Clamp(maxLeaderboardEntries, 1, 100)
             };
 
+            // Khối an toàn: thực thi tác vụ có khả năng phát sinh lỗi và sẽ xử lý ngoại lệ đi kèm.
             try
             {
                 PlayFabClientAPI.GetLeaderboard(topRequest,
@@ -996,8 +1174,12 @@ namespace PolyJump.Scripts
             }
         }
 
+        /// <summary>
+        /// Tải Event Player Position phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private void FetchEventPlayerPosition(string statisticName)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (!PlayFabClientAPI.IsClientLoggedIn())
             {
                 FinalizeEventCacheWithoutRank();
@@ -1010,6 +1192,7 @@ namespace PolyJump.Scripts
                 MaxResultsCount = 1
             };
 
+            // Khối an toàn: thực thi tác vụ có khả năng phát sinh lỗi và sẽ xử lý ngoại lệ đi kèm.
             try
             {
                 PlayFabClientAPI.GetLeaderboardAroundPlayer(aroundRequest,
@@ -1056,8 +1239,12 @@ namespace PolyJump.Scripts
             }
         }
 
+        /// <summary>
+        /// Thực hiện nghiệp vụ Finalize Event Cache Without Rank theo ngữ cảnh sử dụng của script.
+        /// </summary>
         private void FinalizeEventCacheWithoutRank()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             _eventCache.playerName = ResolveCurrentUserName();
             _eventCache.playerScore = 0;
             _eventCache.playerRank = 0;
@@ -1071,8 +1258,12 @@ namespace PolyJump.Scripts
             RefreshCurrentTabUi();
         }
 
+        /// <summary>
+        /// Làm mới Tab Ui phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private void RefreshTabUi(LeaderboardCache cache, string tabTitle)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (_txtTabTitle != null)
             {
                 _txtTabTitle.text = tabTitle;
@@ -1084,6 +1275,7 @@ namespace PolyJump.Scripts
             SetCurrentPlayerInfo(name, score, rank, cache.hasPlayerInfo);
 
             ClearRows();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (cache.topEntries.Count == 0)
             {
                 UpdateEmptyText(string.IsNullOrWhiteSpace(cache.emptyMessage) ? "Chưa có xếp hạng" : cache.emptyMessage);
@@ -1091,9 +1283,11 @@ namespace PolyJump.Scripts
             }
 
             UpdateEmptyText(string.Empty);
+            // Khối lặp: duyệt tuần tự các phần tử cần xử lý.
             for (int i = 0; i < cache.topEntries.Count; i++)
             {
                 PlayerLeaderboardEntry entry = cache.topEntries[i];
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (entry == null)
                 {
                     continue;
@@ -1103,26 +1297,36 @@ namespace PolyJump.Scripts
             }
         }
 
+        /// <summary>
+        /// Thiết lập Current Player Info phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private void SetCurrentPlayerInfo(string userName, int score, int rank, bool hasRank)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (_txtCurrentUser != null)
             {
                 _txtCurrentUser.text = "Người chơi: " + (string.IsNullOrWhiteSpace(userName) ? "--" : userName);
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_txtCurrentScore != null)
             {
                 _txtCurrentScore.text = "Điểm: " + Mathf.Max(0, score);
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_txtCurrentRank != null)
             {
                 _txtCurrentRank.text = hasRank && rank > 0 ? "Hạng: " + rank : "Hạng: --";
             }
         }
 
+        /// <summary>
+        /// Tạo Leaderboard Row phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private void CreateLeaderboardRow(int index, PlayerLeaderboardEntry entry)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (_rowsContainer == null || _rowTemplate == null)
             {
                 return;
@@ -1133,6 +1337,7 @@ namespace PolyJump.Scripts
             row.SetActive(true);
 
             Image bg = row.GetComponent<Image>();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (bg != null)
             {
                 bg.color = index % 2 == 0
@@ -1150,11 +1355,16 @@ namespace PolyJump.Scripts
             _spawnedRows.Add(row);
         }
 
+        /// <summary>
+        /// Xóa Rows phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private void ClearRows()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             for (int i = 0; i < _spawnedRows.Count; i++)
             {
                 GameObject row = _spawnedRows[i];
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (row != null)
                 {
                     Destroy(row);
@@ -1163,6 +1373,7 @@ namespace PolyJump.Scripts
 
             _spawnedRows.Clear();
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_rowTemplate != null)
             {
                 _rowTemplate.SetActive(false);
@@ -1170,28 +1381,38 @@ namespace PolyJump.Scripts
             }
         }
 
+        /// <summary>
+        /// Thiết lập Row Text phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static void SetRowText(Transform rowTransform, string textName, string value)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (rowTransform == null)
             {
                 return;
             }
 
             Transform t = rowTransform.Find(textName);
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (t == null)
             {
                 return;
             }
 
             Text txt = t.GetComponent<Text>();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (txt != null)
             {
                 txt.text = value;
             }
         }
 
+        /// <summary>
+        /// Tạo Default Row Template phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static GameObject CreateDefaultRowTemplate(Transform parent)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (parent == null)
             {
                 return null;
@@ -1217,13 +1438,18 @@ namespace PolyJump.Scripts
             return row;
         }
 
+        /// <summary>
+        /// Cập nhật Empty Text phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private void UpdateEmptyText(string message)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (_txtEmpty == null)
             {
                 return;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (string.IsNullOrWhiteSpace(message))
             {
                 _txtEmpty.gameObject.SetActive(false);
@@ -1236,8 +1462,12 @@ namespace PolyJump.Scripts
             }
         }
 
+        /// <summary>
+        /// Cập nhật Refresh Button Visual phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private void UpdateRefreshButtonVisual()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (_btnRefresh == null || _txtRefresh == null)
             {
                 return;
@@ -1246,6 +1476,7 @@ namespace PolyJump.Scripts
             bool fetching = _activeTab == LeaderboardTab.Normal ? _normalCache.isFetching : _eventCache.isFetching;
             float remain = Mathf.Max(0f, _refreshCooldownEndRealtime - Time.unscaledTime);
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (fetching)
             {
                 _btnRefresh.interactable = false;
@@ -1253,6 +1484,7 @@ namespace PolyJump.Scripts
                 return;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (remain > 0f)
             {
                 _btnRefresh.interactable = false;
@@ -1264,8 +1496,12 @@ namespace PolyJump.Scripts
             _txtRefresh.text = "Làm mới";
         }
 
+        /// <summary>
+        /// Thực hiện nghiệp vụ Sync Auth Visibility theo ngữ cảnh sử dụng của script.
+        /// </summary>
         private void SyncAuthVisibility()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (_btnOpenLeaderboard != null)
             {
                 bool isAuthMenuHidden = playFabAuthManager == null
@@ -1275,16 +1511,24 @@ namespace PolyJump.Scripts
             }
         }
 
+        /// <summary>
+        /// Dọn dẹp tài nguyên và hủy các ràng buộc còn tồn tại trước khi đối tượng bị hủy.
+        /// </summary>
         private void OnDestroy()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (_instance == this)
             {
                 _instance = null;
             }
         }
 
+        /// <summary>
+        /// Xác định Normal Statistic Name phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private string ResolveNormalStatisticName()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (playFabAuthManager != null && !string.IsNullOrWhiteSpace(playFabAuthManager.leaderboardStatisticName))
             {
                 return playFabAuthManager.leaderboardStatisticName;
@@ -1293,9 +1537,14 @@ namespace PolyJump.Scripts
             return "LeaderBoard_Normal";
         }
 
+        /// <summary>
+        /// Xác định Event Statistic Name phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private string ResolveEventStatisticName()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             string baseName;
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (playFabAuthManager != null && !string.IsNullOrWhiteSpace(playFabAuthManager.eventLeaderboardStatisticName))
             {
                 baseName = playFabAuthManager.eventLeaderboardStatisticName;
@@ -1310,6 +1559,7 @@ namespace PolyJump.Scripts
             }
 
             string suffix = GetEventStatisticSuffix();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (string.IsNullOrWhiteSpace(suffix))
             {
                 return baseName;
@@ -1318,13 +1568,18 @@ namespace PolyJump.Scripts
             return baseName + "_" + suffix;
         }
 
+        /// <summary>
+        /// Lấy Event Statistic Suffix phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private string GetEventStatisticSuffix()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (TryNormalizeEventSuffixFromRaw(_eventStartRaw, out string normalizedRaw))
             {
                 return normalizedRaw;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_eventStartUtc != DateTime.MinValue)
             {
                 return FormatEventTimeForDisplay(_eventStartUtc);
@@ -1333,9 +1588,14 @@ namespace PolyJump.Scripts
             return string.Empty;
         }
 
+        /// <summary>
+        /// Thử xử lý Normalize Event Suffix From Raw phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static bool TryNormalizeEventSuffixFromRaw(string raw, out string normalized)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             normalized = string.Empty;
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (string.IsNullOrWhiteSpace(raw))
             {
                 return false;
@@ -1343,8 +1603,10 @@ namespace PolyJump.Scripts
 
             string text = raw.Trim();
             Match timeDate = Regex.Match(text, @"^\s*(\d{1,2})\D+(\d{1,2})\D+(\d{1,2})\s*-\s*(\d{4})\D+(\d{1,2})\D+(\d{1,2})\s*$");
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (timeDate.Success)
             {
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (!TryParseEventSuffixParts(
                     timeDate.Groups[1].Value,
                     timeDate.Groups[2].Value,
@@ -1361,6 +1623,7 @@ namespace PolyJump.Scripts
             }
 
             Match dateTime = Regex.Match(text, @"^\s*(\d{4})\D+(\d{1,2})\D+(\d{1,2})\s*-\s*(\d{1,2})\D+(\d{1,2})\D+(\d{1,2})\s*$");
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (!dateTime.Success)
             {
                 return false;
@@ -1376,6 +1639,9 @@ namespace PolyJump.Scripts
                 out normalized);
         }
 
+        /// <summary>
+        /// Thử xử lý Parse Event Suffix Parts phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static bool TryParseEventSuffixParts(
             string hourText,
             string minuteText,
@@ -1385,8 +1651,10 @@ namespace PolyJump.Scripts
             string dayText,
             out string normalized)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             normalized = string.Empty;
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (!int.TryParse(hourText, NumberStyles.Integer, CultureInfo.InvariantCulture, out int hour)
                 || !int.TryParse(minuteText, NumberStyles.Integer, CultureInfo.InvariantCulture, out int minute)
                 || !int.TryParse(secondText, NumberStyles.Integer, CultureInfo.InvariantCulture, out int second)
@@ -1397,21 +1665,25 @@ namespace PolyJump.Scripts
                 return false;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (hour < 0 || hour > 24)
             {
                 return false;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (minute < 0 || minute > 59 || second < 0 || second > 59)
             {
                 return false;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (hour == 24 && (minute != 0 || second != 0))
             {
                 return false;
             }
 
+            // Khối an toàn: thực thi tác vụ có khả năng phát sinh lỗi và sẽ xử lý ngoại lệ đi kèm.
             try
             {
                 _ = new DateTime(year, month, day, hour == 24 ? 0 : hour, minute, second, DateTimeKind.Unspecified);
@@ -1433,11 +1705,16 @@ namespace PolyJump.Scripts
             return true;
         }
 
+        /// <summary>
+        /// Thử xử lý Refresh Event Info phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private void TryRefreshEventInfo(bool force, System.Action onCompleted = null)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (!PlayFabClientAPI.IsClientLoggedIn())
             {
                 ApplyEventInfoToUi();
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (onCompleted != null)
                 {
                     onCompleted();
@@ -1449,9 +1726,11 @@ namespace PolyJump.Scripts
                 && !force
                 && (Time.unscaledTime - _eventInfoLastFetchRealtime) < EventInfoCacheSeconds;
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (hasFreshCache)
             {
                 ApplyEventInfoToUi();
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (onCompleted != null)
                 {
                     onCompleted();
@@ -1459,11 +1738,13 @@ namespace PolyJump.Scripts
                 return;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (onCompleted != null)
             {
                 _pendingEventInfoCallbacks.Add(onCompleted);
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_eventInfoFetching)
             {
                 return;
@@ -1522,13 +1803,18 @@ namespace PolyJump.Scripts
                 });
         }
 
+        /// <summary>
+        /// Xử lý callback sự kiện hệ thống hoặc gameplay phát sinh trong vòng đời đối tượng.
+        /// </summary>
         private void OnEventConfigUpdated()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (_panelLeaderboard == null || !_panelLeaderboard.activeSelf || _activeTab != LeaderboardTab.Event)
             {
                 return;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (!IsEventOpenNow())
             {
                 _eventCache.topEntries.Clear();
@@ -1545,6 +1831,7 @@ namespace PolyJump.Scripts
                 return;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (!_eventCache.isFetching
                 && (_eventCache.topEntries.Count == 0
                     || Time.unscaledTime - _eventCache.lastFetchRealtime >= Mathf.Max(30f, cacheRefreshIntervalSeconds)))
@@ -1556,8 +1843,12 @@ namespace PolyJump.Scripts
             RefreshCurrentTabUi();
         }
 
+        /// <summary>
+        /// Thực hiện nghiệp vụ Flush Pending Event Info Callbacks theo ngữ cảnh sử dụng của script.
+        /// </summary>
         private void FlushPendingEventInfoCallbacks()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (_pendingEventInfoCallbacks.Count == 0)
             {
                 return;
@@ -1566,9 +1857,11 @@ namespace PolyJump.Scripts
             List<System.Action> callbacks = new List<System.Action>(_pendingEventInfoCallbacks);
             _pendingEventInfoCallbacks.Clear();
 
+            // Khối lặp: duyệt tuần tự các phần tử cần xử lý.
             for (int i = 0; i < callbacks.Count; i++)
             {
                 System.Action callback = callbacks[i];
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (callback != null)
                 {
                     callback();
@@ -1576,39 +1869,52 @@ namespace PolyJump.Scripts
             }
         }
 
+        /// <summary>
+        /// Thực hiện nghiệp vụ Is Event Open Now theo ngữ cảnh sử dụng của script.
+        /// </summary>
         private bool IsEventOpenNow()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             return GetEventWindowState() == EventWindowState.Active;
         }
 
+        /// <summary>
+        /// Lấy Event Window State phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private EventWindowState GetEventWindowState()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (!_eventInfoLoaded)
             {
                 return EventWindowState.Unknown;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (!_eventEnabled)
             {
                 return EventWindowState.Disabled;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_eventStartUtc == DateTime.MinValue || _eventEndUtc == DateTime.MinValue)
             {
                 return EventWindowState.Invalid;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_eventEndUtc < _eventStartUtc)
             {
                 return EventWindowState.Invalid;
             }
 
             DateTime now = DateTime.UtcNow;
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (now < _eventStartUtc)
             {
                 return EventWindowState.Upcoming;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (now > _eventEndUtc)
             {
                 return EventWindowState.Ended;
@@ -1617,9 +1923,14 @@ namespace PolyJump.Scripts
             return EventWindowState.Active;
         }
 
+        /// <summary>
+        /// Xây dựng Event Unavailable Message phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private string BuildEventUnavailableMessage()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             EventWindowState state = GetEventWindowState();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (state == EventWindowState.Upcoming)
             {
                 return "Sắp có sự kiện vào lúc " + GetEventStartDisplayText();
@@ -1628,13 +1939,18 @@ namespace PolyJump.Scripts
             return "Chưa có sự kiện";
         }
 
+        /// <summary>
+        /// Lấy Event Start Display Text phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private string GetEventStartDisplayText()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (!string.IsNullOrWhiteSpace(_eventStartRaw))
             {
                 return _eventStartRaw;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_eventStartUtc != DateTime.MinValue)
             {
                 return FormatEventTimeForDisplay(_eventStartUtc);
@@ -1643,8 +1959,12 @@ namespace PolyJump.Scripts
             return "--";
         }
 
+        /// <summary>
+        /// Áp dụng Event Info To Ui phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private void ApplyEventInfoToUi()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (_txtEventTime != null)
             {
                 string startText = !string.IsNullOrWhiteSpace(_eventStartRaw)
@@ -1656,6 +1976,7 @@ namespace PolyJump.Scripts
                 _txtEventTime.text = "Thời gian sự kiện: " + startText + " - " + endText;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_txtEventRewards != null)
             {
                 _txtEventRewards.text = "Quà sự kiện: " + (string.IsNullOrWhiteSpace(_eventRewards) ? "Chưa công bố" : _eventRewards);
@@ -1664,8 +1985,12 @@ namespace PolyJump.Scripts
             UpdateEventInfoVisibility();
         }
 
+        /// <summary>
+        /// Lấy Title Data Value phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static string GetTitleDataValue(Dictionary<string, string> data, string key, string fallback)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (data != null && data.ContainsKey(key) && !string.IsNullOrWhiteSpace(data[key]))
             {
                 return data[key].Trim();
@@ -1674,14 +1999,19 @@ namespace PolyJump.Scripts
             return fallback;
         }
 
+        /// <summary>
+        /// Phân tích Title Data Bool phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static bool ParseTitleDataBool(string value)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (string.IsNullOrWhiteSpace(value))
             {
                 return false;
             }
 
             string normalized = value.Trim();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (bool.TryParse(normalized, out bool parsed))
             {
                 return parsed;
@@ -1690,6 +2020,9 @@ namespace PolyJump.Scripts
             return normalized == "1" || normalized.Equals("yes", StringComparison.OrdinalIgnoreCase);
         }
 
+        /// <summary>
+        /// Xác định Event Time From Title Data phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static void ResolveEventTimeFromTitleData(
             Dictionary<string, string> data,
             string utcKey,
@@ -1697,6 +2030,7 @@ namespace PolyJump.Scripts
             out string selectedRaw,
             out DateTime selectedUtc)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             selectedRaw = string.Empty;
             selectedUtc = DateTime.MinValue;
 
@@ -1704,6 +2038,7 @@ namespace PolyJump.Scripts
             string legacyRaw = GetTitleDataValue(data, legacyKey, string.Empty);
 
             DateTime utcParsed = ParseEventUtcTitleData(utcRaw);
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (utcParsed != DateTime.MinValue)
             {
                 selectedRaw = utcRaw;
@@ -1712,6 +2047,7 @@ namespace PolyJump.Scripts
             }
 
             DateTime legacyParsed = ParseEventUtcTitleData(legacyRaw);
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (legacyParsed != DateTime.MinValue)
             {
                 selectedRaw = legacyRaw;
@@ -1722,18 +2058,24 @@ namespace PolyJump.Scripts
             selectedRaw = !string.IsNullOrWhiteSpace(utcRaw) ? utcRaw : legacyRaw;
         }
 
+        /// <summary>
+        /// Phân tích Event Utc Title Data phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static DateTime ParseEventUtcTitleData(string value)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (string.IsNullOrWhiteSpace(value))
             {
                 return DateTime.MinValue;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (TryParseVnEventTextToUtc(value, out DateTime parsedFromCustom))
             {
                 return parsedFromCustom;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (DateTime.TryParseExact(
                 value.Trim(),
                 "HH:mm:ss-yyyy:MM:dd",
@@ -1745,6 +2087,7 @@ namespace PolyJump.Scripts
                 return DateTime.SpecifyKind(utc, DateTimeKind.Utc);
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (DateTime.TryParse(
                 value.Trim(),
                 CultureInfo.InvariantCulture,
@@ -1757,9 +2100,14 @@ namespace PolyJump.Scripts
             return DateTime.MinValue;
         }
 
+        /// <summary>
+        /// Thử xử lý Parse Vn Event Text To Utc phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static bool TryParseVnEventTextToUtc(string value, out DateTime utc)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             utc = DateTime.MinValue;
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (string.IsNullOrWhiteSpace(value))
             {
                 return false;
@@ -1769,8 +2117,10 @@ namespace PolyJump.Scripts
 
             // Accept both "HH:mm:ss-yyyy:MM:dd" and variants like "HH-mm-ss - yyyy-MM-dd".
             Match timeDate = Regex.Match(text, @"^\s*(\d{1,2})\D+(\d{1,2})\D+(\d{1,2})\s*-\s*(\d{4})\D+(\d{1,2})\D+(\d{1,2})\s*$");
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (timeDate.Success)
             {
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (!TryBuildUtcFromParts(
                     timeDate.Groups[4].Value,
                     timeDate.Groups[5].Value,
@@ -1788,6 +2138,7 @@ namespace PolyJump.Scripts
 
             // Also accept reversed order: "yyyy:MM:dd-HH:mm:ss".
             Match dateTime = Regex.Match(text, @"^\s*(\d{4})\D+(\d{1,2})\D+(\d{1,2})\s*-\s*(\d{1,2})\D+(\d{1,2})\D+(\d{1,2})\s*$");
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (!dateTime.Success)
             {
                 return false;
@@ -1803,6 +2154,9 @@ namespace PolyJump.Scripts
                 out utc);
         }
 
+        /// <summary>
+        /// Thử xử lý Build Utc From Parts phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static bool TryBuildUtcFromParts(
             string yearText,
             string monthText,
@@ -1812,8 +2166,10 @@ namespace PolyJump.Scripts
             string secondText,
             out DateTime utc)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             utc = DateTime.MinValue;
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (!int.TryParse(hourText, NumberStyles.Integer, CultureInfo.InvariantCulture, out int hour)
                 || !int.TryParse(minuteText, NumberStyles.Integer, CultureInfo.InvariantCulture, out int minute)
                 || !int.TryParse(secondText, NumberStyles.Integer, CultureInfo.InvariantCulture, out int second)
@@ -1824,25 +2180,30 @@ namespace PolyJump.Scripts
                 return false;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (hour < 0 || hour > 24)
             {
                 return false;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (minute < 0 || minute > 59 || second < 0 || second > 59)
             {
                 return false;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (hour == 24 && (minute != 0 || second != 0))
             {
                 return false;
             }
 
+            // Khối an toàn: thực thi tác vụ có khả năng phát sinh lỗi và sẽ xử lý ngoại lệ đi kèm.
             try
             {
                 int normalizedHour = hour == 24 ? 0 : hour;
                 DateTime vnTime = new DateTime(year, month, day, normalizedHour, minute, second, DateTimeKind.Unspecified);
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (hour == 24)
                 {
                     vnTime = vnTime.AddDays(1);
@@ -1858,31 +2219,45 @@ namespace PolyJump.Scripts
             }
         }
 
+        /// <summary>
+        /// Định dạng Event Time For Display phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static string FormatEventTimeForDisplay(DateTime utc)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             DateTime vn = DateTime.SpecifyKind(utc, DateTimeKind.Utc).AddHours(7);
             return vn.ToString("HH:mm:ss-yyyy:MM:dd");
         }
 
+        /// <summary>
+        /// Thiết lập Button Text phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static void SetButtonText(Button button, string value)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (button == null)
             {
                 return;
             }
 
             Text txt = button.GetComponentInChildren<Text>(true);
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (txt != null)
             {
                 txt.text = value;
             }
         }
 
+        /// <summary>
+        /// Xác định Current User Name phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private string ResolveCurrentUserName()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (playFabAuthManager != null && playFabAuthManager.txt_StartUserName != null)
             {
                 string uiName = playFabAuthManager.txt_StartUserName.text;
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (!string.IsNullOrWhiteSpace(uiName))
                 {
                     return uiName.Trim();
@@ -1892,15 +2267,21 @@ namespace PolyJump.Scripts
             return "--";
         }
 
+        /// <summary>
+        /// Chuẩn hóa Display Name phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static string NormalizeDisplayName(string displayName, string playFabId)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (!string.IsNullOrWhiteSpace(displayName))
             {
                 return displayName.Trim();
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (!string.IsNullOrWhiteSpace(playFabId))
             {
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (playFabId.Length <= 6)
                 {
                     return playFabId;
@@ -1912,12 +2293,18 @@ namespace PolyJump.Scripts
             return "Người chơi";
         }
 
+        /// <summary>
+        /// Tìm Or Create Child phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static GameObject FindOrCreateChild(Transform parent, string name, params Type[] components)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             Transform existing = parent.Find(name);
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (existing != null)
             {
                 GameObject obj = existing.gameObject;
+                // Khối lặp: duyệt tuần tự các phần tử cần xử lý.
                 for (int i = 0; i < components.Length; i++)
                 {
                     if (obj.GetComponent(components[i]) == null)
@@ -1934,10 +2321,15 @@ namespace PolyJump.Scripts
             return created;
         }
 
+        /// <summary>
+        /// Đảm bảo Button phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static Button EnsureButton(Transform parent, string name, string label, Vector2 anchor, Vector2 size, Color bg, Color textColor, int fontSize)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             Transform existing = parent.Find(name);
             Button button = existing != null ? existing.GetComponent<Button>() : null;
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (button == null)
             {
                 button = CreateButton(name, parent, label, anchor, size, bg, textColor, fontSize);
@@ -1946,8 +2338,12 @@ namespace PolyJump.Scripts
             return button;
         }
 
+        /// <summary>
+        /// Tạo Button phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static Button CreateButton(string name, Transform parent, string label, Vector2 anchor, Vector2 size, Color bg, Color textColor, int fontSize)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             GameObject obj = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(Button));
             obj.transform.SetParent(parent, false);
 
@@ -1989,11 +2385,16 @@ namespace PolyJump.Scripts
             return button;
         }
 
+        /// <summary>
+        /// Đảm bảo Label phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static Text EnsureLabel(Transform parent, string name, string value, int size, Color color, Vector2 anchor, Vector2 rectSize, TextAnchor alignment, FontStyle style)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             Transform existing = parent.Find(name);
             bool created = existing == null;
             Text text = existing != null ? existing.GetComponent<Text>() : null;
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (text == null)
             {
                 GameObject obj = new GameObject(name, typeof(RectTransform), typeof(Text));
@@ -2002,6 +2403,7 @@ namespace PolyJump.Scripts
                 created = true;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (created)
             {
                 RectTransform rt = text.GetComponent<RectTransform>();
@@ -2024,6 +2426,9 @@ namespace PolyJump.Scripts
             return text;
         }
 
+        /// <summary>
+        /// Đảm bảo Column Text phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static Text EnsureColumnText(
             Transform parent,
             string name,
@@ -2038,9 +2443,11 @@ namespace PolyJump.Scripts
             Color color,
             FontStyle style)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             Transform existing = parent.Find(name);
             bool created = existing == null;
             Text text;
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (existing == null)
             {
                 GameObject obj = new GameObject(name, typeof(RectTransform), typeof(Text));
@@ -2050,6 +2457,7 @@ namespace PolyJump.Scripts
             else
             {
                 text = existing.GetComponent<Text>();
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (text == null)
                 {
                     text = existing.gameObject.AddComponent<Text>();
@@ -2057,6 +2465,7 @@ namespace PolyJump.Scripts
                 }
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (created)
             {
                 RectTransform rt = text.GetComponent<RectTransform>();
@@ -2079,13 +2488,19 @@ namespace PolyJump.Scripts
             return text;
         }
 
+        /// <summary>
+        /// Tìm Or Create Child phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static GameObject FindOrCreateChild(Transform parent, string name, out bool created, params Type[] components)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             Transform existing = parent.Find(name);
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (existing != null)
             {
                 created = false;
                 GameObject obj = existing.gameObject;
+                // Khối lặp: duyệt tuần tự các phần tử cần xử lý.
                 for (int i = 0; i < components.Length; i++)
                 {
                     if (obj.GetComponent(components[i]) == null)
@@ -2103,14 +2518,19 @@ namespace PolyJump.Scripts
             return newObj;
         }
 
+        /// <summary>
+        /// Lấy Ui Font phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private static Font GetUiFont()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (_cachedFont != null)
             {
                 return _cachedFont;
             }
 
             _cachedFont = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_cachedFont == null)
             {
                 _cachedFont = Resources.GetBuiltinResource<Font>("Arial.ttf");

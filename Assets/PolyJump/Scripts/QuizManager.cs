@@ -6,6 +6,9 @@ using UnityEngine.UI;
 namespace PolyJump.Scripts
 {
     [Serializable]
+    /// <summary>
+    /// Mô tả vai trò chính của lớp QuizQuestion trong hệ thống PolyJump.
+    /// </summary>
     public class QuizQuestion
     {
         public string q;
@@ -14,11 +17,17 @@ namespace PolyJump.Scripts
     }
 
     [Serializable]
+    /// <summary>
+    /// Mô tả vai trò chính của lớp QuizQuestionCollection trong hệ thống PolyJump.
+    /// </summary>
     public class QuizQuestionCollection
     {
         public QuizQuestion[] items;
     }
 
+    /// <summary>
+    /// Quản lý dữ liệu câu hỏi, hiển thị quiz, chấm đáp án và trả kết quả về game chính.
+    /// </summary>
     public class QuizManager : MonoBehaviour
     {
         [Header("UI")]
@@ -54,12 +63,17 @@ namespace PolyJump.Scripts
         private int _questionOrderCursor;
         private int _lastQuestionIndex = -1;
 
+        /// <summary>
+        /// Khởi tạo tham chiếu, trạng thái ban đầu và các cấu hình cần thiết khi đối tượng được tạo.
+        /// </summary>
         private void Awake()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             LoadQuestions();
             NormalizeFeedbackVietnameseText();
             BindAnswerButtons();
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (questionText != null)
             {
                 _questionDefaultAlignment = questionText.alignment;
@@ -69,32 +83,44 @@ namespace PolyJump.Scripts
             HideQuizPanel();
         }
 
+        /// <summary>
+        /// Chuẩn hóa Feedback Vietnamese Text phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private void NormalizeFeedbackVietnameseText()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (string.IsNullOrWhiteSpace(correctFeedbackText) || string.Equals(correctFeedbackText, "Dung roi! +5s", StringComparison.Ordinal))
             {
                 correctFeedbackText = "Đúng rồi! +5s";
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (string.IsNullOrWhiteSpace(wrongFeedbackText) || string.Equals(wrongFeedbackText, "Sai roi! -5s", StringComparison.Ordinal))
             {
                 wrongFeedbackText = "Sai rồi! -5s";
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (string.IsNullOrWhiteSpace(correctHeadlineText) || string.Equals(correctHeadlineText, "CHINH XAC", StringComparison.Ordinal))
             {
                 correctHeadlineText = "CHÍNH XÁC";
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (string.IsNullOrWhiteSpace(wrongHeadlineText) || string.Equals(wrongHeadlineText, "SAI ROI", StringComparison.Ordinal))
             {
                 wrongHeadlineText = "SAI RỒI";
             }
         }
 
+        /// <summary>
+        /// Nạp Questions phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private void LoadQuestions()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             TextAsset jsonAsset = Resources.Load<TextAsset>(resourceFileName);
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (jsonAsset == null)
             {
                 Debug.LogError("[PolyJump] Khong tim thay file quiz trong Resources: " + resourceFileName);
@@ -104,6 +130,7 @@ namespace PolyJump.Scripts
 
             string wrapped = "{\"items\":" + jsonAsset.text + "}";
             QuizQuestionCollection data = JsonUtility.FromJson<QuizQuestionCollection>(wrapped);
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (data == null || data.items == null)
             {
                 _questions = Array.Empty<QuizQuestion>();
@@ -116,15 +143,21 @@ namespace PolyJump.Scripts
             _lastQuestionIndex = -1;
         }
 
+        /// <summary>
+        /// Gắn Answer Buttons phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private void BindAnswerButtons()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (answerButtons == null)
             {
                 return;
             }
 
+            // Khối lặp: duyệt tuần tự các phần tử cần xử lý.
             for (int i = 0; i < answerButtons.Length; i++)
             {
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (answerButtons[i] == null)
                 {
                     continue;
@@ -136,8 +169,12 @@ namespace PolyJump.Scripts
             }
         }
 
+        /// <summary>
+        /// Hiển thị Random Question phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         public void ShowRandomQuestion()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (_resolveRoutine != null)
             {
                 StopCoroutine(_resolveRoutine);
@@ -146,9 +183,11 @@ namespace PolyJump.Scripts
 
             _isResolvingAnswer = false;
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_questions.Length == 0)
             {
                 HideQuizPanel();
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (GameManager.Instance != null)
                 {
                     GameManager.Instance.ResolveQuiz(0f);
@@ -157,9 +196,11 @@ namespace PolyJump.Scripts
             }
 
             _currentQuestion = GetNextQuestion();
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_currentQuestion == null)
             {
                 HideQuizPanel();
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (GameManager.Instance != null)
                 {
                     GameManager.Instance.ResolveQuiz(0f);
@@ -167,20 +208,24 @@ namespace PolyJump.Scripts
                 return;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (panelQuiz != null)
             {
                 panelQuiz.SetActive(true);
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (questionText != null)
             {
                 RestoreQuestionTextAlignment();
                 questionText.text = _currentQuestion.q;
             }
 
+            // Khối lặp: duyệt tuần tự các phần tử cần xử lý.
             for (int i = 0; i < answerButtons.Length; i++)
             {
                 Button button = answerButtons[i];
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (button == null)
                 {
                     continue;
@@ -190,6 +235,7 @@ namespace PolyJump.Scripts
                 button.gameObject.SetActive(visible);
                 button.interactable = visible;
 
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (visible)
                 {
                     Text btnText = button.GetComponentInChildren<Text>();
@@ -201,8 +247,12 @@ namespace PolyJump.Scripts
             }
         }
 
+        /// <summary>
+        /// Ẩn Quiz Panel phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         public void HideQuizPanel()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (_resolveRoutine != null)
             {
                 StopCoroutine(_resolveRoutine);
@@ -211,6 +261,7 @@ namespace PolyJump.Scripts
 
             _isResolvingAnswer = false;
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (panelQuiz != null)
             {
                 panelQuiz.SetActive(false);
@@ -219,18 +270,24 @@ namespace PolyJump.Scripts
             RestoreQuestionTextAlignment();
         }
 
+        /// <summary>
+        /// Xử lý sự kiện khi người dùng nhấn nút/chức năng tương ứng trên giao diện.
+        /// </summary>
         public void OnAnswerButtonPressed(int answerIndex)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (_isResolvingAnswer)
             {
                 return;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_currentQuestion == null || _currentQuestion.a == null)
             {
                 return;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (answerIndex < 0 || answerIndex >= _currentQuestion.a.Length)
             {
                 return;
@@ -245,21 +302,30 @@ namespace PolyJump.Scripts
             _resolveRoutine = StartCoroutine(ResolveAfterDelay(timeDelta));
         }
 
+        /// <summary>
+        /// Xác định After Delay phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private IEnumerator ResolveAfterDelay(float timeDelta)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             yield return new WaitForSecondsRealtime(Mathf.Max(0f, feedbackDelaySeconds));
 
             _resolveRoutine = null;
             _isResolvingAnswer = false;
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (GameManager.Instance != null)
             {
                 GameManager.Instance.ResolveQuiz(timeDelta);
             }
         }
 
+        /// <summary>
+        /// Hiển thị Answer Feedback phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private void ShowAnswerFeedback(bool isCorrect)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (questionText == null)
             {
                 return;
@@ -270,6 +336,7 @@ namespace PolyJump.Scripts
             Color feedbackColor = isCorrect ? correctFeedbackColor : wrongFeedbackColor;
             string baseQuestion = _currentQuestion != null ? _currentQuestion.q : string.Empty;
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (!_hasCachedQuestionAlignment)
             {
                 _questionDefaultAlignment = questionText.alignment;
@@ -285,8 +352,12 @@ namespace PolyJump.Scripts
                 "\n<size=42><b><color=#" + hex + ">" + message + "</color></b></size>";
         }
 
+        /// <summary>
+        /// Thực hiện nghiệp vụ Restore Question Text Alignment theo ngữ cảnh sử dụng của script.
+        /// </summary>
         private void RestoreQuestionTextAlignment()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (questionText == null || !_hasCachedQuestionAlignment)
             {
                 return;
@@ -295,16 +366,22 @@ namespace PolyJump.Scripts
             questionText.alignment = _questionDefaultAlignment;
         }
 
+        /// <summary>
+        /// Thiết lập Answers Interactable phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private void SetAnswersInteractable(bool interactable)
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (answerButtons == null)
             {
                 return;
             }
 
+            // Khối lặp: duyệt tuần tự các phần tử cần xử lý.
             for (int i = 0; i < answerButtons.Length; i++)
             {
                 Button button = answerButtons[i];
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (button == null || !button.gameObject.activeSelf)
                 {
                     continue;
@@ -314,18 +391,24 @@ namespace PolyJump.Scripts
             }
         }
 
+        /// <summary>
+        /// Lấy Next Question phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
         private QuizQuestion GetNextQuestion()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (_questions == null || _questions.Length == 0)
             {
                 return null;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_questionOrder == null || _questionOrder.Length != _questions.Length || _questionOrderCursor >= _questionOrder.Length)
             {
                 RebuildQuestionOrder();
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (_questionOrder == null || _questionOrder.Length == 0 || _questionOrderCursor >= _questionOrder.Length)
             {
                 return null;
@@ -337,9 +420,14 @@ namespace PolyJump.Scripts
             return _questions[questionIndex];
         }
 
+        /// <summary>
+        /// Thực hiện nghiệp vụ Rebuild Question Order theo ngữ cảnh sử dụng của script.
+        /// </summary>
         private void RebuildQuestionOrder()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             int count = _questions != null ? _questions.Length : 0;
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (count <= 0)
             {
                 _questionOrder = Array.Empty<int>();
@@ -348,14 +436,17 @@ namespace PolyJump.Scripts
             }
 
             _questionOrder = new int[count];
+            // Khối lặp: duyệt tuần tự các phần tử cần xử lý.
             for (int i = 0; i < count; i++)
             {
                 _questionOrder[i] = i;
             }
 
+            // Khối lặp: duyệt tuần tự các phần tử cần xử lý.
             for (int i = 0; i < count - 1; i++)
             {
                 int swapIndex = UnityEngine.Random.Range(i, count);
+                // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
                 if (swapIndex == i)
                 {
                     continue;
@@ -366,6 +457,7 @@ namespace PolyJump.Scripts
                 _questionOrder[swapIndex] = temp;
             }
 
+            // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (count > 1 && _lastQuestionIndex >= 0 && _questionOrder[0] == _lastQuestionIndex)
             {
                 int temp = _questionOrder[0];
@@ -376,8 +468,12 @@ namespace PolyJump.Scripts
             _questionOrderCursor = 0;
         }
 
+        /// <summary>
+        /// Gỡ đăng ký sự kiện và giải phóng liên kết tạm khi đối tượng bị tắt.
+        /// </summary>
         private void OnDisable()
         {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             if (_resolveRoutine != null)
             {
                 StopCoroutine(_resolveRoutine);
