@@ -29,10 +29,10 @@ Tài liệu này đối chiếu 9 yêu cầu vòng 3 với code hiện tại tro
 
 ### Code liên quan
 
-- Bộ đếm thời gian cấu hình tại [Assets/PolyJump/Scripts/GameManager.cs](Assets/PolyJump/Scripts/GameManager.cs#L63).
-- Khởi tạo thời gian khi bắt đầu run tại [Assets/PolyJump/Scripts/GameManager.cs](Assets/PolyJump/Scripts/GameManager.cs#L235).
-- Trừ thời gian liên tục khi chơi tại [Assets/PolyJump/Scripts/GameManager.cs](Assets/PolyJump/Scripts/GameManager.cs#L166).
-- Hết thời gian thì GameOver tại [Assets/PolyJump/Scripts/GameManager.cs](Assets/PolyJump/Scripts/GameManager.cs#L172).
+- Bộ đếm thời gian cấu hình tại [Assets/PolyJump/Scripts/GameManager.cs](Assets/PolyJump/Scripts/GameManager.cs#L74).
+- Khởi tạo thời gian khi bắt đầu run tại [Assets/PolyJump/Scripts/GameManager.cs](Assets/PolyJump/Scripts/GameManager.cs#L294).
+- Trừ thời gian liên tục khi chơi tại [Assets/PolyJump/Scripts/GameManager.cs](Assets/PolyJump/Scripts/GameManager.cs#L206).
+- Hết thời gian thì GameOver tại [Assets/PolyJump/Scripts/GameManager.cs](Assets/PolyJump/Scripts/GameManager.cs#L208).
 
 ### Cách hoạt động hiện tại
 
@@ -62,10 +62,10 @@ Tài liệu này đối chiếu 9 yêu cầu vòng 3 với code hiện tại tro
 
 ### Code liên quan
 
-- Điểm run gửi khi GameOver tại [Assets/PolyJump/Scripts/GameManager.cs](Assets/PolyJump/Scripts/GameManager.cs#L509).
-- Trigger gửi điểm event khi event mở tại [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L414).
-- Gửi điểm event qua CloudScript tại [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L513).
-- Server ghi đè trực tiếp giá trị statistic event bằng điểm vừa gửi tại [Assets/PolyJump/CloudScript/SubmitEventScore.js](Assets/PolyJump/CloudScript/SubmitEventScore.js#L188).
+- Điểm run gửi khi GameOver tại [Assets/PolyJump/Scripts/GameManager.cs](Assets/PolyJump/Scripts/GameManager.cs#L640).
+- Trigger gửi điểm event khi event mở tại [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L457).
+- Gửi điểm event qua CloudScript tại [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L606).
+- Server ghi đè trực tiếp giá trị statistic event bằng điểm vừa gửi tại [Assets/PolyJump/CloudScript/SubmitEventScore.js](Assets/PolyJump/CloudScript/SubmitEventScore.js#L178).
 
 ### Cách hoạt động hiện tại
 
@@ -91,10 +91,10 @@ Tài liệu này đối chiếu 9 yêu cầu vòng 3 với code hiện tại tro
 
 ### Code liên quan
 
-- Điểm được gửi ở cuối run: [Assets/PolyJump/Scripts/GameManager.cs](Assets/PolyJump/Scripts/GameManager.cs#L509).
-- API update statistic thường: [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L1128), [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L1139).
-- Event score qua CloudScript: [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L513), [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L517).
-- Server update event score: [Assets/PolyJump/CloudScript/SubmitEventScore.js](Assets/PolyJump/CloudScript/SubmitEventScore.js#L156).
+- Điểm được gửi ở cuối run: [Assets/PolyJump/Scripts/GameManager.cs](Assets/PolyJump/Scripts/GameManager.cs#L640).
+- API update statistic thường: [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L1365), [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L1377).
+- Event score qua CloudScript: [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L606), [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L608).
+- Server update event score: [Assets/PolyJump/CloudScript/SubmitEventScore.js](Assets/PolyJump/CloudScript/SubmitEventScore.js#L173).
 
 ### Cách hoạt động hiện tại
 
@@ -121,10 +121,10 @@ Tài liệu này đối chiếu 9 yêu cầu vòng 3 với code hiện tại tro
 
 ### Code liên quan
 
-- Key cấu hình event ở client: [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L80), [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L81), [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L82).
-- Đọc Title Data: [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L470).
-- Kiểm tra event open/close: [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L868).
-- CloudScript cũng kiểm tra lại cửa sổ giờ: [Assets/PolyJump/CloudScript/SubmitEventScore.js](Assets/PolyJump/CloudScript/SubmitEventScore.js#L2), [Assets/PolyJump/CloudScript/SubmitEventScore.js](Assets/PolyJump/CloudScript/SubmitEventScore.js#L95), [Assets/PolyJump/CloudScript/SubmitEventScore.js](Assets/PolyJump/CloudScript/SubmitEventScore.js#L118).
+- Key cấu hình event ở client: [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L83), [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L84), [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L85).
+- Đọc Title Data: [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L569).
+- Kiểm tra event open/close: [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L1030).
+- CloudScript cũng kiểm tra lại cửa sổ giờ: [Assets/PolyJump/CloudScript/SubmitEventScore.js](Assets/PolyJump/CloudScript/SubmitEventScore.js#L3), [Assets/PolyJump/CloudScript/SubmitEventScore.js](Assets/PolyJump/CloudScript/SubmitEventScore.js#L89), [Assets/PolyJump/CloudScript/SubmitEventScore.js](Assets/PolyJump/CloudScript/SubmitEventScore.js#L132).
 
 ### Cách hoạt động hiện tại
 
@@ -145,10 +145,10 @@ Tài liệu này đối chiếu 9 yêu cầu vòng 3 với code hiện tại tro
 
 ### Code liên quan
 
-- Cấu hình số lượng top: [Assets/PolyJump/Scripts/LeaderboardUiManager.cs](Assets/PolyJump/Scripts/LeaderboardUiManager.cs#L64).
-- Query top leaderboard: [Assets/PolyJump/Scripts/LeaderboardUiManager.cs](Assets/PolyJump/Scripts/LeaderboardUiManager.cs#L774), [Assets/PolyJump/Scripts/LeaderboardUiManager.cs](Assets/PolyJump/Scripts/LeaderboardUiManager.cs#L965).
-- Cơ chế event hết giờ/đóng: [Assets/PolyJump/Scripts/LeaderboardUiManager.cs](Assets/PolyJump/Scripts/LeaderboardUiManager.cs#L1669).
-- Dữ liệu profile người chơi lưu trên PlayFab: [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L1191), [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L1196), [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L1201).
+- Cấu hình số lượng top: [Assets/PolyJump/Scripts/LeaderboardUiManager.cs](Assets/PolyJump/Scripts/LeaderboardUiManager.cs#L74).
+- Query top leaderboard: [Assets/PolyJump/Scripts/LeaderboardUiManager.cs](Assets/PolyJump/Scripts/LeaderboardUiManager.cs#L933), [Assets/PolyJump/Scripts/LeaderboardUiManager.cs](Assets/PolyJump/Scripts/LeaderboardUiManager.cs#L1148).
+- Cơ chế event hết giờ/đóng: [Assets/PolyJump/Scripts/LeaderboardUiManager.cs](Assets/PolyJump/Scripts/LeaderboardUiManager.cs#L1818).
+- Dữ liệu profile người chơi lưu trên PlayFab: [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L1430), [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L1436), [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L1442).
 
 ### Cách hoạt động hiện tại
 
@@ -174,10 +174,10 @@ Tài liệu này đối chiếu 9 yêu cầu vòng 3 với code hiện tại tro
 
 ### Code liên quan
 
-- Chỉ update score thường khi vượt highscore: [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L390).
-- Cooldown nút refresh leaderboard: [Assets/PolyJump/Scripts/LeaderboardUiManager.cs](Assets/PolyJump/Scripts/LeaderboardUiManager.cs#L63), [Assets/PolyJump/Scripts/LeaderboardUiManager.cs](Assets/PolyJump/Scripts/LeaderboardUiManager.cs#L644).
-- Chỉ nhận score event khi trong cửa sổ hợp lệ: [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L421), [Assets/PolyJump/CloudScript/SubmitEventScore.js](Assets/PolyJump/CloudScript/SubmitEventScore.js#L118).
-- Validate score không âm ở server: [Assets/PolyJump/CloudScript/SubmitEventScore.js](Assets/PolyJump/CloudScript/SubmitEventScore.js#L127).
+- Chỉ update score thường khi vượt highscore: [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L463).
+- Cooldown nút refresh leaderboard: [Assets/PolyJump/Scripts/LeaderboardUiManager.cs](Assets/PolyJump/Scripts/LeaderboardUiManager.cs#L73), [Assets/PolyJump/Scripts/LeaderboardUiManager.cs](Assets/PolyJump/Scripts/LeaderboardUiManager.cs#L757).
+- Chỉ nhận score event khi trong cửa sổ hợp lệ: [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L490), [Assets/PolyJump/CloudScript/SubmitEventScore.js](Assets/PolyJump/CloudScript/SubmitEventScore.js#L132).
+- Validate score không âm ở server: [Assets/PolyJump/CloudScript/SubmitEventScore.js](Assets/PolyJump/CloudScript/SubmitEventScore.js#L141).
 
 ### Cách hoạt động hiện tại
 
@@ -205,13 +205,13 @@ Tài liệu này đối chiếu 9 yêu cầu vòng 3 với code hiện tại tro
 ### Code/cấu trúc liên quan
 
 - Các manager theo trách nhiệm rõ ràng:
-  - [Assets/PolyJump/Scripts/GameManager.cs](Assets/PolyJump/Scripts/GameManager.cs#L17)
-  - [Assets/PolyJump/Scripts/PlayerController.cs](Assets/PolyJump/Scripts/PlayerController.cs#L7)
-  - [Assets/PolyJump/Scripts/LevelSpawner.cs](Assets/PolyJump/Scripts/LevelSpawner.cs#L6)
-  - [Assets/PolyJump/Scripts/QuizManager.cs](Assets/PolyJump/Scripts/QuizManager.cs#L22)
-  - [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L16)
-  - [Assets/PolyJump/Scripts/LeaderboardUiManager.cs](Assets/PolyJump/Scripts/LeaderboardUiManager.cs#L12)
-  - [Assets/PolyJump/Scripts/AudioManager.cs](Assets/PolyJump/Scripts/AudioManager.cs#L11)
+  - [Assets/PolyJump/Scripts/GameManager.cs](Assets/PolyJump/Scripts/GameManager.cs#L20)
+  - [Assets/PolyJump/Scripts/PlayerController.cs](Assets/PolyJump/Scripts/PlayerController.cs#L10)
+  - [Assets/PolyJump/Scripts/LevelSpawner.cs](Assets/PolyJump/Scripts/LevelSpawner.cs#L9)
+  - [Assets/PolyJump/Scripts/QuizManager.cs](Assets/PolyJump/Scripts/QuizManager.cs#L31)
+  - [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L19)
+  - [Assets/PolyJump/Scripts/LeaderboardUiManager.cs](Assets/PolyJump/Scripts/LeaderboardUiManager.cs#L15)
+  - [Assets/PolyJump/Scripts/AudioManager.cs](Assets/PolyJump/Scripts/AudioManager.cs#L14)
 - Dữ liệu quiz tách riêng: [Assets/PolyJump/Resources/QuizData.json](Assets/PolyJump/Resources/QuizData.json)
 - CloudScript server tách riêng: [Assets/PolyJump/CloudScript/SubmitEventScore.js](Assets/PolyJump/CloudScript/SubmitEventScore.js)
 
@@ -234,12 +234,12 @@ Tài liệu này đối chiếu 9 yêu cầu vòng 3 với code hiện tại tro
 ### Code/asset liên quan
 
 - Palette nhận diện FPT trong builder:
-  - [Assets/PolyJump/Editor/PolyJumpPrototypeBuilder.cs](Assets/PolyJump/Editor/PolyJumpPrototypeBuilder.cs#L24)
-  - [Assets/PolyJump/Editor/PolyJumpPrototypeBuilder.cs](Assets/PolyJump/Editor/PolyJumpPrototypeBuilder.cs#L25)
+  - [Assets/PolyJump/Editor/PolyJumpPrototypeBuilder.cs](Assets/PolyJump/Editor/PolyJumpPrototypeBuilder.cs#L27)
+  - [Assets/PolyJump/Editor/PolyJumpPrototypeBuilder.cs](Assets/PolyJump/Editor/PolyJumpPrototypeBuilder.cs#L28)
 - Tạo UI theo palette cam/xanh:
-  - [Assets/PolyJump/Editor/PolyJumpPrototypeBuilder.cs](Assets/PolyJump/Editor/PolyJumpPrototypeBuilder.cs#L928)
-  - [Assets/PolyJump/Editor/PolyJumpPrototypeBuilder.cs](Assets/PolyJump/Editor/PolyJumpPrototypeBuilder.cs#L929)
-  - [Assets/PolyJump/Editor/PolyJumpPrototypeBuilder.cs](Assets/PolyJump/Editor/PolyJumpPrototypeBuilder.cs#L930)
+  - [Assets/PolyJump/Editor/PolyJumpPrototypeBuilder.cs](Assets/PolyJump/Editor/PolyJumpPrototypeBuilder.cs#L1126)
+  - [Assets/PolyJump/Editor/PolyJumpPrototypeBuilder.cs](Assets/PolyJump/Editor/PolyJumpPrototypeBuilder.cs#L1132)
+  - [Assets/PolyJump/Editor/PolyJumpPrototypeBuilder.cs](Assets/PolyJump/Editor/PolyJumpPrototypeBuilder.cs#L1133)
 - Bộ asset UI/chibi/background nằm tại thư mục `Assets/PolyJump/UI`.
 
 ### Cách hoạt động hiện tại
@@ -266,17 +266,17 @@ Tài liệu này đối chiếu 9 yêu cầu vòng 3 với code hiện tại tro
 
 ### Code liên quan (luồng API)
 
-- Client gọi gửi điểm sau mỗi run: [Assets/PolyJump/Scripts/GameManager.cs](Assets/PolyJump/Scripts/GameManager.cs#L509).
+- Client gọi gửi điểm sau mỗi run: [Assets/PolyJump/Scripts/GameManager.cs](Assets/PolyJump/Scripts/GameManager.cs#L640).
 - API lưu score thường (PlayFab UpdatePlayerStatistics):
-  - [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L1128)
-  - [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L1139)
+  - [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L1365)
+  - [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L1377)
 - API event qua CloudScript:
-  - Request tạo ở [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L515)
-  - FunctionName ở [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L517)
-  - Payload ở [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L518)
+  - Request tạo ở [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L606)
+  - FunctionName ở [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L608)
+  - Payload ở [Assets/PolyJump/Scripts/PlayFabAuthManager.cs](Assets/PolyJump/Scripts/PlayFabAuthManager.cs#L609)
 - Server xử lý và ghi score event:
-  - CloudScript handler: [Assets/PolyJump/CloudScript/SubmitEventScore.js](Assets/PolyJump/CloudScript/SubmitEventScore.js#L1)
-  - Update server-side statistic: [Assets/PolyJump/CloudScript/SubmitEventScore.js](Assets/PolyJump/CloudScript/SubmitEventScore.js#L156)
+  - CloudScript handler: [Assets/PolyJump/CloudScript/SubmitEventScore.js](Assets/PolyJump/CloudScript/SubmitEventScore.js#L3)
+  - Update server-side statistic: [Assets/PolyJump/CloudScript/SubmitEventScore.js](Assets/PolyJump/CloudScript/SubmitEventScore.js#L173)
 
 ### Cách hoạt động hiện tại
 
