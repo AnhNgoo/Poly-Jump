@@ -284,11 +284,11 @@ namespace PolyJump.Scripts
             InvalidateLeaderboardHighscoreCache();
             InvalidateEventWindowCache();
 
-            string username = BuildUsernameFromName(trimmedName);
+            string username = BuildSafeBackendUsername(trimmedEmail);
             // Khối điều kiện: rẽ nhánh xử lý theo dữ liệu và trạng thái hiện tại.
             if (string.IsNullOrWhiteSpace(username))
             {
-                SetStatus("Tên người dùng không hợp lệ", StatusAutoHideSeconds);
+                SetStatus("Không thể tạo mã tài khoản nội bộ", StatusAutoHideSeconds);
                 return;
             }
 
@@ -314,7 +314,7 @@ namespace PolyJump.Scripts
                     }
 
                     SetStatus("Đăng ký thành công", StatusAutoHideSeconds);
-                    SaveExtraInfo(trimmedName, trimmedPhone, trimmedEmail, username);
+                    SaveExtraInfo(trimmedName, trimmedPhone, trimmedEmail);
                     MarkAuthenticatedAndOpenStartMenu(trimmedName);
                 },
                 HandleRegisterError);
@@ -1420,7 +1420,7 @@ namespace PolyJump.Scripts
         /// <summary>
         /// Lưu Extra Info phục vụ luồng xử lý hiện tại của hệ thống.
         /// </summary>
-        private void SaveExtraInfo(string fullName, string phone, string email, string username)
+        private void SaveExtraInfo(string fullName, string phone, string email)
         {
             // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
             var data = new Dictionary<string, string>();
@@ -1565,7 +1565,7 @@ namespace PolyJump.Scripts
                 case PlayFabErrorCode.UsernameNotAvailable:
                 case PlayFabErrorCode.DuplicateUsername:
                 case PlayFabErrorCode.NameNotAvailable:
-                    SetStatus("Tên người dùng đã tồn tại", StatusAutoHideSeconds);
+                    SetStatus("Mã tài khoản nội bộ bị trùng, vui lòng thử lại", StatusAutoHideSeconds);
                     break;
                 case PlayFabErrorCode.EmailAddressNotAvailable:
                 case PlayFabErrorCode.DuplicateEmail:
@@ -2096,6 +2096,59 @@ namespace PolyJump.Scripts
             }
 
             return username;
+        }
+
+        /// <summary>
+        /// Tạo Safe Backend Username phục vụ luồng xử lý hiện tại của hệ thống.
+        /// </summary>
+        private static string BuildSafeBackendUsername(string email)
+        {
+            // Khối chính: chuẩn bị dữ liệu cục bộ và điều phối các bước xử lý của hàm.
+            string normalizedEmail = NormalizeEmail(email);
+            if (string.IsNullOrWhiteSpace(normalizedEmail))
+            {
+                return string.Empty;
+            }
+
+            string localPart = normalizedEmail;
+            int atIndex = normalizedEmail.IndexOf('@');
+            if (atIndex > 0)
+            {
+                localPart = normalizedEmail.Substring(0, atIndex);
+            }
+
+            var sb = new StringBuilder(localPart.Length);
+            for (int i = 0; i < localPart.Length; i++)
+            {
+                char c = localPart[i];
+                if ((c >= 'a' && c <= 'z') || (c >= '0' && c <= '9'))
+                {
+                    sb.Append(c);
+                }
+            }
+
+            string baseName = sb.ToString();
+            if (string.IsNullOrWhiteSpace(baseName))
+            {
+                baseName = "player";
+            }
+
+            // Một số backend chỉ chấp nhận username bắt đầu bằng chữ cái.
+            if (baseName[0] < 'a' || baseName[0] > 'z')
+            {
+                baseName = "u" + baseName;
+            }
+
+            const int suffixLength = 8;
+            const int maxUsernameLength = 20;
+            int maxBaseLength = maxUsernameLength - suffixLength;
+            if (baseName.Length > maxBaseLength)
+            {
+                baseName = baseName.Substring(0, maxBaseLength);
+            }
+
+            string suffix = Guid.NewGuid().ToString("N").Substring(0, suffixLength);
+            return baseName + suffix;
         }
 
         /// <summary>
