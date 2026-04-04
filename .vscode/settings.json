@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "GameAI.sln"
+    "dotnet.defaultSolution": "Poly-Jump.sln"
 }

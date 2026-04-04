@@ -12,7 +12,7 @@ using Unity.CodeEditor;
 
 namespace SingularityGroup.HotReload.Editor {
     static class InstallUtility {
-        const string installFlagPath = PackageConst.LibraryCachePath + "/installFlag.txt";
+        static string installFlagPath = PackageConst.LibraryCachePath + "/installFlag.txt";
 
         public static void DebugClearInstallState() {
             File.Delete(installFlagPath);
@@ -22,9 +22,11 @@ namespace SingularityGroup.HotReload.Editor {
         public static void HandleEditorStart(string updatedFromVersion) {
             var showOnStartup = HotReloadPrefs.ShowOnStartup;
             if (showOnStartup == ShowOnStartupEnum.Always || (showOnStartup == ShowOnStartupEnum.OnNewVersion && !String.IsNullOrEmpty(updatedFromVersion))) {
-                HotReloadWindow.Open();
+                if (!HotReloadPrefs.DeactivateHotReload) {
+                    HotReloadWindow.Open();
+                }
             }
-            if (HotReloadPrefs.LaunchOnEditorStart) {
+            if (HotReloadPrefs.LaunchOnEditorStart && !HotReloadPrefs.DeactivateHotReload) {
                 EditorCodePatcher.DownloadAndRun().Forget();
             }
             
@@ -32,7 +34,7 @@ namespace SingularityGroup.HotReload.Editor {
         }
 
         public static void CheckForNewInstall() {
-            if(File.Exists(installFlagPath)) {
+            if(File.Exists(installFlagPath) || MultiplayerPlaymodeHelper.IsClone) {
                 return;
             }
             Directory.CreateDirectory(Path.GetDirectoryName(installFlagPath));
@@ -45,11 +47,13 @@ namespace SingularityGroup.HotReload.Editor {
             if (EditorCodePatcher.licenseType == UnityLicenseType.UnityPro) {
                 RedeemLicenseHelper.I.StartRegistration();
             }
-            HotReloadWindow.Open();
             HotReloadPrefs.AllowDisableUnityAutoRefresh = true;
             HotReloadPrefs.AllAssetChanges = true;
             HotReloadPrefs.AutoRecompileUnsupportedChanges = true;
             HotReloadPrefs.AutoRecompileUnsupportedChangesOnExitPlayMode = true;
+#if UNITY_EDITOR_WIN
+            HotReloadPrefs.UseWatchman = false;
+#endif
             if (HotReloadCli.CanOpenInBackground) {
                 HotReloadPrefs.DisableConsoleWindow = true;
             }

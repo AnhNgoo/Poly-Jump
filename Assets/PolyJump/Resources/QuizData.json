@@ -942,5 +942,1165 @@
       "Cả A và C"
     ],
     "correct": 3
+  },
+  {
+    "q": "Hình thức xét tuyển phổ biến tại FPT Polytechnic dành cho học sinh lớp 12 là gì?",
+    "a": [
+      "Xét tuyển hồ sơ theo quy định tuyển sinh từng đợt",
+      "Thi năng khiếu bắt buộc cho mọi ngành",
+      "Bốc thăm ngẫu nhiên",
+      "Chỉ nhận học sinh trường chuyên"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Học sinh 12 nên chuẩn bị giấy tờ gì trước khi nộp hồ sơ vào FPT Polytechnic?",
+    "a": [
+      "Các giấy tờ cá nhân và học tập theo thông báo tuyển sinh",
+      "Chỉ cần ảnh thẻ",
+      "Không cần giấy tờ",
+      "Chỉ cần thẻ học sinh"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Thông tin tuyển sinh chính thức của FPT Polytechnic nên xem ở đâu trước tiên?",
+    "a": [
+      "Kênh truyền thông chính thức của trường",
+      "Các bình luận không rõ nguồn trên mạng",
+      "Tin đồn từ hội nhóm",
+      "Video cắt ghép"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Khi chọn ngành tại FPT Polytechnic, yếu tố nào quan trọng nhất với học sinh lớp 12?",
+    "a": [
+      "Sở thích, năng lực và mục tiêu nghề nghiệp",
+      "Bạn bè học ngành nào thì học theo",
+      "Ngành có tên lạ",
+      "Chọn ngẫu nhiên"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Open Day tại FPT Polytechnic giúp học sinh lớp 12 làm gì?",
+    "a": [
+      "Trải nghiệm ngành học và tư vấn trực tiếp",
+      "Thi tuyển bắt buộc",
+      "Nhận bằng tốt nghiệp ngay",
+      "Bỏ qua hồ sơ nhập học"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Điểm mạnh nổi bật của mô hình học tại FPT Polytechnic là gì?",
+    "a": [
+      "Tăng thời lượng thực hành gắn với công việc",
+      "Chỉ học lý thuyết suốt khóa",
+      "Không làm dự án",
+      "Không đánh giá kỹ năng"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Nếu chưa rõ ngành phù hợp, học sinh nên làm gì trước khi đăng ký vào FPT Polytechnic?",
+    "a": [
+      "Làm bài test hướng nghiệp và nhận tư vấn",
+      "Đăng ký đại một ngành",
+      "Không cần tìm hiểu",
+      "Chờ người khác quyết định hộ"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "FPT Polytechnic có tổ chức tham quan cơ sở cho học sinh THPT không?",
+    "a": [
+      "Có, theo các chương trình trải nghiệm và tư vấn",
+      "Không bao giờ",
+      "Chỉ dành cho giảng viên",
+      "Chỉ dành cho phụ huynh"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Điều nào mô tả đúng về môi trường học tập tại FPT Polytechnic?",
+    "a": [
+      "Năng động, nhiều hoạt động và đề cao kỹ năng nghề",
+      "Khép kín, ít hoạt động thực tế",
+      "Chỉ học qua sách cũ",
+      "Không có tương tác nhóm"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Vì sao học sinh lớp 12 nên tìm hiểu lộ trình học trước khi nhập học FPT Polytechnic?",
+    "a": [
+      "Để chủ động kế hoạch học tập và tài chính",
+      "Để bỏ qua các môn học",
+      "Để không cần đi học",
+      "Để đổi ngành mỗi tuần"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "FPT Polytechnic có hỗ trợ tư vấn 1-1 cho thí sinh trước nhập học không?",
+    "a": [
+      "Có",
+      "Không",
+      "Chỉ tư vấn qua bạn bè",
+      "Chỉ tư vấn sau tốt nghiệp"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Ngoài giờ học chính, sinh viên FPT Polytechnic thường có thể tham gia gì?",
+    "a": [
+      "CLB, workshop, hoạt động kỹ năng",
+      "Không có hoạt động nào",
+      "Chỉ thi cuối kỳ",
+      "Chỉ trực nhật"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Khi so sánh ngành học, học sinh nên xem kỹ thông tin nào của FPT Polytechnic?",
+    "a": [
+      "Chuẩn đầu ra, kỹ năng nhận được và cơ hội nghề nghiệp",
+      "Màu poster quảng cáo",
+      "Tên môn nghe hay",
+      "Ảnh đại diện fanpage"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Vai trò của phụ huynh trong quá trình chọn ngành vào FPT Polytechnic nên là gì?",
+    "a": [
+      "Đồng hành và định hướng cùng học sinh",
+      "Quyết định toàn bộ mà không hỏi con",
+      "Không cần quan tâm",
+      "Cấm tìm hiểu thông tin trường"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "FPT Polytechnic có môi trường phù hợp cho học sinh thích học qua làm không?",
+    "a": [
+      "Có, vì chương trình thiên về thực hành",
+      "Không, chỉ học chép bài",
+      "Không có bài thực hành",
+      "Chỉ học trực tuyến hoàn toàn"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Nếu muốn học ngành công nghệ tại FPT Polytechnic, học sinh 12 nên rèn gì sớm?",
+    "a": [
+      "Tư duy logic, tiếng Anh và kỹ năng tự học",
+      "Chỉ học thuộc văn mẫu",
+      "Không cần dùng máy tính",
+      "Tránh làm bài tập nhóm"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Nếu muốn học ngành kinh tế - dịch vụ, kỹ năng nào nên chuẩn bị trước?",
+    "a": [
+      "Giao tiếp, thuyết trình, làm việc nhóm",
+      "Học thuộc công thức hóa học",
+      "Không cần kỹ năng mềm",
+      "Chỉ cần chơi game giỏi"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Hoạt động trải nghiệm ngành tại FPT Polytechnic mang lại lợi ích gì?",
+    "a": [
+      "Hiểu rõ nghề trước khi đăng ký",
+      "Được miễn toàn bộ học phí",
+      "Được cấp bằng ngay",
+      "Không cần nộp hồ sơ"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Sinh viên mới thường được hướng dẫn sử dụng hệ thống học tập số khi nhập học không?",
+    "a": [
+      "Có",
+      "Không",
+      "Chỉ hướng dẫn cho năm cuối",
+      "Tự tìm hiểu hoàn toàn"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Trong tuần định hướng, tân sinh viên FPT Polytechnic thường được cung cấp gì?",
+    "a": [
+      "Thông tin quy chế, lộ trình và dịch vụ hỗ trợ",
+      "Chỉ danh sách điểm thi",
+      "Chỉ đồng phục thể thao",
+      "Không có nội dung nào"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Lý do học sinh 12 nên tham gia workshop của FPT Polytechnic là gì?",
+    "a": [
+      "Được tiếp cận ngành nghề và xu hướng thực tế",
+      "Để tránh tìm hiểu ngành",
+      "Để bỏ qua buổi định hướng",
+      "Để không cần chuẩn bị hồ sơ"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Thông tin nào cần xác nhận kỹ trước khi nhập học FPT Polytechnic?",
+    "a": [
+      "Thời gian nhập học, hồ sơ và học phí theo kỳ",
+      "Màu áo của bạn cùng lớp",
+      "Số ghế ngồi trong lớp",
+      "Tên quán ăn gần trường"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "FPT Polytechnic có khuyến khích sinh viên xây dựng portfolio cá nhân không?",
+    "a": [
+      "Có",
+      "Không",
+      "Chỉ ngành du lịch",
+      "Chỉ sau khi tốt nghiệp 5 năm"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Portfolio có ích gì với sinh viên FPT Polytechnic?",
+    "a": [
+      "Thể hiện năng lực qua sản phẩm thực tế",
+      "Thay thế giấy tờ tùy thân",
+      "Miễn mọi môn học",
+      "Không có giá trị"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Học sinh lớp 12 muốn theo Digital Marketing tại FPT Polytechnic nên bắt đầu từ đâu?",
+    "a": [
+      "Tìm hiểu nền tảng quảng cáo, nội dung và phân tích số liệu",
+      "Chỉ học thuộc công thức vật lý",
+      "Không cần dùng mạng xã hội",
+      "Không cần kỹ năng viết"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Bạn học sinh yêu thích thiết kế có thể chuẩn bị gì trước khi vào FPT Polytechnic?",
+    "a": [
+      "Rèn tư duy thẩm mỹ và công cụ thiết kế cơ bản",
+      "Không cần luyện tập",
+      "Chỉ xem phim",
+      "Chỉ học lý thuyết lịch sử"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Nhóm học sinh muốn theo lập trình nên làm gì từ lớp 12?",
+    "a": [
+      "Làm quen thuật toán và xây dự án nhỏ",
+      "Tránh tiếp xúc máy tính",
+      "Chỉ học thuộc định nghĩa",
+      "Chỉ luyện viết chữ đẹp"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "FPT Polytechnic có phù hợp với học sinh thích học qua dự án nhóm không?",
+    "a": [
+      "Có",
+      "Không",
+      "Chỉ học cá nhân",
+      "Không có dự án"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Trước khi đăng ký học, học sinh cần hiểu rõ điều gì về ngành tại FPT Polytechnic?",
+    "a": [
+      "Nội dung học và công việc sau tốt nghiệp",
+      "Màu logo ngành",
+      "Số lượng ảnh trên fanpage",
+      "Tên biệt danh của lớp"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Kỹ năng quản lý thời gian có quan trọng khi học tại FPT Polytechnic không?",
+    "a": [
+      "Có, rất quan trọng",
+      "Không cần",
+      "Chỉ cần vào cuối khóa",
+      "Chỉ cần khi đi thực tập"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Sinh viên FPT Polytechnic có cơ hội học cùng doanh nghiệp qua dự án không?",
+    "a": [
+      "Có",
+      "Không",
+      "Chỉ có ở bậc sau đại học",
+      "Chỉ có trong môn thể dục"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Điểm khác biệt khi học nghề tại FPT Polytechnic so với chỉ học lý thuyết là gì?",
+    "a": [
+      "Được luyện kỹ năng làm việc thực tế sớm",
+      "Không có kiểm tra nào",
+      "Không cần làm bài tập",
+      "Không cần đi học"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Nếu học sinh băn khoăn về cơ hội việc làm, nên liên hệ ai ở FPT Polytechnic?",
+    "a": [
+      "Bộ phận tư vấn tuyển sinh và quan hệ doanh nghiệp",
+      "Người lạ trên mạng",
+      "Nhóm tin đồn",
+      "Bất kỳ tài khoản ẩn danh"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "FPT Polytechnic có chú trọng đào tạo kỹ năng phỏng vấn xin việc cho sinh viên không?",
+    "a": [
+      "Có",
+      "Không",
+      "Chỉ cho sinh viên năm nhất",
+      "Chỉ cho giảng viên"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Học sinh lớp 12 muốn nhận tư vấn ngành nhanh có thể làm gì?",
+    "a": [
+      "Đăng ký tư vấn trực tuyến hoặc trực tiếp tại trường",
+      "Đợi đến lúc tốt nghiệp đại học",
+      "Không cần tư vấn",
+      "Chỉ hỏi bạn bè"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Khi chọn cơ sở học FPT Polytechnic, tiêu chí nào nên ưu tiên?",
+    "a": [
+      "Khoảng cách, ngành đào tạo và điều kiện học tập",
+      "Số lượng quán trà sữa xung quanh",
+      "Màu cổng trường",
+      "Tên đường dễ đọc"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Với học sinh tỉnh xa, thông tin nào cần tìm hiểu kỹ trước nhập học?",
+    "a": [
+      "Chi phí sinh hoạt và phương án chỗ ở",
+      "Màu bàn học",
+      "Tên cây trong sân trường",
+      "Thời tiết năm ngoái"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "FPT Polytechnic có phù hợp với học sinh muốn đi làm sớm sau khi ra trường không?",
+    "a": [
+      "Có, do định hướng thực hành nghề nghiệp",
+      "Không, chỉ nghiên cứu hàn lâm",
+      "Không có thực tập",
+      "Không có môn chuyên ngành"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Trong quá trình học, sinh viên có cần phát triển kỹ năng tự học không?",
+    "a": [
+      "Có, đây là kỹ năng rất cần thiết",
+      "Không cần",
+      "Chỉ cần khi thi lại",
+      "Chỉ cần ở học kỳ cuối"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "FPT Polytechnic có tạo điều kiện để sinh viên rèn kỹ năng làm việc nhóm không?",
+    "a": [
+      "Có",
+      "Không",
+      "Chỉ học cá nhân",
+      "Không có dự án nhóm"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Học sinh nên làm gì để tránh chọn sai ngành khi đăng ký FPT Polytechnic?",
+    "a": [
+      "Nghiên cứu kỹ ngành và trải nghiệm tư vấn trước khi quyết định",
+      "Đăng ký theo cảm hứng tức thời",
+      "Chọn theo tên ngành ngắn nhất",
+      "Nghe một nguồn tin duy nhất"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Lợi ích của việc tham gia CLB tại FPT Polytechnic đối với tân sinh viên là gì?",
+    "a": [
+      "Mở rộng quan hệ, luyện kỹ năng mềm và trải nghiệm thực tế",
+      "Không có tác dụng",
+      "Chỉ để điểm danh",
+      "Thay thế toàn bộ môn học"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Học sinh lớp 12 có thể nhận thông tin học bổng FPT Polytechnic từ đâu?",
+    "a": [
+      "Thông báo chính thức trong từng đợt tuyển sinh",
+      "Tin nhắn không rõ nguồn",
+      "Bình luận ẩn danh",
+      "Ảnh chụp màn hình cũ"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Tại sao cần kiểm tra hạn nộp hồ sơ khi đăng ký FPT Polytechnic?",
+    "a": [
+      "Để không bỏ lỡ đợt tuyển sinh mong muốn",
+      "Không cần quan tâm",
+      "Vì hạn nộp luôn vô thời hạn",
+      "Chỉ nộp sau khi học xong mới được"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Trong quá trình học, sinh viên FPT Polytechnic có được làm nhiều đồ án thực tế không?",
+    "a": [
+      "Có",
+      "Không",
+      "Chỉ có 1 đồ án duy nhất",
+      "Chỉ làm bài viết lý thuyết"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Học sinh muốn biết ngành nào phù hợp năng lực bản thân nên làm gì?",
+    "a": [
+      "Trao đổi với tư vấn viên và thử bài đánh giá hướng nghiệp",
+      "Chọn theo màu yêu thích",
+      "Chọn theo cung hoàng đạo",
+      "Không cần đánh giá"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Tiếng Anh có vai trò như thế nào khi học tại FPT Polytechnic?",
+    "a": [
+      "Hỗ trợ học chuyên ngành và cơ hội nghề nghiệp",
+      "Không liên quan",
+      "Chỉ dùng để hát",
+      "Chỉ dùng trong giờ thể dục"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Sinh viên có thể nhận hỗ trợ học tập khi gặp khó khăn tại FPT Polytechnic không?",
+    "a": [
+      "Có",
+      "Không",
+      "Chỉ khi đã tốt nghiệp",
+      "Chỉ dành cho sinh viên quốc tế"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Trước ngày nhập học, học sinh nên chuẩn bị điều gì quan trọng nhất?",
+    "a": [
+      "Kế hoạch học tập, tài chính và mục tiêu cá nhân",
+      "Chỉ mua balo mới",
+      "Không cần chuẩn bị",
+      "Chỉ tập thể thao"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "FPT Polytechnic có tổ chức hoạt động kết nối tân sinh viên đầu khóa không?",
+    "a": [
+      "Có",
+      "Không",
+      "Chỉ dành cho năm cuối",
+      "Chỉ dành cho phụ huynh"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Nếu muốn học ngành du lịch - dịch vụ, học sinh nên rèn phẩm chất nào?",
+    "a": [
+      "Tác phong chuyên nghiệp và kỹ năng giao tiếp",
+      "Ngại tiếp xúc người khác",
+      "Không cần làm việc nhóm",
+      "Không cần đúng giờ"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Nếu muốn theo ngành thiết kế, việc luyện quan sát và sáng tạo có cần thiết không?",
+    "a": [
+      "Có",
+      "Không",
+      "Chỉ cần đến năm cuối",
+      "Chỉ cần khi thi tốt nghiệp"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Vì sao nên tìm hiểu chuẩn đầu ra ngành trước khi nhập học FPT Polytechnic?",
+    "a": [
+      "Để biết kỹ năng cần đạt và định hướng nghề nghiệp",
+      "Để chọn lớp ngẫu nhiên",
+      "Để bỏ qua thực hành",
+      "Để không cần tham gia học"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Trong môi trường học nghề, thái độ nào giúp sinh viên tiến bộ nhanh?",
+    "a": [
+      "Chủ động, kỷ luật và ham học hỏi",
+      "Ngại thử thách",
+      "Chỉ chờ giao việc",
+      "Bỏ bài tập nhóm"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "FPT Polytechnic có tạo cơ hội cho sinh viên trình bày sản phẩm trước lớp/doanh nghiệp không?",
+    "a": [
+      "Có",
+      "Không",
+      "Chỉ trình bày bằng văn bản",
+      "Chỉ dành cho giảng viên"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Kỹ năng nào giúp sinh viên FPT Polytechnic thích nghi tốt với bài tập dự án?",
+    "a": [
+      "Lập kế hoạch và phối hợp nhóm",
+      "Làm việc tùy hứng",
+      "Không ghi chú tiến độ",
+      "Tránh giao tiếp"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Học sinh muốn theo ngành CNTT tại FPT Polytechnic nên ưu tiên học gì ở THPT?",
+    "a": [
+      "Toán, logic và nền tảng tin học",
+      "Chỉ học thuộc thơ",
+      "Không cần kỹ năng số",
+      "Chỉ luyện chữ đẹp"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Ngành dịch vụ - nhà hàng - khách sạn tại FPT Polytechnic yêu cầu kỹ năng nào nổi bật?",
+    "a": [
+      "Giao tiếp, xử lý tình huống và tác phong chuyên nghiệp",
+      "Không cần giao tiếp",
+      "Chỉ học lý thuyết",
+      "Không cần làm việc ca"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Học sinh lớp 12 nên tham khảo trải nghiệm cựu sinh viên FPT Polytechnic để làm gì?",
+    "a": [
+      "Có góc nhìn thực tế về ngành và việc làm",
+      "Sao chép y nguyên lựa chọn của người khác",
+      "Không cần đọc",
+      "Chỉ xem hình ảnh"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Trong quá trình học, việc tham gia cuộc thi chuyên môn mang lại lợi ích gì?",
+    "a": [
+      "Nâng kỹ năng thực chiến và tăng trải nghiệm nghề",
+      "Không có lợi ích",
+      "Chỉ để nghỉ học",
+      "Để tránh làm dự án"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "FPT Polytechnic có hỗ trợ kết nối thực tập cho sinh viên theo chương trình không?",
+    "a": [
+      "Có",
+      "Không",
+      "Chỉ khi sinh viên tự tìm 100%",
+      "Chỉ cho học sinh THPT"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Tân sinh viên có nên đặt mục tiêu nghề nghiệp ngay từ học kỳ đầu không?",
+    "a": [
+      "Có, để học tập đúng hướng",
+      "Không bao giờ",
+      "Chỉ đặt mục tiêu sau khi tốt nghiệp",
+      "Chỉ cần đặt trước kỳ thi"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Nên làm gì để tận dụng tốt thời gian học tại FPT Polytechnic?",
+    "a": [
+      "Kết hợp học trên lớp, tự học và tham gia hoạt động thực tế",
+      "Chỉ học sát ngày thi",
+      "Không làm bài tập",
+      "Không tham gia dự án"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "FPT Polytechnic có môi trường để rèn kỹ năng thuyết trình không?",
+    "a": [
+      "Có",
+      "Không",
+      "Chỉ rèn khi đi làm",
+      "Chỉ dành cho ngành PR"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Học sinh nên cập nhật thông báo tuyển sinh FPT Polytechnic theo cách nào?",
+    "a": [
+      "Theo dõi kênh chính thức và lịch thông báo định kỳ",
+      "Chờ truyền miệng",
+      "Đợi bạn gửi lại ảnh cũ",
+      "Không cần cập nhật"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Trường hợp muốn đổi nguyện vọng ngành trước nhập học, học sinh nên làm gì?",
+    "a": [
+      "Liên hệ bộ phận tuyển sinh theo quy định thời gian",
+      "Tự sửa thông tin không báo",
+      "Không thể thay đổi dù còn hạn",
+      "Đăng bài hỏi ngẫu nhiên trên mạng"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Một lợi thế của việc học theo dự án tại FPT Polytechnic là gì?",
+    "a": [
+      "Rút ngắn khoảng cách giữa học và làm",
+      "Giảm toàn bộ kỹ năng mềm",
+      "Không cần phản biện",
+      "Không cần làm việc nhóm"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Học sinh lớp 12 muốn theo ngành sáng tạo nội dung nên chuẩn bị gì?",
+    "a": [
+      "Kỹ năng viết, tư duy ý tưởng và kể chuyện",
+      "Chỉ học công thức toán",
+      "Không cần đọc tài liệu",
+      "Không cần luyện giao tiếp"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Tại FPT Polytechnic, việc phản hồi từ giảng viên trong bài dự án có quan trọng không?",
+    "a": [
+      "Có, giúp cải thiện sản phẩm và kỹ năng",
+      "Không quan trọng",
+      "Chỉ cần điểm số",
+      "Chỉ cần nộp cho đủ"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Sinh viên có thể phát triển kỹ năng networking khi học tại FPT Polytechnic không?",
+    "a": [
+      "Có",
+      "Không",
+      "Chỉ sau khi ra trường",
+      "Chỉ trong học kỳ doanh nghiệp"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Trước khi đăng ký ngành, học sinh nên tự trả lời câu hỏi nào?",
+    "a": [
+      "Mình muốn làm công việc gì sau tốt nghiệp?",
+      "Mình thích màu nào nhất?",
+      "Mình muốn học chung với bao nhiêu bạn?",
+      "Mình muốn nghỉ học ngày nào?"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "FPT Polytechnic có phù hợp với người học thích thực chiến và sản phẩm đầu ra không?",
+    "a": [
+      "Có",
+      "Không",
+      "Chỉ phù hợp nghiên cứu hàn lâm",
+      "Chỉ phù hợp học thụ động"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Tại sao học sinh nên đọc kỹ mô tả môn học của ngành trước khi chọn?",
+    "a": [
+      "Để hiểu mình sẽ học gì và có phù hợp không",
+      "Để bỏ qua nội dung chuyên môn",
+      "Để chọn môn dễ nghỉ",
+      "Không cần đọc"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Tham gia sự kiện định hướng nghề nghiệp của trường giúp ích điều gì?",
+    "a": [
+      "Hiểu thị trường lao động và lộ trình phát triển",
+      "Được miễn học toàn khóa",
+      "Không cần nộp hồ sơ",
+      "Không cần học kỹ năng mềm"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Nếu còn phân vân giữa hai ngành, học sinh nên chọn cách nào?",
+    "a": [
+      "So sánh chuẩn đầu ra và công việc mục tiêu của từng ngành",
+      "Tung đồng xu",
+      "Đăng ký cùng lúc mọi ngành",
+      "Để người lạ quyết định"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "FPT Polytechnic có nhiều hoạt động giúp tân sinh viên hòa nhập nhanh không?",
+    "a": [
+      "Có",
+      "Không",
+      "Chỉ có vào dịp lễ",
+      "Chỉ có cho sinh viên năm cuối"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Lớp 12 muốn theo ngành lập trình game nên chuẩn bị gì trước?",
+    "a": [
+      "Tư duy logic, toán và nền tảng lập trình",
+      "Chỉ chơi game",
+      "Không cần học gì",
+      "Chỉ học thuộc lý thuyết"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Trong môi trường học ứng dụng, kỹ năng phản biện có cần thiết không?",
+    "a": [
+      "Có",
+      "Không",
+      "Chỉ cần cho giảng viên",
+      "Chỉ cần lúc bảo vệ tốt nghiệp"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Học sinh nên chuẩn bị thiết bị học tập như thế nào trước khi vào FPT Polytechnic?",
+    "a": [
+      "Theo khuyến nghị cấu hình cho từng nhóm ngành",
+      "Mua thiết bị bất kỳ không cần phù hợp",
+      "Không cần thiết bị",
+      "Chỉ cần điện thoại phổ thông"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "FPT Polytechnic có phù hợp với học sinh muốn phát triển cả chuyên môn lẫn kỹ năng mềm không?",
+    "a": [
+      "Có",
+      "Không",
+      "Chỉ dạy kiến thức khô khan",
+      "Chỉ dạy kỹ năng giải trí"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Khi tham gia dự án học tập, sinh viên thường học được điều gì quan trọng?",
+    "a": [
+      "Cách giải quyết vấn đề thực tế",
+      "Cách tránh làm việc nhóm",
+      "Cách bỏ deadline",
+      "Cách không lập kế hoạch"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Học sinh muốn học ngành PR và sự kiện nên rèn gì từ sớm?",
+    "a": [
+      "Tổ chức công việc, giao tiếp và xử lý tình huống",
+      "Ngại nói trước đám đông",
+      "Không cần làm việc nhóm",
+      "Chỉ học lý thuyết giấy"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Tại FPT Polytechnic, việc đúng hạn deadline trong các dự án có quan trọng không?",
+    "a": [
+      "Có, rất quan trọng",
+      "Không quan trọng",
+      "Chỉ quan trọng ở năm cuối",
+      "Chỉ quan trọng với giảng viên"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Học sinh 12 muốn theo ngành logistics nên quan tâm kỹ năng nào?",
+    "a": [
+      "Tư duy hệ thống, quản lý quy trình và dữ liệu",
+      "Không cần tổ chức công việc",
+      "Chỉ cần học thuộc lý thuyết",
+      "Không cần giao tiếp"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "FPT Polytechnic có tạo cơ hội cho sinh viên tham gia hoạt động cộng đồng không?",
+    "a": [
+      "Có",
+      "Không",
+      "Chỉ dành cho cán bộ lớp",
+      "Chỉ dành cho cựu sinh viên"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Một thói quen tốt cho tân sinh viên FPT Polytechnic là gì?",
+    "a": [
+      "Theo dõi lịch học và kế hoạch tuần đều đặn",
+      "Đợi sát hạn mới làm",
+      "Bỏ qua thông báo",
+      "Không ghi chú môn học"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Học sinh lớp 12 nên làm gì để tự tin khi bước vào môi trường cao đẳng nghề?",
+    "a": [
+      "Rèn tinh thần chủ động và sẵn sàng trải nghiệm",
+      "Sợ sai và không dám thử",
+      "Chỉ học đối phó",
+      "Không tham gia hoạt động nào"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "FPT Polytechnic có khuyến khích sinh viên tham gia seminar chuyên môn không?",
+    "a": [
+      "Có",
+      "Không",
+      "Chỉ dành cho khách mời",
+      "Chỉ dành cho năm cuối"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Khi học theo nhóm, kỹ năng nào giúp dự án hiệu quả hơn?",
+    "a": [
+      "Phân vai rõ ràng và giao tiếp thường xuyên",
+      "Không họp nhóm",
+      "Không chia nhiệm vụ",
+      "Nộp bài sát giờ không kiểm tra"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Lý do nên tham gia ngày hội tuyển sinh của FPT Polytechnic là gì?",
+    "a": [
+      "Được giải đáp trực tiếp về ngành, học phí và lộ trình",
+      "Để nhận bằng ngay tại chỗ",
+      "Để miễn mọi điều kiện hồ sơ",
+      "Không có lợi ích gì"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Sinh viên có thể nhận phản hồi từ doanh nghiệp trong một số hoạt động học tập không?",
+    "a": [
+      "Có",
+      "Không",
+      "Chỉ sau khi nghỉ học",
+      "Chỉ khi đổi ngành"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Học sinh lớp 12 cần chú ý gì khi chọn ngành theo xu hướng?",
+    "a": [
+      "Kết hợp xu hướng với năng lực và sở thích bản thân",
+      "Chọn theo trào lưu bất chấp phù hợp",
+      "Không cần tìm hiểu nghề",
+      "Chỉ nghe quảng cáo ngắn"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "FPT Polytechnic có môi trường để rèn kỹ năng giao tiếp chuyên nghiệp không?",
+    "a": [
+      "Có",
+      "Không",
+      "Chỉ học kỹ thuật",
+      "Chỉ học lý thuyết"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Một mục tiêu hợp lý trong học kỳ đầu tại FPT Polytechnic là gì?",
+    "a": [
+      "Nắm nền tảng ngành và xây thói quen học hiệu quả",
+      "Bỏ qua mọi môn đại cương",
+      "Chỉ đi học khi thích",
+      "Không tham gia nhóm học"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Tại sao kỹ năng tin học văn phòng vẫn hữu ích với nhiều ngành tại FPT Polytechnic?",
+    "a": [
+      "Hỗ trợ báo cáo, thuyết trình và quản lý công việc",
+      "Không dùng đến",
+      "Chỉ dùng cho học sinh THCS",
+      "Chỉ dùng khi đi du lịch"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "FPT Polytechnic có thúc đẩy sinh viên tham gia hoạt động liên ngành không?",
+    "a": [
+      "Có",
+      "Không",
+      "Chỉ học riêng từng ngành tuyệt đối",
+      "Chỉ dành cho giảng viên"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Nếu muốn tăng cơ hội việc làm, sinh viên nên làm gì trong thời gian học?",
+    "a": [
+      "Tích lũy dự án, kỹ năng và kinh nghiệm thực tế",
+      "Chỉ chờ đến lúc ra trường",
+      "Không cần làm portfolio",
+      "Không cần học kỹ năng mềm"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Học sinh lớp 12 có nên tham khảo chương trình từng kỳ của ngành trước khi đăng ký không?",
+    "a": [
+      "Có",
+      "Không",
+      "Chỉ xem khi đã học năm cuối",
+      "Không có chương trình cụ thể"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "FPT Polytechnic có cơ hội để sinh viên tham gia các sự kiện nghề nghiệp trong năm không?",
+    "a": [
+      "Có",
+      "Không",
+      "Chỉ 1 lần duy nhất toàn khóa",
+      "Chỉ sau tốt nghiệp"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Thói quen nào giúp học sinh mới hòa nhập nhanh tại FPT Polytechnic?",
+    "a": [
+      "Chủ động kết nối bạn học và giảng viên",
+      "Ngại tương tác",
+      "Bỏ qua hoạt động lớp",
+      "Không theo dõi lịch học"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Để học hiệu quả ở môi trường thực hành, sinh viên nên ưu tiên cách học nào?",
+    "a": [
+      "Học qua làm, thử nghiệm và cải tiến liên tục",
+      "Chỉ đọc chép",
+      "Không luyện tập",
+      "Không nhận phản hồi"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "FPT Polytechnic có tạo điều kiện cho sinh viên xây dựng kỹ năng lãnh đạo qua hoạt động tập thể không?",
+    "a": [
+      "Có",
+      "Không",
+      "Chỉ dành cho ban giám hiệu",
+      "Chỉ dành cho lớp trưởng năm cuối"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Điều nào là kỳ vọng thực tế khi học tại FPT Polytechnic?",
+    "a": [
+      "Phải nỗ lực thực hành và chủ động để tiến bộ",
+      "Không cần học vẫn giỏi",
+      "Không cần làm bài vẫn qua môn",
+      "Không cần kỹ năng mềm vẫn có việc ngay"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Học sinh muốn theo ngành ô tô nên chuẩn bị thái độ học tập như thế nào?",
+    "a": [
+      "Cẩn thận, kỷ luật và yêu thích thực hành kỹ thuật",
+      "Ngại thực hành",
+      "Không cần tuân thủ an toàn",
+      "Chỉ học lý thuyết"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Tại sao nên tham gia hoạt động kỹ năng mềm ngay từ năm nhất?",
+    "a": [
+      "Giúp học tập, làm dự án và xin việc tốt hơn",
+      "Không có tác dụng",
+      "Chỉ để giải trí",
+      "Chỉ dành cho năm cuối"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "FPT Polytechnic có khuyến khích tinh thần học tập suốt đời không?",
+    "a": [
+      "Có",
+      "Không",
+      "Chỉ học trong 1 học kỳ",
+      "Chỉ học khi có kiểm tra"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Nếu muốn cải thiện kỹ năng nghề nhanh, sinh viên nên làm gì ngoài giờ lên lớp?",
+    "a": [
+      "Tự luyện thêm và tham gia dự án cá nhân/nhóm",
+      "Không cần luyện thêm",
+      "Chỉ xem giải trí",
+      "Không cần đọc tài liệu"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Học sinh lớp 12 nên xây dựng tư duy nào trước khi vào FPT Polytechnic?",
+    "a": [
+      "Tư duy chủ động, thực tế và sẵn sàng hợp tác",
+      "Tư duy học đối phó",
+      "Tư duy né tránh thử thách",
+      "Tư duy phụ thuộc hoàn toàn"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Một dấu hiệu chọn ngành đúng tại FPT Polytechnic là gì?",
+    "a": [
+      "Bạn có động lực học và thấy phù hợp năng lực bản thân",
+      "Bạn chọn vì bạn bè ép",
+      "Bạn không hiểu ngành học gì",
+      "Bạn không quan tâm công việc sau này"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Khi có nhiều lựa chọn ngành, cách ra quyết định tốt là gì?",
+    "a": [
+      "Lập bảng so sánh mục tiêu, năng lực và cơ hội nghề",
+      "Chọn theo cảm tính tức thời",
+      "Để người khác chọn hộ hoàn toàn",
+      "Không cần cân nhắc"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "FPT Polytechnic có phù hợp với học sinh muốn học nhanh để sớm đi làm không?",
+    "a": [
+      "Có, nếu người học chủ động và nghiêm túc",
+      "Không bao giờ phù hợp",
+      "Chỉ phù hợp học nghiên cứu thuần túy",
+      "Chỉ phù hợp người không thích thực hành"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Năng lực nào giúp sinh viên tận dụng tốt cơ hội thực tập?",
+    "a": [
+      "Tinh thần trách nhiệm và khả năng thích nghi",
+      "Đi trễ thường xuyên",
+      "Ngại học cái mới",
+      "Không tôn trọng quy trình"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Vì sao cần tìm hiểu kỹ học phí theo kỳ trước khi nhập học?",
+    "a": [
+      "Để chuẩn bị kế hoạch tài chính phù hợp",
+      "Không cần chuẩn bị gì",
+      "Để bỏ qua kỳ đầu",
+      "Để nộp muộn không báo"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "FPT Polytechnic có cơ hội để sinh viên học từ lỗi sai trong quá trình làm dự án không?",
+    "a": [
+      "Có",
+      "Không",
+      "Chỉ chấm điểm mà không phản hồi",
+      "Chỉ học lý thuyết không làm dự án"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Đâu là cách chuẩn bị tâm thế tốt khi trở thành tân sinh viên FPT Polytechnic?",
+    "a": [
+      "Sẵn sàng học hỏi, hợp tác và kỷ luật cá nhân",
+      "Chờ mọi thứ tự đến",
+      "Không lập kế hoạch",
+      "Không tham gia bất kỳ hoạt động nào"
+    ],
+    "correct": 0
+  },
+  {
+    "q": "Để hiểu rõ FPT Polytechnic hơn, học sinh lớp 12 nên kết hợp những cách nào?",
+    "a": [
+      "Đọc thông tin chính thức, dự sự kiện và hỏi tư vấn viên",
+      "Chỉ xem tin đồn",
+      "Chỉ nghe 1 bình luận",
+      "Không cần tìm hiểu"
+    ],
+    "correct": 0
   }
 ]
